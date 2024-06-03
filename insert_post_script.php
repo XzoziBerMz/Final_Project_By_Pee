@@ -32,7 +32,7 @@ if (isset($_POST["submit"])) {
       $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
       $newImageName = uniqid() . '.' . $imageExtension;
 
-      move_uploaded_file($tmpName, 'upload/' . $newImageName);
+      move_uploaded_file($tmpName, 'image/' . $newImageName);
       $filesArray[] = $newImageName;
     }
 

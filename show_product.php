@@ -52,7 +52,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if (!empty($product_images)) {
               $first_image = $product_images[0];
               ?>
-              <img src="upload/<?php echo $first_image; ?>" width="200" height="200">
+              <img src="image/<?php echo $first_image; ?>" width="200" height="200">
             <?php } ?>
 
           </div>
