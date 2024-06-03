@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+*
+{
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    font-family: 'Roboto', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+.product-card {
+    width: 350px;
+    position: relative;
+    box-shadow: 0 4px 7px #cdcdcd;
+    margin: 16px;
+    background: #ffffff;
+}
+
+.product-tumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    background: #f0f0f0;
+    max-width: 100%; 
+    max-height: 185px; 
+    overflow: hidden; 
+}
+
+.product-tumb img {
+    max-width: 100%;
+    max-height:100%;
+    object-fit: contain;
+}
+
+.product-details {
+    padding: 25px;
+}
+
+.product-catagory {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+
+.product-details h4 a {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 18px;
+    color: #484848;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.product-details h4 a:hover {
+    color: #08ae4b;
+}
+
+.product-details p {
+    font-size: 15px;
+    line-height: 22px;
+    margin-bottom: 18px;
+    color: #999;
+}
+
+.product-bottom-details {
+    overflow: hidden;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.product-bottom-details div {
+    float: left;
+    width: 50%;
+}   
+
+.product-price {
+    font-size: 18px;
+    color: #000000;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.btn-more{
+    background-color: #09CD56;
+    color: #FFFFFF; 
+    width: 100%;
+    padding: 5px;  
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.btn-more:hover{
+    background-color: #08ae4b;
+    color: #FFFFFF;
+}
+
+.tag-sell {
+    border: 1px solid;
+    border-color: #f6203b;
+    background-color: #f6203b;
+    padding: 5px;
+    width: 60px;
+    border-radius: 7px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 96%
+}
+
+.tag-buy {
+    border: 1px solid;
+    border-color: #09CD56;
+    background-color: #09CD56;
+    padding: 5px;
+    width: 60px;
+    border-radius: 7px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 96%
+}
+
+.text-config {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

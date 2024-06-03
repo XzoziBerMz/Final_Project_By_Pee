@@ -1,0 +1,114 @@
+/* css ส่วนของ image หน้าหลัก */
+
+/* ปรับขนาดของรูปภาพด้านบน */
+.div-img {
+  position: relative; 
+  width: 100%; 
+  height: 450px; 
+  overflow: hidden;
+}
+
+/* ด้านบน */
+.img-banner {
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover;
+}
+
+/* ปุ่มโพสต์หา-ขายสินค้า */
+.div-btn {
+position: absolute; 
+top: 30px; 
+right: 20px;
+margin-right: 50px;
+}
+
+.btn-post {
+background-color: #09CD56;
+color: #FFFFFF; 
+width: 110%;
+padding: 10px;  
+transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.btn-post:hover {
+background-color: #08ae4b;
+color: #FFFFFF;
+}
+
+/* css ลูกเล่นตรงส่วน ปุ่มโพสต์หา-ขายสินค้า */
+.blink-2{-webkit-animation:blink-2 1s 1s infinite both;animation:blink-2 1s 1s infinite both}
+
+@-webkit-keyframes blink-2{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}@keyframes blink-2{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}
+
+/* ปุ่มหาสินค้า */
+.div-search-bar {
+position: absolute; 
+top: 80%; 
+left: 50%; 
+transform: translate(-50%, -50%); 
+text-align: center;
+}
+
+.btn-serch {
+background-color: #09CD56; 
+width: 50px;
+padding: 10px;
+margin-left: -4px;
+border: 0px;
+transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.btn-serch:hover {
+background-color: #08ae4b;
+}
+
+.img-container {
+  position: relative;
+  display: inline-block;
+}
+
+.top-left-text {
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  padding: 5px;
+  color: #fff;
+  font-size: xx-large;
+  
+}
+
+/* หมวหมู่ */
+.scale-up-hor-left {
+-webkit-animation: scale-up-hor-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.1s both;
+        animation: scale-up-hor-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.1s both;
+}
+
+@-webkit-keyframes scale-up-hor-left {
+  0% {
+    -webkit-transform: scaleX(0.4);
+            transform: scaleX(0.4);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+  100% {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+}
+@keyframes scale-up-hor-left {
+  0% {
+    -webkit-transform: scaleX(0.4);
+            transform: scaleX(0.4);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+  100% {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+  }
+}
