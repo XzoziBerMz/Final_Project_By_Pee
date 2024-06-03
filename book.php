@@ -16,7 +16,6 @@ require_once  "header.php";
 
   <!-- Link to Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
   <!-- css -->
   <link rel="stylesheet" href="Custom/body.css">
   <link rel="stylesheet" href="Custom/book.css">
