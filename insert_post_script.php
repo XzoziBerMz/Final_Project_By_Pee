@@ -21,45 +21,102 @@ if (isset($_POST["submit"])) {
     $price = '0';
   }
 
-  try {
-    // เพิ่มดักด้วยยยยยยยยยยยยยยยยยยยยยยยยยยยยยยยยยย ดัก Size Image
-    $conn->beginTransaction();
+  // ดักการกรอกข้อมูลในform
+  if (empty($title)) {
+    $_SESSION['error'] = 'กรุณากรอกหัวข้อสิ่งที่ต้องการประกาศ';
+    header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
+    exit();
+  } elseif (empty($price) && $priceType !== "ฟรี") {
+    $_SESSION['error'] = 'กรุณากรอกราคา!!';
+    header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
+    exit();
+  } elseif (empty($description)) {
+    $_SESSION['error'] = 'กรุณากรอกรายละเอียด';
+    header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
+    exit();
+  } else {
+    try {
+      $conn->beginTransaction();
 
-    for ($i = 0; $i < $totalFiles; $i++) {
-      $imageName = $_FILES["photo_file"]["name"][$i];
-      $tmpName = $_FILES["photo_file"]["tmp_name"][$i];
+      for ($i = 0; $i < $totalFiles; $i++) {
+        $imageName = $_FILES["photo_file"]["name"][$i];
+        $tmpName = $_FILES["photo_file"]["tmp_name"][$i];
 
-      $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
-      $newImageName = uniqid() . '.' . $imageExtension;
+        $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
+        $newImageName = uniqid() . '.' . $imageExtension;
 
-      move_uploaded_file($tmpName, 'image/' . $newImageName);
-      $filesArray[] = $newImageName;
+        // ตรวจสอบว่าไฟล์เป็นรูปภาพหรือไม่
+        $fileType = pathinfo($imageName, PATHINFO_EXTENSION);
+        $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'JPG', 'PNG', 'jfif');
+
+        if (in_array($fileType, $allowTypes)) {
+          $size = $_FILES["photo_file"]["size"][$i];
+          if ($size < 20000000) { // check file size 20MB
+            move_uploaded_file($tmpName, 'image/' . $newImageName);
+            $filesArray[] = $newImageName;
+          } else {
+            $_SESSION['warning'] = "ขนาดไฟล์ใหญ่เกิน 20MB";
+            header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
+            exit();
+          }
+        } else {
+          $_SESSION['warning'] = "กรุณาเลือกไฟล์รูปภาพที่ตรงตามเงือนไข (jpg, jpeg, png, gif, jfif)";
+          header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
+          exit();
+        }
+      }
+
+      $filesArray = json_encode($filesArray);
+      $query = "INSERT INTO posts (product_name, type_id, sub_type_id, Product_detail, type_buy_or_sell, product_price_type, product_price, Product_img, datasave) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+      $stmt = $conn->prepare($query);
+      $stmt->bindParam(1, $title);
+      $stmt->bindParam(2, $type_id);
+      $stmt->bindParam(3, $sub_type_id);
+      $stmt->bindParam(4, $description);
+      $stmt->bindParam(5, $price_type);
+      $stmt->bindParam(6, $priceType);
+      $stmt->bindParam(7, $price);
+      $stmt->bindParam(8, $filesArray);
+      $result = $stmt->execute();
+
+      if ($result) {
+        $conn->commit();
+
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
+        echo '<script>
+                setTimeout(function() {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "เพิ่มข้อมูลการประกาศสำเร็จ",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location = "index.php"; 
+                    });
+                }, 1000);  
+                </script>';
+      } else {
+        $conn->rollBack();
+        echo '<script>
+                setTimeout(function() {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "เกิดข้อผิดพลาด",
+                        showConfirmButton: true,
+                    }).then(function() {
+                        window.location = "category_Sell-find_products.php"; 
+                    });
+                }, 1000);  
+                </script>';
+      }
+    } catch (PDOException $e) {
+      $conn->rollBack();
+      $_SESSION['error'] = "มีบางอย่างผิดพลาด " . $e->getMessage();
+      header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
+      exit();
     }
-
-    $filesArray = json_encode($filesArray);
-    $query = "INSERT INTO posts (product_name, type_id, sub_type_id, Product_detail, type_buy_or_sell, product_price_type, product_price, Product_img, datasave) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(1, $title);
-    $stmt->bindParam(2, $type_id);
-    $stmt->bindParam(3, $sub_type_id);
-    $stmt->bindParam(4, $description);
-    $stmt->bindParam(5, $price_type);
-    $stmt->bindParam(6, $priceType);
-    $stmt->bindParam(7, $price);
-    $stmt->bindParam(8, $filesArray);
-    $stmt->execute();
-
-    $conn->commit();
-
-    echo "
-    <script>
-      alert('Successfully Added');
-      document.location.href = 'index.php'; 
-    </script>
-    ";
-  } catch (PDOException $e) {
-    $conn->rollBack();
-    echo "Error: " . $e->getMessage();
   }
 }
 ?>
