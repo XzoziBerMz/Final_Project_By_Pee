@@ -182,3 +182,67 @@ textarea:hover{
   flex-direction: row;
   flex-wrap: wrap;
 }
+
+/* เลือกประกาศ */
+.radio-input {
+  --container-width: 600px;
+  --selection-bg: #3ec550;
+  --border-radius: 10px;
+  --border-color: rgba(53, 52, 52, 0.226);
+  --font-color: #000;
+  --font-color-selected: #fff;
+  --transition-speed: 0.15s;
+
+  
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: var(--container-width);
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.radio-input input {
+  display: none;
+}
+
+.radio-input label {
+  height: 50px;
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: 16px;
+  color: var(--font-color);
+  z-index: 1;
+  transition: color var(--transition-speed);
+}
+
+.radio-input .selection {
+  position: absolute;
+  height: 100%;
+  width: calc(var(--container-width) / 2);
+  background-color: var(--selection-bg);
+  top: 0;
+  left: 0;
+  z-index: 0;
+  transition: transform var(--transition-speed), background-color var(--transition-speed);
+}
+
+.radio-input label:has(input:checked) {
+  color: var(--font-color-selected);
+}
+
+.radio-input label:nth-of-type(1):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container-width) * 0 / 2));
+}
+
+.radio-input label:nth-of-type(2):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container-width) * 1 / 2));
+}
