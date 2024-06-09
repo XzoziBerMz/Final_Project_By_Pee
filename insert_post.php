@@ -39,7 +39,7 @@ ob_end_flush()
   <!-- css -->
   <link rel="stylesheet" href="Custom/mains.css">
   <link rel="stylesheet" href="Custom/body.css">
-  <link rel="stylesheet" href="Custom/insertposts.css">
+  <link rel="stylesheet" href="Custom/insertpost.css">
 
 </head>
 
@@ -174,24 +174,33 @@ ob_end_flush()
           <!-- สร้าง input hidden เพื่อเก็บค่า "ฟรี" -->
           <input type="hidden" id="hiddenFreePrice" name="hiddenFreePrice" value="ฟรี">
         </div>
-        <div class="col-1">
-          <label for="price" class=" form-label label-insert" style="display: block;"> ประเภท <span
-              class="span-label">*</span></label>
-          <select class="select-type" id="price_type" name="price_type">
-            <option>ซื้อ</option>
-            <option>ขาย</option>
-          </select>
-        </div>
+
       </div>
 
+      <!-- ประเภท ประกาศ -->
+      <div>
+        <label for="price" class=" form-label label-insert" style="display: block; margin-top: 30px;"> ประเภทของประกาศ
+          <span class="span-label">*</span></label>
+        <div class="radio-input" style="margin-top: 15px;">
 
+          <label style=>
+            <input type="radio" id="price_type" name="price_type" value="ซื้อ" checked>
+            <span>ซื้อ</span>
+          </label>
+          <label>
+            <input type="radio" id="price_type" name="price_type" value="ขาย">
+            <span>ขาย</span>
+          </label>
+          <span class="selection"></span>
+        </div>
 
+      </div>
 
       <!-- upload image -->
-      <div class="mb-2" style="margin-top: 40px;">
+      <div class="mb-2" style="margin-top: 35px;">
         <label for="price" class="form-label label-insert" style="display: block;"> รูปภาพ <span
             class="span-label">*</span></label>
-        <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 10MB</p>
+        <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 20MB</p>
 
         <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
@@ -217,7 +226,7 @@ ob_end_flush()
       <div class="mb-2" style="margin-top: 30px;">
         <label for="price" class="form-label label-insert" style="display: block;"> คำอธิบาย <span
             class="span-label">*</span></label>
-        <textarea id="description" name="description" rows="4" cols="131"
+        <textarea id="description" name="description" rows="5" cols="167"
           placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..."></textarea>
         <!-- <p>คำที่พิมพ์ได้: <span id="wordCount" style="color:#09CD56;">1000</span> คำ</p> -->
       </div>
@@ -226,9 +235,8 @@ ob_end_flush()
       <!-- <div class="mb-2" style="margin-top: 30px;">
     <label for="price" class="form-label label-insert" style="display: block;"> ประเภทประกาศ <span class="span-label">*</span></label> -->
 
-
       <!-- summit -->
-      <div class="d-grid" style="margin-top: 40px;">
+      <div class="d-grid" style="margin-top: 30px;">
         <button type="submit" name="submit" class="button-27" role="button">เพิ่มประกาศสินค้า</button>
       </div>
 
