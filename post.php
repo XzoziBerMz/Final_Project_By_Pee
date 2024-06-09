@@ -59,56 +59,79 @@ require_once 'connetdatabase/conn_db.php';
     if (isset($_GET['product_id'])) {
         $product_id = $_GET['product_id'];
 
-        $sqlAll = "SELECT * FROM posts WHERE posts_id = $product_id";
-        $result = $conn->query($sqlAll);
+        // Database connection (assuming $conn is already set)
+        $sqlAll = "SELECT * FROM posts WHERE posts_id = :product_id";
+        $stmt = $conn->prepare($sqlAll);
+        $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->execute();
 
-        if ($result->rowCount() > 0) {
-            $row = $result->fetch(PDO::FETCH_OBJ);
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_OBJ);
             if ($row) {
-                // ถ้ามีข้อมูล $row ให้แสดง
+                $images = json_decode($row->Product_img);
+
                 ?>
                 <div class="d-flex justify-content-center gap-5 mt-5">
-                    <div class=" col-5">
-
+                    <div class="col-5">
                         <div class="d-flex justify-content-center">
-                            <?php $imageURL = 'image/' . $row->Product_img; ?>
+                            <?php if (!empty($images)) {
+                                $firstImageURL = 'image/' . trim($images[0]);
+                                ?>
 
-                            <img src="<?php echo $imageURL; ?>" alt="" width="400" height="400">
-                        </div>
+                                <img id="mainImage" src="<?php echo $firstImageURL; ?>" alt="" width="400" height="400">
+                            </div>
 
-                        <div class="d-flex gap-4 justify-content-center mt-4">
-                            <?php foreach ($posts_data as $post) { ?>
-                                <img src="" alt="" width="80" height="80">
-                            <?php } ?>
-                        </div>
-
+                            <div class="d-flex justify-content-center">
+                                <?php
+                                $totalWidth = count($images) * 80; // Assuming each image has a width of 80px
+                                if ($totalWidth < 499) {
+                                    $totalWidth = 500;
+                                    $containerWidth = min($totalWidth, 500); // Maximum width of 500px
+                                    $containerClass = ($totalWidth <= 500) ? "justify-content-center gap-4" : "gap-4";
+                                } else {
+                                    $containerWidth = min($totalWidth, 500); // Maximum width of 500px
+                                    $containerClass = ($totalWidth <= 500) ? "justify-content-center" : "gap-4";
+                                }
+                                ?>
+                                <div id="stylescrollbar" class="d-flex <?php echo $containerClass; ?> mt-4 overflow-auto"
+                                    style="max-height: 100px; width: <?php echo $containerWidth; ?>px">
+                                    <?php foreach ($images as $image) {
+                                        $imageURL = 'image/' . trim($image); // Display each image
+                                        ?>
+                                        <img class="pointer" src="<?php echo $imageURL; ?>" alt="" width="80" height="80"
+                                            onclick="changeImage('<?php echo $imageURL; ?>')">
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
-
 
                     <div class="border col-5 p-4 position-relative">
                         <div>
-                            <h3><?php echo $row->product_name; ?></h3>
+                            <div class="post-name">
+                                <span><?php echo $row->product_name; ?></span>
+                            </div>
                             <span>ราคา: <?php echo $row->product_price; ?></span>
-                            <p><?php echo $row->product_name; ?></p>
+                            <p><?php echo $row->product_price; ?></p><!--ชื่อผู้ post -->
                         </div>
                         <div>
                             <hr class="border-3">
                         </div>
-                        <div>
-                            <h3>รายละเอียด</h3>
+                        <div class="description">
+                            <span>รายละเอียด</span>
                         </div>
                         <div>
                             <div>
                                 <span class="px-2"><?php echo $row->Product_detail; ?></span>
                             </div>
                         </div>
-                        <div class="position-absolute top-92 start-93 translate-middle ">
+                        <div class="position-absolute top-92 start-93 translate-middle contact">
                             <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal"
-                                data-bs-target="#phoneModal">Success
-                            </button>
+                                data-bs-target="#phoneModal">โทรติดต่อ</button>
                         </div>
                     </div>
-                    <?php
+                </div>
+                <?php
             } else {
                 echo "<script>";
                 echo "Swal.fire({";
@@ -155,9 +178,8 @@ require_once 'connetdatabase/conn_db.php';
                     <span>ตอบกลับ</span>
                 </div>
             </div>
-
         </div>
-        <div class="col-5 ">
+        <div class="col-5 row align-items-center">
             <div class="bg-body-secondary p-3">
                 <div>
                     <h5 class="">แชท</h5>
@@ -221,6 +243,8 @@ require_once 'connetdatabase/conn_db.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
+    <script src="js/post.js"></script>
+
     <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 </body>
 
