@@ -9,7 +9,7 @@ require_once 'connetdatabase/conn_db.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>โพสต์</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="Custom/post.css">
@@ -25,7 +25,8 @@ require_once 'connetdatabase/conn_db.php';
         // RAND() อันนี้คือแบบสุ่ม // datasave คือเรียงจากใหม่สุด
         // $sql = "SELECT * FROM posts ORDER BY RAND() DESC LIMIT 4";
     
-        $sql = "SELECT * FROM posts ORDER BY datasave DESC LIMIT 4";
+        $sql = "SELECT * FROM posts
+        ORDER BY datasave DESC LIMIT 4";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $posts_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -112,7 +113,19 @@ require_once 'connetdatabase/conn_db.php';
                                 <span><?php echo $row->product_name; ?></span>
                             </div>
                             <span>ราคา: <?php echo $row->product_price; ?></span>
-                            <p><?php echo $row->product_price; ?></p><!--ชื่อผู้ post -->
+
+                            <!-- แสดงชื่อผู้โพสต์ -->
+                            <?php
+                            $sqlUser = "SELECT firstname , lastname FROM users WHERE user_id = :user_id";
+                            $stmtUser = $conn->prepare($sqlUser);
+                            $stmtUser->bindParam(':user_id', $row->user_id, PDO::PARAM_INT);
+                            $stmtUser->execute();
+                            $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+                            ?>
+                            <p style="margin-top: 20px;">โพสต์โดย:
+                                <span class="username_post"><?php echo $user['firstname'] . ' ' . $user['lastname']; ?></span>
+                            </p>
+
                         </div>
                         <div>
                             <hr class="border-3">

@@ -10,6 +10,12 @@
     width: 150px;
 }
 
+.username_post{
+    color: #4D9C41;
+    font-size: 15px;
+    font-weight: 400;
+}
+
 .post-name {
     width: 700px;
     overflow: hidden;

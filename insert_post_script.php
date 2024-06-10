@@ -3,6 +3,14 @@ session_start();
 require_once "connetdatabase/conn_db.php"; // เชื่อมต่อฐานข้อมูล
 
 if (isset($_POST["submit"])) {
+  $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : (isset($_SESSION['admin_login']) ? $_SESSION['admin_login'] : null);
+
+  if (!$user_id) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบก่อนทำการโพสต์';
+    header("Location: signin.php");
+    exit();
+  }
+
   $title = $_POST['title'];
   $priceType = $_POST['price'];
   $price_type = $_POST['price_type'];
@@ -60,23 +68,24 @@ if (isset($_POST["submit"])) {
             exit();
           }
         } else {
-          $_SESSION['warning'] = "กรุณาเลือกไฟล์รูปภาพที่ตรงตามเงือนไข (jpg, jpeg, png, gif, jfif)";
+          $_SESSION['warning'] = "กรุณาเลือกไฟล์รูปภาพที่ตรงตามเงื่อนไข (jpg, jpeg, png, gif, jfif)";
           header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
           exit();
         }
       }
 
       $filesArray = json_encode($filesArray);
-      $query = "INSERT INTO posts (product_name, type_id, sub_type_id, Product_detail, type_buy_or_sell, product_price_type, product_price, Product_img, datasave) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+      $query = "INSERT INTO posts (user_id, product_name, type_id, sub_type_id, Product_detail, type_buy_or_sell, product_price_type, product_price, Product_img, datasave) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
       $stmt = $conn->prepare($query);
-      $stmt->bindParam(1, $title);
-      $stmt->bindParam(2, $type_id);
-      $stmt->bindParam(3, $sub_type_id);
-      $stmt->bindParam(4, $description);
-      $stmt->bindParam(5, $price_type);
-      $stmt->bindParam(6, $priceType);
-      $stmt->bindParam(7, $price);
-      $stmt->bindParam(8, $filesArray);
+      $stmt->bindParam(1, $user_id);
+      $stmt->bindParam(2, $title);
+      $stmt->bindParam(3, $type_id);
+      $stmt->bindParam(4, $sub_type_id);
+      $stmt->bindParam(5, $description);
+      $stmt->bindParam(6, $price_type);
+      $stmt->bindParam(7, $priceType);
+      $stmt->bindParam(8, $price);
+      $stmt->bindParam(9, $filesArray);
       $result = $stmt->execute();
 
       if ($result) {
