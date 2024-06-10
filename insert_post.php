@@ -221,6 +221,11 @@ ob_end_flush()
         </div>
       </div>
 
+      <!-- phone_number -->
+      <div class="mb-2" style="margin-top: 30px;">
+        <label for="Phone" class="form-label label-insert">เบอร์โทรศัพท์ <span class="span-label">*</span></label>
+        <input type="text" class="form-control input-insert" name="phone_number">
+      </div>
 
       <!-- Description -->
       <div class="mb-2" style="margin-top: 30px;">
