@@ -7,14 +7,19 @@ if (isset($_SESSION['user_login'])) {
     $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id");
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user_full_name = $user || $admin;
 } elseif (isset($_SESSION['admin_login'])) {
     $admin_id = $_SESSION['admin_login'];
     $stmt = $conn->query("SELECT * FROM users WHERE user_id = $admin_id");
     $stmt->execute();
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user_full_name = $admin || $user;
 }
 
-?>
+
+echo $user_full_name['firstname']
+
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,13 +67,14 @@ if (isset($_SESSION['user_login'])) {
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
-            $user_name = htmlspecialchars($_POST['user_name']);
+            // $user_name = htmlspecialchars($_POST['user_name']);
             $comment_text = htmlspecialchars($_POST['comment_text']);
 
             $sql = "INSERT INTO comments (post_id, user_name, comment_text) VALUES (:post_id, :user_name, :comment_text)";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':post_id', $product_id);
-            $stmt->bindParam(':user_name', $user_name);
+            $full_user_name = htmlspecialchars($user['firstname'] . ' ' . $user['lastname']);
+            $stmt->bindParam(':user_name', $full_user_name, PDO::PARAM_STR);
             $stmt->bindParam(':comment_text', $comment_text);
             $stmt->execute();
         }
@@ -209,54 +215,38 @@ if (isset($_SESSION['user_login'])) {
     ?>
     </div>
     <div class="d-flex justify-content-center gap-5 mt-5 ">
-        <form method="POST" action="">
-            <div class="mb-3">
-                <label for="user_name" class="form-label">Name</label>
-                <?php echo $user['firstname'] . ' ' . $user['lastname'] ?>
-            </div>
-            <div class="mb-3">
-                <label for="comment_text" class="form-label">Comment</label>
-                <textarea class="form-control" id="comment_text" name="comment_text" rows="3" required></textarea>
-            </div>
-            <button type="submit" name="submit_comment" class="btn btn-primary">Submit</button>
-        </form>
-        <!-- Display Comments -->
-        <h2>Comments</h2>
-        <?php foreach ($comments as $comment): ?>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo htmlspecialchars($comment['user_name']); ?></h5>
-                    <p class="card-text"><?php echo nl2br(htmlspecialchars($comment['comment_text'])); ?></p>
-                    <p class="card-text"><small class="text-muted"><?php echo $comment['created_at']; ?></small></p>
-                </div>
-            </div>
-        <?php endforeach; ?>
-        <!-- <div class="col-5 bg-dark p-3">
+
+        <div class="col-5 bg-dark p-3">
             <div>
                 <h5 class="text-white">แชท</h5>
             </div>
-            <div class="bg-secondary px-2">
-                <div class="d-flex gap-1 align-itmes-end ">
-                    <span class="text-white">User</span>
-                    <span class="text-white">เวลา</span>
+            <?php foreach ($comments as $comment): ?>
+                <div class="bg-secondary px-2">
+                    <div class="d-flex gap-1 align-itmes-end ">
+                        <span class="text-white"><?php echo htmlspecialchars($comment['user_name']); ?></span>
+                        <span class="text-white"><?php echo $comment['created_at']; ?></span>
+                    </div>
+                    <div class="d-flex gap-3 text-white px-3">
+                        <span><?php echo nl2br(htmlspecialchars($comment['comment_text'])); ?></span>
+                        <span>ตอบกลับ</span>
+                    </div>
                 </div>
-                <div class="d-flex gap-3 text-white px-3">
-                    <span>พิมพ์ข้อความ..........................</span>
-                    <span>ตอบกลับ</span>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
         <div class="col-5 row align-items-center">
             <div class="bg-body-secondary p-3">
                 <div>
                     <h5 class="">แชท</h5>
                 </div>
-                <div class="d-flex gap-2 px-3">
-                    <input type="text" class="form-control" placeholder="พิมพ์ข้อความ................">
-                    <button class="btn btn-success w-150px">ส่งข้อความ</button>
-                </div>
+                <form method="POST" action="">
+                    <div class="d-flex gap-2 px-3">
+                        <input id="comment_text" name="comment_text" type="text" class="form-control"
+                            placeholder="พิมพ์ข้อความ................">
+                        <button type="submit" name="submit_comment" class="btn btn-success w-150px">ส่งข้อความ</button>
+                    </div>
+                </form>
             </div>
-        </div> -->
+        </div>
     </div>
 
     <div class="d-flex justify-content-center gap-3 mt-5 px-5 mx-5">
