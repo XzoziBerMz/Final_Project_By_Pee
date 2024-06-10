@@ -7,19 +7,14 @@ if (isset($_SESSION['user_login'])) {
     $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id");
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $user_full_name = $user || $admin;
 } elseif (isset($_SESSION['admin_login'])) {
     $admin_id = $_SESSION['admin_login'];
     $stmt = $conn->query("SELECT * FROM users WHERE user_id = $admin_id");
     $stmt->execute();
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
-    $user_full_name = $admin || $user;
 }
 
-
-echo $user_full_name['firstname']
-
-    ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,15 +62,16 @@ echo $user_full_name['firstname']
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
-            // $user_name = htmlspecialchars($_POST['user_name']);
+            $user_name = htmlspecialchars($_POST['user_name']);
             $comment_text = htmlspecialchars($_POST['comment_text']);
+            $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
 
-            $sql = "INSERT INTO comments (post_id, user_name, comment_text) VALUES (:post_id, :user_name, :comment_text)";
+            $sql = "INSERT INTO comments (post_id, user_name, comment_text, parent_comment_id) VALUES (:post_id, :user_name, :comment_text, :parent_comment_id)";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':post_id', $product_id);
-            $full_user_name = htmlspecialchars($user['firstname'] . ' ' . $user['lastname']);
-            $stmt->bindParam(':user_name', $full_user_name, PDO::PARAM_STR);
+            $stmt->bindParam(':user_name', $user_name);
             $stmt->bindParam(':comment_text', $comment_text);
+            $stmt->bindParam(':parent_comment_id', $parent_comment_id);
             $stmt->execute();
         }
 
@@ -89,8 +85,16 @@ echo $user_full_name['firstname']
     } else {
         header("Location: index.php");
     }
-    ?>
-    <?php
+
+    function fetchReplies($comment_id, $conn)
+    {
+        $sqlReplies = "SELECT * FROM comments WHERE parent_comment_id = :comment_id ORDER BY created_at ASC";
+        $stmt = $conn->prepare($sqlReplies);
+        $stmt->bindParam(':comment_id', $comment_id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     require_once "header.php";
     ?>
     <?php
@@ -221,15 +225,46 @@ echo $user_full_name['firstname']
                 <h5 class="text-white">แชท</h5>
             </div>
             <?php foreach ($comments as $comment): ?>
-                <div class="bg-secondary px-2">
+                <div class="bg-secondary px-2 mb-2">
                     <div class="d-flex gap-1 align-itmes-end ">
                         <span class="text-white"><?php echo htmlspecialchars($comment['user_name']); ?></span>
                         <span class="text-white"><?php echo $comment['created_at']; ?></span>
                     </div>
                     <div class="d-flex gap-3 text-white px-3">
                         <span><?php echo nl2br(htmlspecialchars($comment['comment_text'])); ?></span>
-                        <span>ตอบกลับ</span>
+                        <span class="pointer" onclick="showReplyForm(<?php echo $comment['comment_id']; ?>)">ตอบกลับ</span>
+
+                        <div id="reply-form-<?php echo $comment['comment_id']; ?>" style="display:none; margin-top:10px;">
+                            <form method="POST" action="">
+                                <div class="mb-3">
+                                    <label for="user_name_<?php echo $comment['comment_id']; ?>"
+                                        class="form-label">Name</label>
+                                    <input type="text" class="form-control"
+                                        id="user_name_<?php echo $comment['comment_id']; ?>" name="user_name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="comment_text_<?php echo $comment['comment_id']; ?>"
+                                        class="form-label">Comment</label>
+                                    <textarea class="form-control" id="comment_text_<?php echo $comment['comment_id']; ?>"
+                                        name="comment_text" rows="3" required></textarea>
+                                </div>
+                                <input type="hidden" name="parent_comment_id" value="<?php echo $comment['comment_id']; ?>">
+                                <button type="submit" name="submit_comment" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
                     </div>
+                    <?php
+                    $replies = fetchReplies($comment['comment_id'], $conn);
+                    foreach ($replies as $reply):
+                        ?>
+                        <div class="card mb-3" style="margin-left: 30px;">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo htmlspecialchars($reply['user_name']); ?></h5>
+                                <p class="card-text"><?php echo nl2br(htmlspecialchars($reply['comment_text'])); ?></p>
+                                <p class="card-text"><small class="text-muted"><?php echo $reply['created_at']; ?></small></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -240,8 +275,11 @@ echo $user_full_name['firstname']
                 </div>
                 <form method="POST" action="">
                     <div class="d-flex gap-2 px-3">
+                        <input type="text" id="user_name" name="user_name" hidden
+                            value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>">
                         <input id="comment_text" name="comment_text" type="text" class="form-control"
                             placeholder="พิมพ์ข้อความ................">
+                        <input type="hidden" name="parent_comment_id" value="0">
                         <button type="submit" name="submit_comment" class="btn btn-success w-150px">ส่งข้อความ</button>
                     </div>
                 </form>
