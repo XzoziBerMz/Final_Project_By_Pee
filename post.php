@@ -2,6 +2,22 @@
 session_start();
 require_once 'connetdatabase/conn_db.php';
 
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
+
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id");
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+} elseif (isset($_SESSION['admin_login'])) {
+    $admin_id = $_SESSION['admin_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id = $admin_id");
+    $stmt->execute();
+    $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +34,6 @@ require_once 'connetdatabase/conn_db.php';
 
 <body>
     <?php
-    require_once 'connetdatabase/conn_db.php';
 
     if (isset($_GET['product_id'])) {
         $product_id = $_GET['product_id'];
@@ -49,6 +64,26 @@ require_once 'connetdatabase/conn_db.php';
             echo "});";
             echo "</script>";
         }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
+            $user_name = htmlspecialchars($_POST['user_name']);
+            $comment_text = htmlspecialchars($_POST['comment_text']);
+
+            $sql = "INSERT INTO comments (post_id, user_name, comment_text) VALUES (:post_id, :user_name, :comment_text)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':post_id', $product_id);
+            $stmt->bindParam(':user_name', $user_name);
+            $stmt->bindParam(':comment_text', $comment_text);
+            $stmt->execute();
+        }
+
+        // Fetch comments for the post
+        $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id ORDER BY created_at DESC";
+        $stmt = $conn->prepare($sqlComments);
+        $stmt->bindParam(':post_id', $product_id);
+        $stmt->execute();
+        $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     } else {
         header("Location: index.php");
     }
@@ -79,7 +114,8 @@ require_once 'connetdatabase/conn_db.php';
                                 $firstImageURL = 'image/' . trim($images[0]);
                                 ?>
 
-                                <img id="mainImage" src="<?php echo $firstImageURL; ?>" alt="" width="400" height="400">
+                                <img id="mainImage" class="image-fix" src="<?php echo $firstImageURL; ?>" alt="" width="400"
+                                    height="400">
                             </div>
 
                             <div class="d-flex justify-content-center">
@@ -99,7 +135,7 @@ require_once 'connetdatabase/conn_db.php';
                                     <?php foreach ($images as $image) {
                                         $imageURL = 'image/' . trim($image); // Display each image
                                         ?>
-                                        <img class="pointer" src="<?php echo $imageURL; ?>" alt="" width="80" height="80"
+                                        <img class="pointer image-fix" src="<?php echo $imageURL; ?>" alt="" width="80" height="80"
                                             onclick="changeImage('<?php echo $imageURL; ?>')">
                                     <?php } ?>
                                 </div>
@@ -177,7 +213,29 @@ require_once 'connetdatabase/conn_db.php';
     ?>
     </div>
     <div class="d-flex justify-content-center gap-5 mt-5 ">
-        <div class="col-5 bg-dark p-3">
+        <form method="POST" action="">
+            <div class="mb-3">
+                <label for="user_name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="user_name" name="user_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="comment_text" class="form-label">Comment</label>
+                <textarea class="form-control" id="comment_text" name="comment_text" rows="3" required></textarea>
+            </div>
+            <button type="submit" name="submit_comment" class="btn btn-primary">Submit</button>
+        </form>
+        <!-- Display Comments -->
+        <h2>Comments</h2>
+        <?php foreach ($comments as $comment): ?>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo htmlspecialchars($comment['user_name']); ?></h5>
+                    <p class="card-text"><?php echo nl2br(htmlspecialchars($comment['comment_text'])); ?></p>
+                    <p class="card-text"><small class="text-muted"><?php echo $comment['created_at']; ?></small></p>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        <!-- <div class="col-5 bg-dark p-3">
             <div>
                 <h5 class="text-white">แชท</h5>
             </div>
@@ -202,7 +260,7 @@ require_once 'connetdatabase/conn_db.php';
                     <button class="btn btn-success w-150px">ส่งข้อความ</button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class="d-flex justify-content-center gap-3 mt-5 px-5 mx-5">
@@ -211,8 +269,15 @@ require_once 'connetdatabase/conn_db.php';
 
             <div class="card col-3 ">
                 <div class="p-4 d-flex  justify-content-center ">
-                    <?php $imageURL = 'image/' . $post['Product_img']; ?>
-                    <img src="<?php echo $imageURL ?>" class="col-12" alt="..." width="400" height="250">
+
+                    <?php
+                    $product_images = json_decode($post["Product_img"]);
+                    if (!empty($product_images)) {
+                        $first_image = $product_images[0];
+                        ?>
+                        <img src="image/<?php echo $first_image; ?>" class="col-12 image-fix" alt="..." width="400" height="250">
+                    <?php } ?>
+
                 </div>
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $post['product_name']; ?></h5>

@@ -68,3 +68,7 @@
             color-stop(.6, #54DE5D));
     margin: 10px;
 }
+
+.image-fix {
+    object-fit: contain;
+}
