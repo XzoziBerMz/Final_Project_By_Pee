@@ -2,10 +2,6 @@
 session_start();
 require_once 'connetdatabase/conn_db.php';
 
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
-
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
     $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id");
@@ -216,7 +212,7 @@ if (isset($_SESSION['user_login'])) {
         <form method="POST" action="">
             <div class="mb-3">
                 <label for="user_name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="user_name" name="user_name" required>
+                <?php echo $user['firstname'] . ' ' . $user['lastname'] ?>
             </div>
             <div class="mb-3">
                 <label for="comment_text" class="form-label">Comment</label>
@@ -275,7 +271,8 @@ if (isset($_SESSION['user_login'])) {
                     if (!empty($product_images)) {
                         $first_image = $product_images[0];
                         ?>
-                        <img src="image/<?php echo $first_image; ?>" class="col-12 image-fix" alt="..." width="400" height="250">
+                        <img src="image/<?php echo $first_image; ?>" class="col-12 image-fix" alt="..." width="400"
+                            height="250">
                     <?php } ?>
 
                 </div>
