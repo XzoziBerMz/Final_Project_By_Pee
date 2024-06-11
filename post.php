@@ -8,14 +8,14 @@ if (isset($_SESSION['user_login'])) {
     $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id");
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    print_r($user);
+    // print_r($user);
 } else
     if (isset($_SESSION['admin_login'])) {
         $admin_id = $_SESSION['admin_login'];
         $stmt = $conn->query("SELECT * FROM users WHERE user_id = $admin_id");
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        print_r($user);
+        // print_r($user);
     }
 
 
