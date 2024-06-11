@@ -151,7 +151,7 @@ ob_end_flush()
       <!-- Title -->
       <div class="mb-2" style="margin-top: 30px;">
         <label for="Title" class="form-label label-insert">Title <span class="span-label">*</span></label>
-        <input type="text" class="form-control input-insert" name="title">
+        <input type="text" class="form-control input-insert" name="title" maxlength="120">
       </div>
 
       <!-- price -->
@@ -224,7 +224,8 @@ ob_end_flush()
       <!-- phone_number -->
       <div class="mb-2" style="margin-top: 30px;">
         <label for="Phone" class="form-label label-insert">เบอร์โทรศัพท์ <span class="span-label">*</span></label>
-        <input type="text" class="form-control input-insert" name="phone_number">
+        <input type="tel" class="form-control input-insert" name="phone_number" maxlength="10" id="phone_number"
+          placeholder="กรุณากรอกหมายเลขโทรศัพท์" oninput="validateInput(this)">
       </div>
 
       <!-- Description -->
@@ -232,13 +233,9 @@ ob_end_flush()
         <label for="price" class="form-label label-insert" style="display: block;"> คำอธิบาย <span
             class="span-label">*</span></label>
         <textarea id="description" name="description" rows="5" cols="167"
-          placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..."></textarea>
-        <!-- <p>คำที่พิมพ์ได้: <span id="wordCount" style="color:#09CD56;">1000</span> คำ</p> -->
+          placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..." oninput="limitTextarea(this, 200)"></textarea>
+        <p>คุณพิมพ์ได้อีก <span id="charCount" style="color:#09BA00;"></span> ตัวอักษร</p>
       </div>
-
-      <!-- type post -->
-      <!-- <div class="mb-2" style="margin-top: 30px;">
-    <label for="price" class="form-label label-insert" style="display: block;"> ประเภทประกาศ <span class="span-label">*</span></label> -->
 
       <!-- summit -->
       <div class="d-grid" style="margin-top: 30px;">
@@ -274,21 +271,29 @@ ob_end_flush()
       }
     });
 
+    // ส่วนของ input phone ตัวแปรนี้ทำให้ไม่สามารถใส่ข้อความได้ใส่ได้แค่ตัวเลขเท่านั้น
+    function validateInput(element) {
+      let value = element.value.replace(/\D/g, ''); // ลบอักขระที่ไม่ใช่ตัวเลข
+      element.value = value;
+    }
+
+    <!-- ส่วน description -->
+    function limitTextarea(element, maxLength) {
+      let value = element.value;
+      if (value.length > maxLength) {
+        element.value = value.slice(0, maxLength);
+      }
+      const remainingChars = Math.max(0, maxLength - value.length);
+      document.getElementById('charCount').innerText = ` ${remainingChars} `;
+    }
+
+    // Initialize character count display
+    document.getElementById('charCount').innerText = '200';
+
   </script>
 
   <!-- ส่วน js ของ image -->
   <script src="js/uploadimage.js"></script>
-
-  <!-- ส่วน description -->
-  <!-- <script>
-        function updateRemaining() {
-            var maxLength = 1000;
-            var currentLength = document.getElementById("description").value.length;
-            var remaining = maxLength - currentLength;
-            document.getElementById("wordCount").textContent = remaining;
-
-        }
-    </script> -->
 
 </body>
 

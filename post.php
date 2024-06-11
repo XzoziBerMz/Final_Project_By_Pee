@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'connetdatabase/conn_db.php';
+require_once "header.php";
 
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
@@ -95,7 +96,6 @@ if (isset($_SESSION['user_login'])) {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    require_once "header.php";
     ?>
     <?php
     if (isset($_GET['product_id'])) {
@@ -323,11 +323,11 @@ if (isset($_SESSION['user_login'])) {
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">เบอร์ติดต่อ</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    095-********
+                    <?php echo $post['phone_number'] ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

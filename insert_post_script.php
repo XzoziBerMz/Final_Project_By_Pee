@@ -43,6 +43,10 @@ if (isset($_POST["submit"])) {
     $_SESSION['error'] = 'กรุณากรอกรายละเอียด';
     header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
     exit();
+  } elseif (empty($p_number)) {
+    $_SESSION['error'] = 'กรุณากรอกเบอร์โทรศัพท์';
+    header("location: insert_post.php?act=showbytype&type_id={$type_id}&sub_type_id={$sub_type_id}");
+    exit();
   } else {
     try {
       $conn->beginTransaction();
@@ -76,17 +80,18 @@ if (isset($_POST["submit"])) {
       }
 
       $filesArray = json_encode($filesArray);
-      $query = "INSERT INTO posts (product_name, type_id, sub_type_id, phone_number, Product_detail, type_buy_or_sell, product_price_type, product_price, Product_img, datasave) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+      $query = "INSERT INTO posts (user_id, product_name, type_id, sub_type_id, phone_number, Product_detail, type_buy_or_sell, product_price_type, product_price, Product_img, datasave) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
       $stmt = $conn->prepare($query);
-      $stmt->bindParam(1, $title);
-      $stmt->bindParam(2, $type_id);
-      $stmt->bindParam(3, $sub_type_id);
-      $stmt->bindParam(4, $p_number);
-      $stmt->bindParam(5, $description);
-      $stmt->bindParam(6, $price_type);
-      $stmt->bindParam(7, $priceType);
-      $stmt->bindParam(8, $price);
-      $stmt->bindParam(9, $filesArray);
+      $stmt->bindParam(1, $user_id);
+      $stmt->bindParam(2, $title);
+      $stmt->bindParam(3, $type_id);
+      $stmt->bindParam(4, $sub_type_id);
+      $stmt->bindParam(5, $p_number);
+      $stmt->bindParam(6, $description);
+      $stmt->bindParam(7, $price_type);
+      $stmt->bindParam(8, $priceType);
+      $stmt->bindParam(9, $price);
+      $stmt->bindParam(10, $filesArray);
       $result = $stmt->execute();
 
       if ($result) {
