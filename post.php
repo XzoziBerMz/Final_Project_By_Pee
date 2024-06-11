@@ -8,12 +8,16 @@ if (isset($_SESSION['user_login'])) {
     $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id");
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-} elseif (isset($_SESSION['admin_login'])) {
-    $admin_id = $_SESSION['admin_login'];
-    $stmt = $conn->query("SELECT * FROM users WHERE user_id = $admin_id");
-    $stmt->execute();
-    $admin = $stmt->fetch(PDO::FETCH_ASSOC);
-}
+    print_r($user);
+} else
+    if (isset($_SESSION['admin_login'])) {
+        $admin_id = $_SESSION['admin_login'];
+        $stmt = $conn->query("SELECT * FROM users WHERE user_id = $admin_id");
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        print_r($user);
+    }
+
 
 ?>
 <!DOCTYPE html>
@@ -77,7 +81,7 @@ if (isset($_SESSION['user_login'])) {
         }
 
         // Fetch comments for the post
-        $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id ORDER BY created_at DESC";
+        $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 ORDER BY created_at DESC";
         $stmt = $conn->prepare($sqlComments);
         $stmt->bindParam(':post_id', $product_id);
         $stmt->execute();
@@ -162,10 +166,11 @@ if (isset($_SESSION['user_login'])) {
                             $stmtUser = $conn->prepare($sqlUser);
                             $stmtUser->bindParam(':user_id', $row->user_id, PDO::PARAM_INT);
                             $stmtUser->execute();
-                            $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+                            $userList = $stmtUser->fetch(PDO::FETCH_ASSOC);
                             ?>
                             <p style="margin-top: 20px;">โพสต์โดย:
-                                <span class="username_post"><?php echo $user['firstname'] . ' ' . $user['lastname']; ?></span>
+                                <span
+                                    class="username_post"><?php echo $userList['firstname'] . ' ' . $userList['lastname']; ?></span>
                             </p>
 
                         </div>
@@ -232,24 +237,40 @@ if (isset($_SESSION['user_login'])) {
                     </div>
                     <div class="d-flex gap-3 text-white px-3">
                         <span><?php echo nl2br(htmlspecialchars($comment['comment_text'])); ?></span>
-                        <span class="pointer" onclick="showReplyForm(<?php echo $comment['comment_id']; ?>)">ตอบกลับ</span>
+                        <div>
+                            <span class="pointer"
+                                onclick="showReplyForm(<?php echo $comment['comment_id']; ?>)">ตอบกลับ</span>
+                        </div>
 
                         <div id="reply-form-<?php echo $comment['comment_id']; ?>" style="display:none; margin-top:10px;">
                             <form method="POST" action="">
-                                <div class="mb-3">
-                                    <label for="user_name_<?php echo $comment['comment_id']; ?>"
-                                        class="form-label">Name</label>
-                                    <input type="text" class="form-control"
-                                        id="user_name_<?php echo $comment['comment_id']; ?>" name="user_name" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="comment_text_<?php echo $comment['comment_id']; ?>"
-                                        class="form-label">Comment</label>
-                                    <textarea class="form-control" id="comment_text_<?php echo $comment['comment_id']; ?>"
-                                        name="comment_text" rows="3" required></textarea>
+                                <input type="text" class="form-control" hidden
+                                    value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>"
+                                    id="user_name_<?php echo $comment['comment_id']; ?>" name="user_name" required>
+                                <div class="d-flex gap-2" style="width: 520px;">
+                                    <div class="mb-3">
+                                        <textarea class="form-control" style="width: 420px; height: 45px;"
+                                            id="comment_text_<?php echo $comment['comment_id']; ?>" name="comment_text"
+                                            rows="3" required></textarea>
+                                    </div>
+                                    <div class="mb-3 d-flex align-items-center">
+                                        <button name="submit_comment">
+                                            <div class="svg-wrapper-1">
+                                                <div class="svg-wrapper">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                                                        height="24">
+                                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                                        <path fill="currentColor"
+                                                            d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <span>Send</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <input type="hidden" name="parent_comment_id" value="<?php echo $comment['comment_id']; ?>">
-                                <button type="submit" name="submit_comment" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
                     </div>
