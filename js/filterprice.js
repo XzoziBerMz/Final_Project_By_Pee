@@ -31,7 +31,7 @@ function validateRange() {
 
 // Function to fetch and display products based on price range
 function fetchProducts(minPrice, maxPrice, search, typeId) {
-  const xhr = new XMLHttpRequest();
+  const xhr = new fetch();
   xhr.open("GET", `show_product_filter.php?min_price=${minPrice}&max_price=${maxPrice}&search=${encodeURIComponent(search)}&type_id=${typeId}`, true);
   xhr.onload = function() {
     if (xhr.status === 200) {

@@ -166,11 +166,11 @@ if (isset($_SESSION['user_login'])) {
                             $stmtUser = $conn->prepare($sqlUser);
                             $stmtUser->bindParam(':user_id', $row->user_id, PDO::PARAM_INT);
                             $stmtUser->execute();
-                            $userList = $stmtUser->fetch(PDO::FETCH_ASSOC);
+                            $postUser = $stmtUser->fetch(PDO::FETCH_ASSOC);
                             ?>
                             <p style="margin-top: 20px;">โพสต์โดย:
                                 <span
-                                    class="username_post"><?php echo $userList['firstname'] . ' ' . $userList['lastname']; ?></span>
+                                    class="username_post"><?php echo $postUser['firstname'] . ' ' . $postUser['lastname']; ?></span>
                             </p>
 
                         </div>
@@ -330,7 +330,7 @@ if (isset($_SESSION['user_login'])) {
                     <p class="card-text"><?php echo $post['Product_detail']; ?></p>
 
                     <div class="d-flex justify-content-between">
-                        <span>ราคา: <?php echo $post['product_price']; ?> ฿</span>
+                        <span>ราคา: <?php echo $post['product_price']; ?> บาท</span>
                         <a class="btn btn-success"
                             href="post.php?product_id=<?php echo $post['posts_id']; ?>">รายละเอียดเพิ่มเติม</a>
                     </div>
@@ -348,7 +348,17 @@ if (isset($_SESSION['user_login'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <?php echo $post['phone_number'] ?>
+                    <?php
+                    $phoneQuery = "SELECT phone_number
+                    FROM posts p
+                    JOIN users u ON p.user_id = u.user_id
+                    WHERE p.posts_id = :product_id";
+                    $stmt = $conn->prepare($phoneQuery);
+                    $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $phoneResult = $stmt->fetch(PDO::FETCH_ASSOC);
+                    ?>
+                    <?php echo isset($phoneResult['phone_number']) ? $phoneResult['phone_number'] : 'ไม่พบเบอร์โทร'; ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

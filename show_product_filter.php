@@ -6,7 +6,7 @@ if (!isset($_SESSION)) {
 require_once 'connetdatabase/conn_db.php';
 
 $min_price = isset($_GET['min_price']) ? intval($_GET['min_price']) : 0;
-$max_price = isset($_GET['max_price']) ? intval($_GET['max_price']) : 0;
+$max_price = isset($_GET['max_price']) ? intval($_GET['max_price']) : PHP_INT_MAX;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $type_id = isset($_GET['type_id']) ? intval($_GET['type_id']) : 0;
 
@@ -14,7 +14,7 @@ $query = "SELECT posts.*, types.type_name, sub_type.sub_type_name
           FROM posts 
           INNER JOIN types ON posts.type_id = types.type_id 
           INNER JOIN sub_type ON posts.sub_type_id = sub_type.sub_type_id 
-          WHERE CAST(product_price AS UNSIGNED) BETWEEN :min_price AND :max_price";
+          WHERE (CAST(product_price AS UNSIGNED) BETWEEN :min_price AND :max_price OR product_price = 'ฟรี')";
 
 if ($search !== '') {
     $query .= " AND product_name LIKE :search";
@@ -39,7 +39,6 @@ if ($type_id > 0) {
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Store results in a session variable to use in show_product_search.php
 $_SESSION['filtered_products'] = $products;
 ?>
 
@@ -54,38 +53,48 @@ $_SESSION['filtered_products'] = $products;
 </head>
 
 <body>
-    <div class="row">
+    <div class="row m-0">
         <?php
         if (isset($_SESSION['filtered_products'])) {
             $result = $_SESSION['filtered_products'];
             if ($result) {
                 foreach ($result as $row_pro) {
-        ?>
-                    <div class="product-card">
+                    ?>
+                    <div class="product-card position-relative">
+                        <div
+                            class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?>">
+                            <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
+                        </div>
                         <div class="product-tumb">
-                            <?php $imageURL = 'image/' . $row_pro['Product_img']; ?>
-                            <img src="<?php echo $imageURL; ?>" alt="">
+                            <?php
+                            $product_images = json_decode($row_pro["Product_img"]);
+                            if (!empty($product_images)) {
+                                $first_image = $product_images[0];
+                                ?>
+                                <img src="image/<?php echo $first_image; ?>" class="image-fix" alt="..." width="350" height="200">
+                            <?php } ?>
                         </div>
                         <div class="product-details">
-                            <span class="product-catagory"> ประเภท : <?php echo $row_pro['type_name']; ?> / <?php echo $row_pro['sub_type_name']; ?></span>
-                            <h4>
-                                <a href="">
+                            <span class="product-catagory"> ประเภท : <?php echo $row_pro['type_name']; ?> /
+                                <?php echo $row_pro['sub_type_name']; ?>
+                            </span>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-config fs-5">
+                                    <span href=""><?php echo $row_pro['product_name']; ?></span>
+                                </div>
+                                <div>
                                     <?php
-                                    $product_title = $row_pro['product_name'];
-                                    if (mb_strlen($product_title) > 40) {
-                                        $shortened_title = mb_substr($product_title, 0, 15) . '...';
-                                        echo $shortened_title;
-                                    } else {
-                                        echo $product_title;
+                                    if ($row_pro['product_price_type'] === 'ต่อรองได้') {
+                                        echo '<p class="m-0">' . $row_pro['product_price_type'] . '</p class="m-0">';
                                     }
                                     ?>
-                                </a>
-                            </h4>
+                                </div>
+                            </div>
                             <p>
                                 <?php
                                 $product_detail = $row_pro['Product_detail'];
                                 if (mb_strlen($product_detail) > 40) {
-                                    $shortened_detail = mb_substr($product_detail, 0, 25) . '...';
+                                    $shortened_detail = mb_substr($product_detail, 0, 28) . '...';
                                     echo $shortened_detail;
                                 } else {
                                     echo $product_detail;
@@ -93,13 +102,20 @@ $_SESSION['filtered_products'] = $products;
                                 ?>
                             </p>
                             <div class="product-bottom-details">
-                                <div class="product-price"><?php echo $row_pro['product_price']; ?> บาท</div>
-                                <div class="btn btn-more">รายละเอียดเพิ่มเติม</div>
+                                <?php
+                                if ($row_pro['product_price'] === '0') {
+                                    echo '<div class="product-price">ฟรี</div>';
+                                } else {
+                                    $formatted_price = number_format($row_pro['product_price']);
+                                    echo '<div class="product-price">' . $formatted_price . ' บาท</div>';
+                                }
+                                ?>
+                                <div><a class="btn btn-more"
+                                        href="post.php?product_id=<?php echo $row_pro['posts_id']; ?>">รายละเอียดเพิ่มเติม</a></div>
                             </div>
                         </div>
                     </div>
-        <?php
-                }
+                <?php }
             } else {
                 echo '<h3 style="text-align:center; margin-top: 10%;">ไม่พบสินค้าที่คุณตามหาอยู่</h3>';
             }

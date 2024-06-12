@@ -36,7 +36,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <div class="mt-3" style="margin-left: 10px;">
 
     <!-- Product cards with Carousel -->
-    <div class="row">
+    <div class="row m-0">
 
       <!-- Product -->
       <?php foreach ($result as $row_pro) { ?>
@@ -52,7 +52,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if (!empty($product_images)) {
               $first_image = $product_images[0];
               ?>
-              <img src="image/<?php echo $first_image; ?>" width="200" height="200">
+              <img src="image/<?php echo $first_image; ?>" class="image-fix" alt="..." width="350" height="200">
             <?php } ?>
 
           </div>
