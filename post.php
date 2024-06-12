@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 require_once 'connetdatabase/conn_db.php';
 require_once "header.php";
 
@@ -35,7 +36,6 @@ if (isset($_SESSION['user_login'])) {
 
 <body>
     <?php
-
     if (isset($_GET['product_id'])) {
         $product_id = $_GET['product_id'];
         // RAND() อันนี้คือแบบสุ่ม // datasave คือเรียงจากใหม่สุด
@@ -78,8 +78,11 @@ if (isset($_SESSION['user_login'])) {
             $stmt->bindParam(':comment_text', $comment_text);
             $stmt->bindParam(':parent_comment_id', $parent_comment_id);
             $stmt->execute();
-        }
 
+            header("Location: post.php?product_id=" . $product_id);
+            exit();
+        }
+        ob_end_flush();
         // Fetch comments for the post
         $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 ORDER BY created_at DESC";
         $stmt = $conn->prepare($sqlComments);
@@ -88,7 +91,7 @@ if (isset($_SESSION['user_login'])) {
         $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     } else {
-        header("Location: index.php");
+        header("Location: i x.php");
     }
 
     function fetchReplies($comment_id, $conn)
@@ -98,6 +101,56 @@ if (isset($_SESSION['user_login'])) {
         $stmt->bindParam(':comment_id', $comment_id);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function displayComments($comments, $conn, $user)
+    {
+        foreach ($comments as $comment) {
+            echo '<div class="bg-secondary px-2 mb-2">';
+            echo '<div class="d-flex gap-1 align-itmes-end ">';
+            echo '<span class="text-white">' . htmlspecialchars($comment['user_name']) . '</span>';
+            echo '<span class="text-white">' . $comment['created_at'] . '</span>';
+            echo '</div>';
+            echo '<div class="d-flex gap-3 text-white px-3">';
+            echo '<span>' . nl2br(htmlspecialchars($comment['comment_text'])) . '</span>';
+            echo '<div>';
+            echo '<span class="pointer" onclick="showReplyForm(' . $comment['comment_id'] . ')">ตอบกลับ</span>';
+            echo '</div>';
+            echo '<div id="reply-form-' . $comment['comment_id'] . '" style="display:none; margin-top:10px;">';
+            echo '<form method="POST" action="">';
+            echo '<input type="text" class="form-control" hidden value="' . htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) . '" id="user_name_' . $comment['comment_id'] . '" name="user_name" required>';
+            echo '<div class="d-flex gap-2" style="width: 520px;">';
+            echo '<div class="mb-3">';
+            echo '<textarea class="form-control" style="width: 420px; height: 45px;" id="comment_text_' . $comment['comment_id'] . '" name="comment_text" rows="3" required></textarea>';
+            echo '</div>';
+            echo '<div class="mb-3 d-flex align-items-center">';
+            echo '<button name="submit_comment">';
+            echo '<div class="svg-wrapper-1">';
+            echo '<div class="svg-wrapper">';
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">';
+            echo '<path fill="none" d="M0 0h24v24H0z"></path>';
+            echo '<path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>';
+            echo '</svg>';
+            echo '</div>';
+            echo '</div>';
+            echo '<span>Send</span>';
+            echo '</button>';
+            echo '</div>';
+            echo '</div>';
+            echo '<input type="hidden" name="parent_comment_id" value="' . $comment['comment_id'] . '">';
+            echo '</form>';
+            echo '</div>';
+            echo '</div>';
+
+            $replies = fetchReplies($comment['comment_id'], $conn);
+            if (!empty($replies)) {
+                echo '<div style="margin-left: 30px;">';
+                displayComments($replies, $conn, $user);
+                echo '</div>';
+            }
+
+            echo '</div>';
+        }
     }
 
     ?>
@@ -158,7 +211,10 @@ if (isset($_SESSION['user_login'])) {
                             <div class="post-name">
                                 <span><?php echo $row->product_name; ?></span>
                             </div>
-                            <span>ราคา: <?php echo $row->product_price; ?></span>
+                            <?php
+                            $formatted_price = number_format($row->product_price);
+                            ?>
+                            <span>ราคา: <?php echo $formatted_price; ?></span>
 
                             <!-- แสดงชื่อผู้โพสต์ -->
                             <?php
@@ -229,65 +285,112 @@ if (isset($_SESSION['user_login'])) {
             <div>
                 <h5 class="text-white">แชท</h5>
             </div>
-            <?php foreach ($comments as $comment): ?>
-                <div class="bg-secondary px-2 mb-2">
-                    <div class="d-flex gap-1 align-itmes-end ">
-                        <span class="text-white"><?php echo htmlspecialchars($comment['user_name']); ?></span>
-                        <span class="text-white"><?php echo $comment['created_at']; ?></span>
-                    </div>
-                    <div class="d-flex gap-3 text-white px-3">
-                        <span><?php echo nl2br(htmlspecialchars($comment['comment_text'])); ?></span>
-                        <div>
-                            <span class="pointer"
-                                onclick="showReplyForm(<?php echo $comment['comment_id']; ?>)">ตอบกลับ</span>
-                        </div>
+            <?php
+            if (isset($comments)) {
+                displayComments($comments, $conn, $user);
+            }
+            ?>
 
-                        <div id="reply-form-<?php echo $comment['comment_id']; ?>" style="display:none; margin-top:10px;">
-                            <form method="POST" action="">
-                                <input type="text" class="form-control" hidden
-                                    value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>"
-                                    id="user_name_<?php echo $comment['comment_id']; ?>" name="user_name" required>
-                                <div class="d-flex gap-2" style="width: 520px;">
-                                    <div class="mb-3">
-                                        <textarea class="form-control" style="width: 420px; height: 45px;"
-                                            id="comment_text_<?php echo $comment['comment_id']; ?>" name="comment_text"
-                                            rows="3" required></textarea>
-                                    </div>
-                                    <div class="mb-3 d-flex align-items-center">
-                                        <button name="submit_comment">
-                                            <div class="svg-wrapper-1">
-                                                <div class="svg-wrapper">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
-                                                        height="24">
-                                                        <path fill="none" d="M0 0h24v24H0z"></path>
-                                                        <path fill="currentColor"
-                                                            d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
-                                                        </path>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                            <span>Send</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="parent_comment_id" value="<?php echo $comment['comment_id']; ?>">
-                            </form>
+            <!-- 
+            <?php foreach ($comments as $comment): ?>
+                    <div class="bg-secondary px-2 mb-2">
+                        <div class="d-flex gap-1 align-itmes-end ">
+                            <span class="text-white"><?php echo htmlspecialchars($comment['user_name']); ?></span>
+                            <span class="text-white"><?php echo $comment['created_at']; ?></span>
                         </div>
-                    </div>
-                    <?php
-                    $replies = fetchReplies($comment['comment_id'], $conn);
-                    foreach ($replies as $reply):
-                        ?>
-                        <div class="card mb-3" style="margin-left: 30px;">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($reply['user_name']); ?></h5>
-                                <p class="card-text"><?php echo nl2br(htmlspecialchars($reply['comment_text'])); ?></p>
-                                <p class="card-text"><small class="text-muted"><?php echo $reply['created_at']; ?></small></p>
+                        <div class="d-flex gap-3 text-white px-3">
+                            <span><?php echo nl2br(htmlspecialchars($comment['comment_text'])); ?></span>
+                            <div>
+                                <span class="pointer"
+                                    onclick="showReplyForm(<?php echo $comment['comment_id']; ?>)">ตอบกลับ</span>
+                            </div>
+
+                            <div id="reply-form-<?php echo $comment['comment_id']; ?>" style="display:none; margin-top:10px;">
+                                <form method="POST" action="">
+                                    <input type="text" class="form-control" hidden
+                                        value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>"
+                                        id="user_name_<?php echo $comment['comment_id']; ?>" name="user_name" required>
+                                    <div class="d-flex gap-2" style="width: 520px;">
+                                        <div class="mb-3">
+                                            <textarea class="form-control" style="width: 420px; height: 45px;"
+                                                id="comment_text_<?php echo $comment['comment_id']; ?>" name="comment_text"
+                                                rows="3" required></textarea>
+                                        </div>
+                                        <div class="mb-3 d-flex align-items-center">
+                                            <button name="submit_comment">
+                                                <div class="svg-wrapper-1">
+                                                    <div class="svg-wrapper">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                                                            height="24">
+                                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                                            <path fill="currentColor"
+                                                                d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <span>Send</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="parent_comment_id" value="<?php echo $comment['comment_id']; ?>">
+                                </form>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endforeach; ?>
+                        <?php
+                        $replies = fetchReplies($comment['comment_id'], $conn);
+                        foreach ($replies as $reply):
+                            ?>
+                                <div class="card mb-3" style="margin-left: 30px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo htmlspecialchars($reply['user_name']); ?></h5>
+                                        <p class="card-text"><?php echo nl2br(htmlspecialchars($reply['comment_text'])); ?></p>
+                                        <p class="card-text"><small class="text-muted"><?php echo $reply['created_at']; ?></small></p>
+                                    </div>
+
+                                    <?php echo $reply['comment_id']; ?>
+
+                                    <div>
+                                        <span class="pointer"
+                                            onclick="showReplyCommentForm(<?php echo $reply['comment_id']; ?>)">ตอบกลับ</span>
+                                    </div>
+
+                                    <div id="reply-form-comment-<?php echo $reply['comment_id']; ?>"
+                                        style="display:none; margin-top:10px;">
+                                        <form method="POST" action="">
+                                            <input type="text" class="form-control" hidden
+                                                value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>"
+                                                id="user_name_<?php echo $comment['comment_id']; ?>" name="user_name" required>
+                                            <div class="d-flex gap-2" style="width: 520px;">
+                                                <div class="mb-3">
+                                                    <textarea class="form-control" style="width: 420px; height: 45px;"
+                                                        id="comment_text_<?php echo $comment['comment_id']; ?>" name="comment_text"
+                                                        rows="3" required></textarea>
+                                                </div>
+                                                <div class="mb-3 d-flex align-items-center">
+                                                    <button name="submit_comment">
+                                                        <div class="svg-wrapper-1">
+                                                            <div class="svg-wrapper">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                                                                    height="24">
+                                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                    <path fill="currentColor"
+                                                                        d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+                                                                    </path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                        <span>Send</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="parent_comment_id" value="<?php echo $reply['comment_id']; ?>">
+                                        </form>
+                                    </div>
+                                </div>
+                        <?php endforeach; ?>
+                    </div>
+            <?php endforeach; ?> -->
         </div>
         <div class="col-5 row align-items-center">
             <div class="bg-body-secondary p-3">
@@ -329,8 +432,16 @@ if (isset($_SESSION['user_login'])) {
                     <h5 class="card-title"><?php echo $post['product_name']; ?></h5>
                     <p class="card-text"><?php echo $post['Product_detail']; ?></p>
 
+
                     <div class="d-flex justify-content-between">
-                        <span>ราคา: <?php echo $post['product_price']; ?> บาท</span>
+                        <?php
+                        if ($post['product_price'] === '0') {
+                            echo '<div class="product-price">ฟรี</div>';
+                        } else {
+                            $formatted_price_list = number_format($post['product_price']);
+                            echo '<div class="product-price">' . $formatted_price_list . ' บาท</div>';
+                        }
+                        ?>
                         <a class="btn btn-success"
                             href="post.php?product_id=<?php echo $post['posts_id']; ?>">รายละเอียดเพิ่มเติม</a>
                     </div>
