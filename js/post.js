@@ -19,3 +19,10 @@ function showReplyCommentForm(commentId) {
         replyForm.style.display = "none";
     }
 }
+
+function showImageModal(imageUrl) {
+    var modalImage = document.getElementById('modalImage');
+    modalImage.src = imageUrl;
+    var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+    imageModal.show();
+}
