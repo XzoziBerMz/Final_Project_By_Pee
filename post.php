@@ -178,7 +178,7 @@ if (isset($_SESSION['user_login'])) {
                                 ?>
 
                                 <img id="mainImage" class="image-fix" src="<?php echo $firstImageURL; ?>" alt="" width="400"
-                                    height="400" onclick="showImageModal('<?php echo $firstImageURL; ?>')">
+                                    height="400" onclick="showImageModal()">
                             </div>
 
                             <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
@@ -227,7 +227,14 @@ if (isset($_SESSION['user_login'])) {
                             <?php
                             $formatted_price = number_format($row->product_price);
                             ?>
-                            <span>ราคา: <?php echo $formatted_price; ?></span>
+                            <?php
+                            if ($formatted_price === '0') {
+                                echo '<div class="product-price">ฟรี</div>';
+                            } else {
+                                echo '<div class="product-price">ราคา: ' . $formatted_price . ' บาท</div>';
+                            }
+                            ?>
+                            <!-- <span>ราคา: <?php echo $formatted_price; ?></span> -->
 
                             <!-- แสดงชื่อผู้โพสต์ -->
                             <?php

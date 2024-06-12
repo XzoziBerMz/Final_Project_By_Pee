@@ -21,8 +21,7 @@ function showReplyCommentForm(commentId) {
 }
 
 function showImageModal(imageUrl) {
-    var modalImage = document.getElementById('modalImage');
-    modalImage.src = imageUrl;
+    // modalImage.src = document.getElementById('mainImage').src;
     var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
     imageModal.show();
 }
