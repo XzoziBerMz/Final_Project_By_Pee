@@ -17,6 +17,8 @@
     width: 100%; 
     margin-left: 5px;
     height: 500px;
+    border: 0px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px;
 }
 
 .profile-container {
@@ -29,7 +31,7 @@
     gap: 10px;
     margin-top: 30px;
     margin-left: 20px;
-    justify-content: center;
+    
 }
 
 .category-item {
@@ -39,10 +41,14 @@
     border-radius: 5px;
     text-decoration: none;
     color: #495057;
+    margin-left: 10px;
+    border: 0px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .category-item:hover {
-    background-color: #e2e6ea;
+    background-color: #4fd33ecc;
+    color: #2e3033;
 }
 
 .hr-catagory{

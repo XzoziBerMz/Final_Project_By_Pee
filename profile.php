@@ -25,14 +25,14 @@ if (isset($_SESSION['user_login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>โปรไฟล์</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="Custom/profile.css">
 </head>
 
 <body>
-    <div class="row m-0">
+    <div class="row m-0 m-3">
 
         <!-- profile user -->
         <div class="col-md-2 profile-container ">
@@ -63,9 +63,9 @@ if (isset($_SESSION['user_login'])) {
             <div class="mt-4">
                 <!-- หมวดหมู่ -->
                 <div class="categories-container">
-                   
-                     <a href="profile.php" class="category-item">ทั้งหมด </a> 
-                    
+
+                    <a href="profile.php" class="category-item">ทั้งหมด </a>
+
                     <?php
                     foreach ($result as $row) { ?>
                         <a href="profile.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>" class="category-item">
