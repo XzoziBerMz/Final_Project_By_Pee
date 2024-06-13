@@ -63,6 +63,9 @@ if (isset($_SESSION['user_login'])) {
             <div class="mt-4">
                 <!-- หมวดหมู่ -->
                 <div class="categories-container">
+                   
+                     <a href="profile.php" class="category-item">ทั้งหมด </a> 
+                    
                     <?php
                     foreach ($result as $row) { ?>
                         <a href="profile.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>" class="category-item">
