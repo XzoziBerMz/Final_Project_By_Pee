@@ -4,6 +4,12 @@ ob_start();
 require_once 'connetdatabase/conn_db.php';
 require_once "header.php";
 
+if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('Location: signin.php');
+    exit();
+}
+
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
     $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id");
@@ -303,7 +309,7 @@ if (isset($_SESSION['user_login'])) {
 
         <div class="col-5 bg-dark p-3">
             <div>
-                <h5 class="text-white">แชท</h5>
+                <h5 class="text-white">Comment</h5>
             </div>
             <?php
             if (isset($comments)) {
@@ -315,7 +321,7 @@ if (isset($_SESSION['user_login'])) {
         <div class="col-5 row align-items-center">
             <div class="bg-body-secondary p-3">
                 <div>
-                    <h5 class="">แชท</h5>
+                    <h5 class="">ตอบกลับประกาศ</h5>
                 </div>
                 <form method="POST" action="">
                     <div class="d-flex gap-2 px-3">

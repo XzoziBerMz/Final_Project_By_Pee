@@ -1,0 +1,19 @@
+
+/* profile users */
+.username{
+    color: #109c33;
+}
+
+.IDnumber{
+    color:#63636398 ;
+}
+
+.rounded-circle{
+    margin-left: 19%;
+}
+
+.card-user{
+    width: 100%; 
+    margin-left: 10px;
+    height: 500px;
+}

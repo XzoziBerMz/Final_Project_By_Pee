@@ -1,8 +1,23 @@
 <?php
-session_start();
+// ตรวจสอบว่า session ยังไม่ได้เปิด ถึงจะทำการเปิด session
+if (!isset($_SESSION)) {
+    session_start();
+}
 require_once "header.php";
-?>
 
+// ดึงข้อมูลแอดมินและผู้ใช้
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id");
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+} elseif (isset($_SESSION['admin_login'])) {
+    $admin_id = $_SESSION['admin_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE user_id = $admin_id");
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,96 +26,92 @@ require_once "header.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="Custom/post.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="Custom/profile.css">
+    <style>
+        .profile-container {
+            padding: 20px;
+        }
+
+        .categories-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .category-item {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #495057;
+        }
+
+        .category-item:hover {
+            background-color: #e2e6ea;
+        }
+    </style>
 </head>
 
-<body class="">
-   
-    <div class="d-flex gap-3 justify-content-center align-itmes-center">
-        <div class="card row p-3">
-            <div>
-                <img src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1224184972.1711670400&semt=ais" class="rounded-circle" alt="" width="200" height="200">
+<body>
+    <div class="row">
+
+        <!-- profile user -->
+        <div class="col-md-2 profile-container">
+            <div class="card card-user p-4">
+                <div class="mb-4">
+                    <img src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1224184972.1711670400&semt=ais"
+                        class="rounded-circle" alt="" width="150" height="150">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <p class="username"> <?php echo $user['firstname'] . ' ' . $user['lastname'] ?> </p>
+                </div>
+                <div class="d-flex justify-content-center mb-3">
+                    <span class="IDnumber">หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
+                </div>
+                <hr>
+            </div>
+        </div>
+
+        <!-- post user -->
+        <?php
+        $type = "SELECT * FROM types";
+        $stmt = $conn->prepare($type);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+
+        <div class="col-md-10">
+            <div class="mt-4">
+                <!-- หมวดหมู่ -->
+                <div class="categories-container">
+                    <?php
+                    foreach ($result as $row) { ?>
+                        <a href="profile.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>" class="category-item">
+                            <?php echo $row["type_name"]; ?></a>
+                    <?php } ?>
+                </div>
             </div>
 
-            <div class="d-flex justify-content-center">
-                <span>Usersname</span>
-            </div>
-
-            <div class="d-flex justify-content-center mb-3">
-                <span>UsersID</span>
-            </div>
+            <!-- post-user -->
+            <?php
+            include_once "show_product_profile.php";
+            ?>
 
         </div>
 
-        <div class="card row">
-            <div>
-                <h2>รายการสินค้า</h2>
-            </div>
+        <!-- footer -->
+        <?php
+        include_once "footer.php";
+        ?>
 
-            <div class="w-100 d-flex  justify-content-center ">
-                <div class="card  ">
-                    <div class="p-4 d-flex  justify-content-center ">
-                        <img src="https://static.scientificamerican.com/sciam/cache/file/2AE14CDD-1265-470C-9B15F49024186C10_source.jpg?w=600" class="" alt="..." width="300" height="200">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">ชื่อสินค้า</h5>
-                        <p class="card-text">Lorem Ipsum is simply dummy
-                            text of the printing and typesetting industry.</p>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+            integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+            </script>
 
-                        <div class="d-flex justify-content-between">
-                            <span>ราคา: 200 ฿</span>
-                            <button class="btn btn-success">รายละเอียดเพิ่มเติม</button>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="card  ">
-                    <div class="p-4 d-flex  justify-content-center ">
-                        <img src="https://static.scientificamerican.com/sciam/cache/file/2AE14CDD-1265-470C-9B15F49024186C10_source.jpg?w=600" class="" alt="..." width="400" height="250">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">ชื่อสินค้า</h5>
-                        <p class="card-text">Lorem Ipsum is simply dummy
-                            text of the printing and typesetting industry.</p>
-
-                        <div class="d-flex justify-content-between">
-                            <span>ราคา: 200 ฿</span>
-                            <button class="btn btn-success">รายละเอียดเพิ่มเติม</button>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="card  ">
-                    <div class="p-4 d-flex  justify-content-center ">
-                        <img src="https://static.scientificamerican.com/sciam/cache/file/2AE14CDD-1265-470C-9B15F49024186C10_source.jpg?w=600" class="" alt="..." width="400" height="250">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">ชื่อสินค้า</h5>
-                        <p class="card-text">Lorem Ipsum is simply dummy
-                            text of the printing and typesetting industry.</p>
-
-                        <div class="d-flex justify-content-between">
-                            <span>ราคา: 200 ฿</span>
-                            <button class="btn btn-success">รายละเอียดเพิ่มเติม</button>
-                        </div>
-
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 
 </html>
