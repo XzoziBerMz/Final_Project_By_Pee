@@ -29,39 +29,14 @@ if (isset($_SESSION['user_login'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="Custom/profile.css">
-    <style>
-        .profile-container {
-            padding: 20px;
-        }
-
-        .categories-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .category-item {
-            background-color: #f8f9fa;
-            padding: 10px 15px;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            text-decoration: none;
-            color: #495057;
-        }
-
-        .category-item:hover {
-            background-color: #e2e6ea;
-        }
-    </style>
 </head>
 
 <body>
-    <div class="row">
+    <div class="row m-0">
 
         <!-- profile user -->
-        <div class="col-md-2 profile-container">
-            <div class="card card-user p-4">
+        <div class="col-md-2 profile-container ">
+            <div class="card card-user">
                 <div class="mb-4">
                     <img src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1224184972.1711670400&semt=ais"
                         class="rounded-circle" alt="" width="150" height="150">
@@ -94,6 +69,7 @@ if (isset($_SESSION['user_login'])) {
                             <?php echo $row["type_name"]; ?></a>
                     <?php } ?>
                 </div>
+                <hr class="hr-catagory">
             </div>
 
             <!-- post-user -->
@@ -102,15 +78,16 @@ if (isset($_SESSION['user_login'])) {
             ?>
 
         </div>
+    </div>
 
-        <!-- footer -->
-        <?php
-        include_once "footer.php";
-        ?>
+    <!-- footer -->
+    <?php
+    include_once "footer.php";
+    ?>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-            integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
-            </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+        </script>
 
 </body>
 
