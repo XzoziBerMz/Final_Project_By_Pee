@@ -17,6 +17,37 @@ if (isset($_SESSION['user_login'])) {
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+// ส่วนของโชว์ค่าวันที่และเดือนตรง create_at
+function getMonth($month)
+{
+    $thaiMonths = [
+        1 => 'มกราคม',
+        2 => 'กุมภาพันธ์',
+        3 => 'มีนาคม',
+        4 => 'เมษายน',
+        5 => 'พฤษภาคม',
+        6 => 'มิถุนายน',
+        7 => 'กรกฎาคม',
+        8 => 'สิงหาคม',
+        9 => 'กันยายน',
+        10 => 'ตุลาคม',
+        11 => 'พฤศจิกายน',
+        12 => 'ธันวาคม'
+    ];
+    return $thaiMonths[intval($month)];
+}
+
+function formatDate($date)
+{
+    $timestamp = strtotime($date);
+    $year = date('Y', $timestamp) + 543; // แปลงปี ค.ศ. เป็น พ.ศ.
+    $month = date('n', $timestamp); // เดือน (1-12)
+    $ThaiMonth = getMonth($month);
+
+    return " $ThaiMonth $year ";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +76,10 @@ if (isset($_SESSION['user_login'])) {
                     <p class="username"> <?php echo $user['firstname'] . ' ' . $user['lastname'] ?> </p>
                 </div>
                 <div class="d-flex justify-content-center mb-3">
-                    <span class="IDnumber">หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
+                    <span class="detaill_user">หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <span class="detaill_user">เข้าร่วมเมื่อ : <?php echo formatDate($user['create_at']); ?></span>
                 </div>
                 <hr>
             </div>

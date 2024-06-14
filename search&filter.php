@@ -99,9 +99,9 @@ require_once "header.php";
       <div class="range-slider">
         <div class="range-fill"></div>
         <input type="range" class="min-price" value="<?php echo $minPrice; ?>" min="<?php echo $minPrice; ?>"
-          max="<?php echo $maxPrice; ?>" step="10" />
+          max="<?php echo $maxPrice; ?>" step="1" />
         <input type="range" class="max-price" value="<?php echo $maxPrice; ?>" min="<?php echo $minPrice; ?>"
-          max="<?php echo $maxPrice; ?>" step="10" />
+          max="<?php echo $maxPrice; ?>" step="1" />
       </div>
     </div>
 
