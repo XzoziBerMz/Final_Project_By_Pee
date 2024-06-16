@@ -110,7 +110,7 @@ if (isset($_SESSION['admin_login'])) {
       <div class="card">
         <i class="fa fa-th-list mb-2" style="font-size: 70px;"></i>
         <h4 style="color:white;">Total SubCategory </h4>
-        <h5 style="color:white;">
+        <h5 style="color:white;"> 
           <?php
             $sql="SELECT * from sub_type";
             $result=$conn-> query($sql);

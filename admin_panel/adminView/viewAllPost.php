@@ -45,7 +45,6 @@
               }
               ?>
             </td>
-            <!-- ใส่รายละเอียดและทำการย่อให้แสดงได้ไม่เกิน...ตัวอักษร -->
             <td>
               <?php
               $product_detail = $row['Product_detail'];
@@ -59,7 +58,15 @@
             </td>
             <td><?= $row["type_name"] ?></td>
             <td><?= $row["sub_type_name"] ?></td>
-            <td><?= $row["product_price"] ?> บาท </td>
+            <td>
+              <?php
+              if ($row['product_price'] === '0') {
+                echo '<div class="product-price">ฟรี</div>';
+              } else {
+                $formatted_price = number_format($row['product_price']);
+                echo '<div class="product-price">' . $formatted_price . ' บาท</div>';
+              }
+              ?>
             <td>
               <button class="btn btn-warning" style="height:40px"
                 onclick="PostEditForm('<?= $row['posts_id'] ?>')">Edit</button>
@@ -143,7 +150,11 @@
             </div>
             <div class="form-group" style="margin-top: 30px;">
               <label for="file">Choose Image:</label>
-              <input type="file" class="form-control-file" id="file" name="file" required>
+              <input type="file" multiple="multiple" class="form-control-file" id="photo_file" name="photo_file[]"
+                accept="image/gif, image/jpeg, image/png" required>
+            </div>
+            <div id="preview-images" style="margin-top: 20px;">
+              <!-- Images preview will be shown here -->
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-secondary" name="upload"
@@ -161,6 +172,60 @@
 
   <!-- สคริปการแสดงผลสำหรับ DataTable -->
   <script>
+    document.getElementById('photo_file').addEventListener('change', function (event) {
+      const preview = document.getElementById('preview-images');
+      preview.innerHTML = ''; // Clear the preview area
+      const files = event.target.files;
+
+      if (files) {
+        Array.from(files).forEach((file, index) => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const imgContainer = document.createElement('div');
+            imgContainer.style.display = 'inline-block';
+            imgContainer.style.position = 'relative';
+            imgContainer.style.margin = '10px';
+
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.width = '100px';
+            imgContainer.appendChild(img);
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.style.position = 'absolute';
+            removeButton.style.top = '5px';
+            removeButton.style.right = '5px';
+            removeButton.style.background = '#ff0000';
+            removeButton.style.color = '#ffffff';
+            removeButton.style.border = 'none';
+            removeButton.style.borderRadius = '3px';
+            removeButton.style.cursor = 'pointer';
+            removeButton.addEventListener('click', function () {
+              imgContainer.remove();
+              // Also remove the file from the input
+              const dt = new DataTransfer();
+              Array.from(files).forEach((f, i) => {
+                if (i !== index) dt.items.add(f);
+              });
+              document.getElementById('photo_file').files = dt.files;
+              updateFileInputText(dt.files.length);
+            });
+            imgContainer.appendChild(removeButton);
+
+            preview.appendChild(imgContainer);
+          }
+          reader.readAsDataURL(file);
+        });
+        updateFileInputText(files.length);
+      }
+    });
+
+    function updateFileInputText(fileCount) {
+      const input = document.getElementById('photo_file');
+      input.nextElementSibling.innerText = `${fileCount} files selected`;
+    }
+
     $(document).ready(function () { //ใช้งาน DataTable เมื่อเว็บโหลดเสร็จ
 
       let table = new DataTable('#poststable'); //เลือกตารางข้อมูล และเปิดใช้งาน DataTable
