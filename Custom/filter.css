@@ -58,7 +58,7 @@
 
     /* header-filter */
     .header-filter {
-        margin-left: 20px;
+        margin-left: 10px;
     }
 
     /* fliter */
@@ -66,8 +66,9 @@
         margin-top: 25px;
     }
 
+    /* หมวดหมู่ */
 
-    /* ranger slide  */
+    /* price ranger slide  */
     .price-content {
         display: flex;
         align-items: center;
@@ -126,3 +127,80 @@
         border-radius: 3px;
         border: none;
       }
+
+      /* เลือกประกาศ */
+      .radio-input {
+        --container-width: 100%;
+        --selection-bg: #3ec550;
+        --border-radius: 10px;
+        --border-color: rgba(53, 52, 52, 0.226);
+        --font-color: #000;
+        --font-color-selected: #fff;
+        --transition-speed: 0.15s;
+      
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: var(--container-width);
+        background-color: #fff;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+      }
+      
+      .radio-input::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        background-color: #00000033;
+        z-index: 1;
+      }
+      
+      .radio-input input {
+        display: none;
+      }
+      
+      .radio-input label {
+        height: 50px;
+        flex: 1;
+        padding: 10px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        letter-spacing: -1px;
+        font-size: 16px;
+        color: var(--font-color);
+        z-index: 2; /* Ensures labels are above the dividing line */
+        transition: color var(--transition-speed);
+      }
+      
+      .radio-input .selection {
+        position: absolute;
+        height: 100%;
+        width: calc(var(--container-width) / 2);
+        background-color: #fff; /* Set initial background color to white */
+        top: 0;
+        left: 0;
+        z-index: 0;
+        transition: transform var(--transition-speed), background-color var(--transition-speed);
+      }
+      
+      .radio-input label:has(input:checked) {
+        color: var(--font-color-selected);
+      }
+      
+      .radio-input label:nth-of-type(1):has(input:checked) ~ .selection {
+        background-color: var(--selection-bg);
+        transform: translateX(calc(var(--container-width) * 0 / 2));
+      }
+      
+      .radio-input label:nth-of-type(2):has(input:checked) ~ .selection {
+        background-color: var(--selection-bg);
+        transform: translateX(calc(var(--container-width) * 2 / 2));
+      }
+      

@@ -32,7 +32,8 @@ function validateRange() {
 // Function to fetch and display products based on price range
 function fetchProducts(minPrice, maxPrice, search, typeId) {
   const xhr = new XMLHttpRequest();
-  xhr.open("GET", `show_product_filter.php?min_price=${minPrice}&max_price=${maxPrice}&search=${encodeURIComponent(search)}&type_id=${typeId}`, true);
+  xhr.open("GET", `show_product_filter.php?min_price=${minPrice}&max_price=${maxPrice}&search=${encodeURIComponent(search)}&type_id=${typeId}&price_type=${getCurrentPriceType()}`, true);
+
   xhr.onload = function() {
     if (xhr.status === 200) {
       document.getElementById("product-list").innerHTML = xhr.responseText;
@@ -56,6 +57,12 @@ inputElements.forEach((element) => {
 
 // Add an event listener to the search input
 searchInput.addEventListener("input", validateRange);
+
+function getCurrentPriceType() {
+  const selectedPriceType = document.querySelector('input[name="price_type"]:checked');
+  return selectedPriceType ? selectedPriceType.value : '';
+}
+
 
 // Add an event listener to each type link
 typeLinks.forEach((link) => {

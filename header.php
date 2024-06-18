@@ -35,7 +35,7 @@ if (isset($_SESSION['user_login'])) {
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <!-- css -->
-  <link rel="icon" href="image/logo01.png">
+  <link rel="icon" href="image/logo.png">
   <link rel="stylesheet" href="Custom/header.css">
 
   <!-- font awesome -->
@@ -50,10 +50,8 @@ if (isset($_SESSION['user_login'])) {
 
     <div class=" navbar-collapse ">
 
-      <a href="index.php" style="margin-left: 3%;"><i class="fa-solid fa-house"
-          style="color: #d9d9d9 ; margin-top: 16px;">
-          <p style="float: right; opacity: 0.3;">&nbsp; &nbsp; &nbsp;|</p>
-        </i></a>
+      <a href="index.php" style="margin-left: 3%; margin-right: 10px;"> <img src="image/logo.png" alt=""
+          style=" margin-right: 10px;" width="35px" height="35px"></a>
 
       <!-- หมวดหมู่1 -->
       <?php

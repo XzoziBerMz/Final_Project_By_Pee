@@ -15,7 +15,7 @@ require_once "header.php";
 
 <body>
   <!-- navbar-head -->
-  <nav class="navbar navbar-dark bg-dark nav-head slide-right" style="height: 105px;">
+  <nav class="navbar navbar-dark bg-dark nav-head slide-right mb-3" style="height: 105px;">
     <div class="container-fluid">
       <a class="navbar-brand" href="search&filter.php" style="margin-left: 150px;">
         <img src="image/logo01.png" alt="" width="65" height="70" class="d-inline-block align-text-top"
@@ -52,7 +52,7 @@ require_once "header.php";
     <div class="col-md-2 mt-4">
       <!-- หมวดหมู่ -->
       <b class="header-filter">หมวดหมู่</b>
-      <div class="list-group" style="margin-top: 10px;">
+      <div class="list-group mb-4" style="margin-top: 10px;">
         <?php
         foreach ($result as $row) { ?>
           <a href="search&filter.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>"
@@ -60,7 +60,6 @@ require_once "header.php";
             <?php echo $row["type_name"]; ?></a>
         <?php } ?>
       </div>
-      <br>
       <!-- ราคา -->
       <?php
       // ดึงข้อมูลตัวเลขจากฐานข้อมูล
@@ -96,13 +95,28 @@ require_once "header.php";
           <p id="max-value"><?php echo $maxPrice; ?> บาท</p>
         </div>
       </div>
-      <div class="range-slider">
+      <div class="range-slider mb-5">
         <div class="range-fill"></div>
         <input type="range" class="min-price" value="<?php echo $minPrice; ?>" min="<?php echo $minPrice; ?>"
           max="<?php echo $maxPrice; ?>" step="1" />
         <input type="range" class="max-price" value="<?php echo $maxPrice; ?>" min="<?php echo $minPrice; ?>"
           max="<?php echo $maxPrice; ?>" step="1" />
       </div>
+
+      <!-- post_type -->
+      <b class="header-filter">ประเภทประกาศ</b>
+      <div class="radio-input" style="margin-top: 15px;">
+        <label style=>
+          <input type="radio" name="price_type" value="ซื้อ">
+          <span>ซื้อ</span>
+        </label>
+        <label>
+          <input type="radio" name="price_type" value="ขาย">
+          <span>ขาย</span>
+        </label>
+        <span class="selection"></span>
+      </div>
+
     </div>
 
     <!-- ส่วนของ post -->
@@ -113,12 +127,24 @@ require_once "header.php";
   <?php
   include_once "footer.php";
   ?>
-  <!-- fliterprice.js -->
+
   <script>
+    // fliterprice.js 
     const phpMinPrice = <?php echo $minPrice; ?>;
     const phpMaxPrice = <?php echo $maxPrice; ?>;
+
+    // price_type
+    document.querySelectorAll('input[name="price_type"]').forEach((elem) => {
+      elem.addEventListener("change", function (event) {
+        validateRange();
+      });
+    });
+
   </script>
+
+  <!-- price rang -->
   <script src="js/filterprice.js"></script>
+
 </body>
 
 </html>

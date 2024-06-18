@@ -9,7 +9,9 @@ $min_price = isset($_GET['min_price']) ? intval($_GET['min_price']) : 0;
 $max_price = isset($_GET['max_price']) ? intval($_GET['max_price']) : PHP_INT_MAX;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $type_id = isset($_GET['type_id']) ? intval($_GET['type_id']) : 0;
+$price_type = isset($_GET['price_type']) ? $_GET['price_type'] : '';
 
+// Query ที่ใช้ในการดึงข้อมูล
 $query = "SELECT posts.*, types.type_name, sub_type.sub_type_name 
           FROM posts 
           INNER JOIN types ON posts.type_id = types.type_id 
@@ -22,8 +24,13 @@ if ($search !== '') {
 if ($type_id > 0) {
     $query .= " AND posts.type_id = :type_id";
 }
+if ($price_type !== '') {
+    $query .= " AND posts.type_buy_or_sell = :price_type";
+}
 
 $query .= " ORDER BY posts.posts_id ASC";
+
+// Prepare และ Bind ค่าพารามิเตอร์
 $stmt = $conn->prepare($query);
 $stmt->bindParam(':min_price', $min_price, PDO::PARAM_INT);
 $stmt->bindParam(':max_price', $max_price, PDO::PARAM_INT);
@@ -35,10 +42,15 @@ if ($search !== '') {
 if ($type_id > 0) {
     $stmt->bindParam(':type_id', $type_id, PDO::PARAM_INT);
 }
+if ($price_type !== '') {
+    $stmt->bindParam(':price_type', $price_type, PDO::PARAM_STR);
+}
 
+// Execute และ Fetch ข้อมูล
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// เก็บข้อมูลสินค้าที่ถูกกรองไว้ใน SESSION
 $_SESSION['filtered_products'] = $products;
 ?>
 
@@ -53,7 +65,7 @@ $_SESSION['filtered_products'] = $products;
 </head>
 
 <body>
-    <div class="row m-0">
+    <div class="row m-0" id="product-container">
         <?php
         if (isset($_SESSION['filtered_products'])) {
             $result = $_SESSION['filtered_products'];
