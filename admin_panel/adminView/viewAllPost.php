@@ -29,9 +29,22 @@
           <tr>
             <td><?= $No_Post ?></td>
             <td><?= $row["posts_id"] ?></td>
-            <td><?php $imageURL = '../image/' . $row['Product_img']; ?>
-              <!-- เชื่อมต่อ URL ของรูปภาพจากฐานข้อมูล -->
-              <img height="100px" src="<?php echo $imageURL; ?>" alt="">
+            <td>
+              <?php
+              // ตรวจสอบและแก้ไขเส้นทางของรูปภาพ
+              $product_images = json_decode($row["Product_img"], true);
+              if (!empty($product_images) && is_array($product_images)) {
+                $first_image = $product_images[0];
+                $image_path = '../../image/' . $first_image;
+                if (file_exists($image_path)) {
+                  echo '<img height="100px" src="' . $image_path, ENT_QUOTES . '" alt="Product Image">';
+                } else {
+                  echo 'Image not found';
+                }
+              } else {
+                echo 'No images available';
+              }
+              ?>
             </td>
             <!-- ใส่หัวข้อและทำการย่อให้แสดงได้ไม่เกิน...ตัวอักษร -->
             <td>
@@ -102,6 +115,19 @@
             <div class="form-group">
               <label for="p_name">Product Name:</label>
               <input type="text" class="form-control" id="p_name" name="p_name" required>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+              <label for="price_type">price type:</label>
+
+              <label style=>
+                <input type="radio" id="price_type" name="price_type" value="ซื้อ" checked>
+                <span>ซื้อ</span>
+              </label>
+              <label>
+                <input type="radio" id="price_type" name="price_type" value="ขาย">
+                <span>ขาย</span>
+              </label>
+
             </div>
             <div class="form-group" style="margin-top: 20px;">
               <label for="p_price" class="form-label label-insert" style="display: block;">Price:</label>

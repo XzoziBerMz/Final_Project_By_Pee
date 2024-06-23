@@ -3,28 +3,30 @@ include_once "../config/dbconnect.php";
 
 if (isset($_POST['upload'])) {
     $ProductName = $_POST['p_name'];
-
-    if ($_POST['p_price'] == 'ราคาคงที่') {
-        $price = $_POST['fixedPrice'];
-    } elseif ($_POST['p_price'] == 'ต่อรองได้') {
-        $price = $_POST['negotiablePrice'];
-    } else {
-        $price = 'ฟรี';
-    }
-
     $desc = $_POST['p_desc'];
     $category = $_POST['category'];
     $subcategory = $_POST['subcategory'];
+    $priceType = $_POST['price'];
+    $price_type = $_POST['price_type'];
+    $price = '';
     $image = $_FILES['file']['name'];
     $target_dir = "../../image/";
     $target_file = $target_dir . basename($image);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    
+
+    if ($priceType === "ราคาคงที่") {
+        $price = $_POST['fixedPrice'];
+    } elseif ($priceType === "ต่อรองได้") {
+        $price = $_POST['negotiablePrice'];
+    } elseif ($priceType === "ฟรี") {
+        $price = '0';
+    }
+
     // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นภาพจริงหรือไม่
-    if(isset($_POST["submit"])) {
+    if (isset($_POST["submit"])) {
         $check = getimagesize($_FILES["file"]["tmp_name"]);
-        if($check !== false) {
+        if ($check !== false) {
             $uploadOk = 1;
         } else {
             echo "<script>
@@ -34,17 +36,6 @@ if (isset($_POST['upload'])) {
             $uploadOk = 0;
         }
     }
-    
-// ---------------------------------------------------------------------
-    // ตรวจสอบว่าไฟล์มีอยู่แล้วหรือไม่
-    // if (file_exists($target_file)) {
-    //     echo "<script>
-    //             alert('ขออภัย ไฟล์มีอยู่แล้ว');
-    //             window.location.href = '../index.php';
-    //           </script>";
-    //     $uploadOk = 0;
-    // }
-// ----------------------------------------------------------------------
 
     // เพิ่มตัวเลขไปข้างหลังชื่อไฟล์หากชื่อซ้ำกัน
     $originalFileName = $image;
@@ -56,7 +47,7 @@ if (isset($_POST['upload'])) {
     $target_file = $target_dir . $image;
 
     // ตรวจสอบขนาดของไฟล์
-    if ($_FILES["file"]["size"] > 500000) { // จำกัดขนาดไฟล์ที่ 500 KB
+    if ($_FILES["file"]["size"] > 1000000) { // จำกัดขนาดไฟล์ที่ 10 mb
         echo "<script>
                 alert('ขออภัย ไฟล์ของคุณมีขนาดใหญ่เกินไป');
                 window.location.href = '../index.php';
@@ -65,8 +56,10 @@ if (isset($_POST['upload'])) {
     }
 
     // อนุญาตเฉพาะไฟล์รูปภาพบางประเภท
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" 
-    && $imageFileType != "gif" ) {
+    if (
+        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif"
+    ) {
         echo "<script>
                 alert('ขออภัย อนุญาตเฉพาะไฟล์ JPG, JPEG, PNG และ GIF เท่านั้น');
                 window.location.href = '../index.php';
@@ -80,21 +73,23 @@ if (isset($_POST['upload'])) {
                 alert('ขออภัย ไฟล์ของคุณไม่ได้ถูกอัปโหลด');
                 window.location.href = '../index.php';
               </script>";
-    // ถ้าทุกอย่างถูกต้อง พยายามอัปโหลดไฟล์
+        // ถ้าทุกอย่างถูกต้อง พยายามอัปโหลดไฟล์
     } else {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
             try {
                 // เตรียมคำสั่ง SQL
-                $stmt = $conn->prepare("INSERT INTO posts (product_name, Product_detail, type_id, sub_type_id, Product_img, product_price) 
-                                        VALUES (:p_name, :p_desc, :category, :subcategory, :p_image, :p_price)");
-                
+                $stmt = $conn->prepare("INSERT INTO posts (product_name, Product_detail, type_id, sub_type_id, Product_img, type_buy_or_sell, product_price_type, product_price) 
+                                        VALUES (:p_name, :p_desc, :category, :subcategory, :p_image, :price_type, :priceType, :price)");
+
                 // ผูกค่าพารามิเตอร์
                 $stmt->bindParam(':p_name', $ProductName, PDO::PARAM_STR);
                 $stmt->bindParam(':p_desc', $desc, PDO::PARAM_STR);
                 $stmt->bindParam(':category', $category, PDO::PARAM_INT);
                 $stmt->bindParam(':subcategory', $subcategory, PDO::PARAM_INT);
                 $stmt->bindParam(':p_image', $image, PDO::PARAM_STR);
-                $stmt->bindParam(':p_price', $price, PDO::PARAM_STR);
+                $stmt->bindParam(':priceType', $priceType, PDO::PARAM_STR);
+                $stmt->bindParam(':price_type', $price_type, PDO::PARAM_STR);
+                $stmt->bindParam(':price', $price, PDO::PARAM_STR);
 
                 // ดำเนินการ statement
                 if ($stmt->execute()) {
