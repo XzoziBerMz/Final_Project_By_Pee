@@ -59,7 +59,7 @@ ob_end_flush()
   <div class="main-insert ">
 
     <!-- header -->
-    <h3><b>ใส่ข้อมูลเกี่ยวกับสินค้าของคุณ</b></h3>
+    <h3><b>แก้ไขข้อมูลเกี่ยวกับสินค้าของคุณ</b></h3>
 
     <!-- alert -->
     <?php
@@ -109,33 +109,17 @@ ob_end_flush()
     <form action="insert_post_script.php" method="post" enctype="multipart/form-data">
 
       <?php
-      $type_id = isset($_GET['type_id']) ? $_GET['type_id'] : null;
-      $sub_type_id = isset($_GET['sub_type_id']) ? $_GET['sub_type_id'] : null;
+      $product_id = isset($_GET['product_id']) ? $_GET['product_id'] : null;
 
-      $query = "SELECT type_name, sub_type_name FROM types INNER JOIN sub_type ON types.type_id = sub_type.type_id WHERE types.type_id = :type_id AND sub_type.sub_type_id = :sub_type_id";
-      $stmt = $conn->prepare($query);
-      $stmt->bindParam(':type_id', $type_id);
-      $stmt->bindParam(':sub_type_id', $sub_type_id);
+      $product = "SELECT * FROM posts WHERE posts_id = :posts_id";
+      $stmt = $conn->prepare($product);
+      $stmt->bindParam(':posts_id', $product_id, PDO::PARAM_INT);
       $stmt->execute();
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
       // ตรวจสอบว่ามีการแนบค่า type_id และ sub_type_id หรือไม่
-      if ($stmt->execute()) {
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // ตรวจสอบว่ามีค่าที่รับมาจากฐานข้อมูลหรือไม่
-        if ($result) {
-          $type_name = $result['type_name'];
-          $sub_type_name = $result['sub_type_name'];
-
-          $_SESSION['type_id'] = $type_id;
-          $_SESSION['sub_type_id'] = $sub_type_id;
-        }
-
-      }
       ?>
 
       <!-- catagory -->
-      <input type="hidden" name="type_id" value="<?php echo $type_id; ?>">
-      <input type="hidden" name="sub_type_id" value="<?php echo $sub_type_id; ?>">
       <div class="mb-2" style="margin-top: 30px;">
         <a href="category_Sell-find_products.php" type="button" class="btn btn-category" name="category"
           style="position: relative;">
@@ -151,7 +135,8 @@ ob_end_flush()
       <!-- Title -->
       <div class="mb-2" style="margin-top: 30px;">
         <label for="Title" class="form-label label-insert">Title <span class="span-label">*</span></label>
-        <input type="text" class="form-control input-insert" name="title" maxlength="120">
+        <input type="text" class="form-control input-insert" name="title" maxlength="120"
+          value="<?php echo $result['product_name'] ?>">
       </div>
 
       <!-- price -->
@@ -159,11 +144,23 @@ ob_end_flush()
         <div class="col">
           <label for="price" class=" form-label label-insert" style="display: block;"> ราคา <span
               class="span-label">*</span></label>
-          <select class="select-price" id="price" name="price">
+          <!-- <select class="select-price" id="price" name="price">
             <option>ฟรี</option>
             <option>ต่อรองได้</option>
             <option>ราคาคงที่</option>
+          </select> -->
+
+          <select class="select-price" id="price" name="price">
+            <?php
+            $product_price_type = $result['product_price_type'];
+            ?>
+            <option value="ฟรี" <?php echo ($product_price_type === 'ฟรี') ? 'selected' : ''; ?>>ฟรี</option>
+            <option value="ต่อรองได้" <?php echo ($product_price_type === 'ต่อรองได้') ? 'selected' : ''; ?>>ต่อรองได้
+            </option>
+            <option value="ราคาคงที่" <?php echo ($product_price_type === 'ราคาคงที่') ? 'selected' : ''; ?>>ราคาคงที่
+            </option>
           </select>
+
 
           <!-- input ราคา -->
           <input type="number" class="input-price" id="negotiablePrice" name="negotiablePrice" style="display: none;"
@@ -182,15 +179,16 @@ ob_end_flush()
         <label for="price" class=" form-label label-insert" style="display: block; margin-top: 30px;"> ประเภทของประกาศ
           <span class="span-label">*</span></label>
         <div class="radio-input" style="margin-top: 15px;">
-
-          <label style=>
-            <input type="radio" id="price_type" name="price_type" value="ซื้อ" checked>
+          <?php $type_buy_or_sell = $result['type_buy_or_sell']; ?>
+          <label>
+            <input type="radio" id="price_type" name="price_type" value="ซื้อ" <?php echo ($type_buy_or_sell === 'ซื้อ') ? 'checked' : ''; ?>>
             <span>ซื้อ</span>
           </label>
           <label>
-            <input type="radio" id="price_type" name="price_type" value="ขาย">
+            <input type="radio" id="price_type" name="price_type" value="ขาย" <?php echo ($type_buy_or_sell === 'ขาย') ? 'checked' : ''; ?>>
             <span>ขาย</span>
           </label>
+
           <span class="selection"></span>
         </div>
 
@@ -202,6 +200,7 @@ ob_end_flush()
             class="span-label">*</span></label>
         <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 20MB</p>
 
+        <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
         <div class="file-upload">
           <div class="image-upload-wrap">
@@ -224,7 +223,8 @@ ob_end_flush()
       <div class="mb-2" style="margin-top: 30px;">
         <label for="Phone" class="form-label label-insert">เบอร์โทรศัพท์ <span class="span-label">*</span></label>
         <input type="tel" class="form-control input-insert" name="phone_number" maxlength="10" id="phone_number"
-          placeholder="กรุณากรอกหมายเลขโทรศัพท์" oninput="validateInput(this)">
+          placeholder="กรุณากรอกหมายเลขโทรศัพท์" oninput="validateInput(this)"
+          value="<?php echo $result['phone_number'] ?>">
       </div>
 
       <!-- Description -->
@@ -232,13 +232,14 @@ ob_end_flush()
         <label for="price" class="form-label label-insert" style="display: block;"> คำอธิบาย <span
             class="span-label">*</span></label>
         <textarea id="description" name="description" rows="5" cols="167"
-          placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..." oninput="limitTextarea(this, 200)"></textarea>
+          placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..."
+          oninput="limitTextarea(this, 200)"><?php echo $result['Product_detail'] ?>"</textarea>
         <p>คุณพิมพ์ได้อีก <span id="charCount" style="color:#09BA00;"></span> ตัวอักษร</p>
       </div>
 
       <!-- summit -->
       <div class="d-grid" style="margin-top: 30px;">
-        <button type="submit" name="submit" class="button-27" role="button">เพิ่มประกาศสินค้า</button>
+        <button type="submit" name="submit" class="button-27" role="button">แก้ไขประกาศสินค้า</button>
       </div>
 
     </form>
@@ -246,7 +247,6 @@ ob_end_flush()
 
 
   <!-- ส่วน js ของ price -->
-        <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script>
     document.getElementById("price").addEventListener("change", function () {
       var selectedValue = this.value;

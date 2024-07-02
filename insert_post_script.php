@@ -66,6 +66,7 @@ if (isset($_POST["submit"])) {
           $size = $_FILES["photo_file"]["size"][$i];
           if ($size < 20000000) { // check file size 20MB
             move_uploaded_file($tmpName, 'image/' . $newImageName);
+            move_uploaded_file($tmpName, 'admin_panel/assets/image_post/' . $newImageName);
             $filesArray[] = $newImageName;
           } else {
             $_SESSION['warning'] = "ขนาดไฟล์ใหญ่เกิน 20MB";

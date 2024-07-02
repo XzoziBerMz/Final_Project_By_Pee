@@ -1,6 +1,7 @@
 let minValue = document.getElementById("min-value");
 let maxValue = document.getElementById("max-value");
 const rangeFill = document.querySelector(".range-fill");
+// . คือ class || # คือ id
 
 const inputElements = document.querySelectorAll("input[type='range']");
 const searchInput = document.querySelector("input[name='search']");
@@ -11,12 +12,16 @@ function validateRange() {
   let minPrice = parseInt(inputElements[0].value);
   let maxPrice = parseInt(inputElements[1].value);
 
+  // [] Array
+  // {} Object
+
   if (minPrice > maxPrice) {
     let tempValue = maxPrice;
     maxPrice = minPrice;
     minPrice = tempValue;
   }
 
+  // เส้น เขียว
   const minPercentage = ((minPrice - phpMinPrice) / (phpMaxPrice - phpMinPrice)) * 100;
   const maxPercentage = ((maxPrice - phpMinPrice) / (phpMaxPrice - phpMinPrice)) * 100;
 

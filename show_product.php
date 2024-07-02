@@ -55,6 +55,19 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <img src="image/<?php echo $first_image; ?>" class="image-fix" alt="..." width="350" height="200">
             <?php } ?>
 
+
+            <?php
+              // ตรวจสอบและแก้ไขเส้นทางของรูปภาพ
+              $product_images = json_decode($row["Product_img"]);
+              if (!empty($product_images)) {
+                $first_image = $product_images[0];
+                if (file_exists($first_image)) {
+                  echo '<img height="100px" src="../../image/' . $first_image . '" alt="">';
+                } else {
+                  echo 'Image not found';
+                }
+              }
+              ?>
           </div>
           <div class="product-details">
             <span class="product-catagory"> ประเภท : <?php echo $row_pro['type_name']; ?> /

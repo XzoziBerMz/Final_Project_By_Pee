@@ -77,7 +77,7 @@ require_once "header.php";
       $stmtStrings->execute();
       $resultStrings = $stmtStrings->fetchAll(PDO::FETCH_ASSOC);
 
-      // กำหนดค่าต่ำสุดให้กับตัวอักษร
+      // กำหนดค่าต่ำสุดให้กับตัวอักษร 
       $minPriceStrings = count($resultStrings) > 0 ? 0 : $minPriceNumbers; // กำหนดค่าต่ำสุดให้กับตัวอักษรเป็น 0
       
       // หาค่าต่ำสุดและค่าสูงสุด

@@ -68,7 +68,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
     <div class="mt-3" style="margin-left: 10px;">
 
         <!-- Product cards with Carousel -->
-        <div class="row m-0">
+        <div class="row m-0 gap-3">
 
             <!-- Product -->
             <?php foreach ($result as $row_pro) { ?>
@@ -76,6 +76,10 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
                     <div
                         class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?>">
                         <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
+                    </div>
+                    <div class="position-absolute top-0 tag-edit translate-middle"
+                        onclick="editpage(<?php echo $row_pro['posts_id']; ?>)">
+                        <span>แก้ไข</span>
                     </div>
                     <div class="product-tumb">
                         <?php
@@ -135,5 +139,12 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
     </div>
 
 </body>
+
+<script>
+    function editpage(value) {
+        console.log("🚀 ~ editpage ~ value:", value)
+        window.location.href = `./edit_post.php?product_id=${value}`
+    }
+</script>
 
 </html>

@@ -42,122 +42,7 @@ if (isset($_SESSION['user_login'])) {
 
 <body>
     <?php
-    if (isset($_GET['product_id'])) {
-        $product_id = $_GET['product_id'];
-        // RAND() อันนี้คือแบบสุ่ม // datasave คือเรียงจากใหม่สุด
-        // $sql = "SELECT * FROM posts ORDER BY RAND() DESC LIMIT 4";
-    
-        $sql = "SELECT * FROM posts
-        ORDER BY datasave DESC LIMIT 4";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $posts_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $sqlAll = "SELECT * FROM posts WHERE posts_id = $product_id";
-        $result = $conn->query($sqlAll);
-
-        if ($result->rowCount() > 0) {
-            $row = $result->fetch(PDO::FETCH_OBJ);
-        } else {
-            echo "<script>";
-            echo "Swal.fire({";
-            echo "position: 'top-center',";
-            echo "icon: 'error',";
-            echo "title: 'ไม่พบสินค้า',";
-            echo "showConfirmButton: false,";
-            echo "timer: 2000";
-            echo "}).then((result) => {";
-            echo "window.location.href = 'index.php';";
-            echo "});";
-            echo "</script>";
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
-            $user_name = htmlspecialchars($_POST['user_name']);
-            $comment_text = htmlspecialchars($_POST['comment_text']);
-            $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
-
-            $sql = "INSERT INTO comments (post_id, user_name, comment_text, parent_comment_id) VALUES (:post_id, :user_name, :comment_text, :parent_comment_id)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':post_id', $product_id);
-            $stmt->bindParam(':user_name', $user_name);
-            $stmt->bindParam(':comment_text', $comment_text);
-            $stmt->bindParam(':parent_comment_id', $parent_comment_id);
-            $stmt->execute();
-
-            header("Location: post.php?product_id=" . $product_id);
-            exit();
-        }
-        ob_end_flush();
-        // Fetch comments for the post
-        $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 ORDER BY created_at DESC";
-        $stmt = $conn->prepare($sqlComments);
-        $stmt->bindParam(':post_id', $product_id);
-        $stmt->execute();
-        $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    } else {
-        header("Location: i x.php");
-    }
-
-    function fetchReplies($comment_id, $conn)
-    {
-        $sqlReplies = "SELECT * FROM comments WHERE parent_comment_id = :comment_id ORDER BY created_at ASC";
-        $stmt = $conn->prepare($sqlReplies);
-        $stmt->bindParam(':comment_id', $comment_id);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    function displayComments($comments, $conn, $user)
-    {
-        foreach ($comments as $comment) {
-            echo '<div class="bg-secondary px-2 mb-2">';
-            echo '<div class="d-flex gap-1 align-itmes-end ">';
-            echo '<span class="text-white">' . htmlspecialchars($comment['user_name']) . '</span>';
-            echo '<span class="text-white">' . $comment['created_at'] . '</span>';
-            echo '</div>';
-            echo '<div class="d-flex gap-3 text-white px-3">';
-            echo '<span>' . nl2br(htmlspecialchars($comment['comment_text'])) . '</span>';
-            echo '<div>';
-            echo '<span class="pointer" onclick="showReplyForm(' . $comment['comment_id'] . ')">ตอบกลับ</span>';
-            echo '</div>';
-            echo '<div id="reply-form-' . $comment['comment_id'] . '" style="display:none; margin-top:10px;">';
-            echo '<form method="POST" action="">';
-            echo '<input type="text" class="form-control" hidden value="' . htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) . '" id="user_name_' . $comment['comment_id'] . '" name="user_name" required>';
-            echo '<div class="d-flex gap-2" style="width: 520px;">';
-            echo '<div class="mb-3">';
-            echo '<textarea class="form-control" style="width: 420px; height: 45px;" id="comment_text_' . $comment['comment_id'] . '" name="comment_text" rows="3" required></textarea>';
-            echo '</div>';
-            echo '<div class="mb-3 d-flex align-items-center">';
-            echo '<button name="submit_comment">';
-            echo '<div class="svg-wrapper-1">';
-            echo '<div class="svg-wrapper">';
-            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">';
-            echo '<path fill="none" d="M0 0h24v24H0z"></path>';
-            echo '<path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>';
-            echo '</svg>';
-            echo '</div>';
-            echo '</div>';
-            echo '<span>Send</span>';
-            echo '</button>';
-            echo '</div>';
-            echo '</div>';
-            echo '<input type="hidden" name="parent_comment_id" value="' . $comment['comment_id'] . '">';
-            echo '</form>';
-            echo '</div>';
-            echo '</div>';
-
-            $replies = fetchReplies($comment['comment_id'], $conn);
-            if (!empty($replies)) {
-                echo '<div style="margin-left: 30px;">';
-                displayComments($replies, $conn, $user);
-                echo '</div>';
-            }
-
-            echo '</div>';
-        }
-    }
 
     ?>
     <?php
@@ -234,13 +119,13 @@ if (isset($_SESSION['user_login'])) {
                             $formatted_price = number_format($row->product_price);
                             ?>
                             <?php
+                            // เช็คค่าว่าเป็น 0 ไหมถ้าเป็น 0 ให้โชว์ ฟรี
                             if ($formatted_price === '0') {
                                 echo '<div class="product-price">ฟรี</div>';
                             } else {
                                 echo '<div class="product-price">ราคา: ' . $formatted_price . ' บาท</div>';
                             }
                             ?>
-                            <!-- <span>ราคา: <?php echo $formatted_price; ?></span> -->
 
                             <!-- แสดงชื่อผู้โพสต์ -->
                             <?php
@@ -301,7 +186,17 @@ if (isset($_SESSION['user_login'])) {
             echo "</script>";
         }
     } else {
-        header("Location: index.php");
+        echo "<script>";
+        echo "Swal.fire({";
+        echo "position: 'top-center',";
+        echo "icon: 'error',";
+        echo "title: 'ไม่พบสินค้า',";
+        echo "showConfirmButton: false,";
+        echo "timer: 2000";
+        echo "}).then((result) => {";
+        echo "window.location.href = 'index.php';";
+        echo "});";
+        echo "</script>";
     }
     ?>
     </div>
@@ -312,10 +207,143 @@ if (isset($_SESSION['user_login'])) {
                 <h5 class="text-white">Comment</h5>
             </div>
             <?php
+            if (isset($_GET['product_id'])) {
+                $product_id = $_GET['product_id'];
+
+                // comment คอมเม้น นะแจะ
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    if (isset($_POST['submit_comment'])) {
+                        $user_name = htmlspecialchars($_POST['user_name']);
+                        $comment_text = htmlspecialchars($_POST['comment_text']);
+                        $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
+
+                        $sql = "INSERT INTO comments (post_id, user_name, comment_text, parent_comment_id) VALUES (:post_id, :user_name, :comment_text, :parent_comment_id)";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':post_id', $product_id);
+                        $stmt->bindParam(':user_name', $user_name);
+                        $stmt->bindParam(':comment_text', $comment_text);
+                        $stmt->bindParam(':parent_comment_id', $parent_comment_id);
+                        $stmt->execute();
+
+                        header("Location: post.php?product_id=" . $product_id);
+                        exit();
+                    } elseif (isset($_POST['submit_edit'])) {
+                        $comment_id = $_POST['comment_id'];
+                        $edited_text = htmlspecialchars($_POST['edited_text']);
+
+                        $sql = "UPDATE comments SET comment_text = :comment_text WHERE comment_id = :comment_id";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':comment_text', $edited_text);
+                        $stmt->bindParam(':comment_id', $comment_id);
+                        $stmt->execute();
+
+                        header("Location: post.php?product_id=" . $product_id);
+                        exit();
+                    }
+                }
+                ob_end_flush();
+
+                // Fetch comments for the post
+                $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 ORDER BY created_at DESC";
+                $stmt = $conn->prepare($sqlComments);
+                $stmt->bindParam(':post_id', $product_id);
+                $stmt->execute();
+                $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                print_r($comments);
+            } else {
+                echo "<script>";
+                echo "Swal.fire({";
+                echo "position: 'top-center',";
+                echo "icon: 'error',";
+                echo "title: 'ไม่พบสินค้า',";
+                echo "showConfirmButton: false,";
+                echo "timer: 2000";
+                echo "}).then((result) => {";
+                echo "window.location.href = 'index.php';";
+                echo "});";
+                echo "</script>";
+            }
+
             if (isset($comments)) {
                 displayComments($comments, $conn, $user);
             }
+
+            function fetchReplies($comment_id, $conn)
+            {
+                $sqlReplies = "SELECT * FROM comments WHERE parent_comment_id = :comment_id ORDER BY created_at ASC";
+                $stmt = $conn->prepare($sqlReplies);
+                $stmt->bindParam(':comment_id', $comment_id);
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+
+            function displayComments($comments, $conn, $user)
+            {
+                foreach ($comments as $comment) {
+                    echo '<div class="bg-secondary px-2 mb-2">';
+                    echo '<div class="d-flex gap-1 align-items-end ">';
+                    echo '<span class="text-white">' . htmlspecialchars($comment['user_name']) . '</span>';
+                    echo '<span class="text-white">' . $comment['created_at'] . '</span>';
+                    echo '</div>';
+                    echo '<div class="d-flex gap-3 text-white px-3">';
+                    echo '<span>' . nl2br(htmlspecialchars($comment['comment_text'])) . '</span>';
+
+                    // Add edit button if user_id matches
+                    if (isset($comment['user_id']) && $comment['user_id'] == $user['user_id']) {
+                        echo '<div id="edit-form-' . $comment['comment_id'] . '">';
+                        echo '<span class="pointer" onclick="showEditForm(' . $comment['comment_id'] . ')">แก้ไข</span>';
+                        echo '</div>';
+                        echo '<div id="edit-comment-' . $comment['comment_id'] . '" style="display:none; margin-top:10px;">';
+                        echo '<form method="POST" action="">';
+                        echo '<input type="hidden" name="comment_id" value="' . $comment['comment_id'] . '">';
+                        echo '<textarea class="form-control" name="edited_text" rows="3" required>' . htmlspecialchars($comment['comment_text']) . '</textarea>';
+                        echo '<button name="submit_edit" type="submit">Update</button>';
+                        echo '</form>';
+                        echo '</div>';
+                    }
+
+                    echo '<div>';
+                    echo '<span class="pointer" onclick="showReplyForm(' . $comment['comment_id'] . ')">ตอบกลับ</span>';
+                    echo '</div>';
+
+                    echo '<div id="reply-form-' . $comment['comment_id'] . '" style="display:none; margin-top:10px;">';
+                    echo '<form method="POST" action="">';
+                    echo '<input type="text" class="form-control" hidden value="' . htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) . '" id="user_name_' . $comment['comment_id'] . '" name="user_name" required>';
+                    echo '<div class="d-flex gap-2" style="width: 520px;">';
+                    echo '<div class="mb-3">';
+                    echo '<textarea class="form-control" style="width: 420px; height: 45px;" id="comment_text_' . $comment['comment_id'] . '" name="comment_text" rows="3" required></textarea>';
+                    echo '</div>';
+                    echo '<div class="mb-3 d-flex align-items-center">';
+                    echo '<button name="submit_comment">';
+                    echo '<div class="svg-wrapper-1">';
+                    echo '<div class="svg-wrapper">';
+                    echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">';
+                    echo '<path fill="none" d="M0 0h24v24H0z"></path>';
+                    echo '<path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>';
+                    echo '</svg>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '<span>Send</span>';
+                    echo '</button>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '<input type="hidden" name="parent_comment_id" value="' . $comment['comment_id'] . '">';
+                    echo '</form>';
+                    echo '</div>';
+                    echo '</div>';
+
+                    $replies = fetchReplies($comment['comment_id'], $conn);
+                    if (!empty($replies)) {
+                        echo '<div style="margin-left: 30px;">';
+                        displayComments($replies, $conn, $user);
+                        echo '</div>';
+                    }
+
+                    echo '</div>';
+                }
+            }
             ?>
+
 
         </div>
         <div class="col-5 row align-items-center">
@@ -338,7 +366,17 @@ if (isset($_SESSION['user_login'])) {
     </div>
 
     <div class="d-flex justify-content-center gap-3 mt-5 px-5 mx-5">
-
+        <?php
+        // Assuming $row is already fetched from the previous query
+        // RAND() อันนี้คือแบบสุ่ม // datasave คือเรียงจากใหม่สุด
+        // $sql = "SELECT * FROM posts ORDER BY RAND() DESC LIMIT 4";
+        $sql = "SELECT * FROM posts WHERE type_id = :type_id AND posts_id != :posts_id ORDER BY datasave DESC LIMIT 4";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':type_id', $row->type_id, PDO::PARAM_INT);
+        $stmt->bindParam(':posts_id', $row->posts_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $posts_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
         <?php foreach ($posts_data as $post) { ?>
 
             <div class="card col-3 ">
