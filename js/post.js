@@ -25,3 +25,22 @@ function showImageModal(imageUrl) {
     var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
     imageModal.show();
 }
+
+
+function showEditForm(commentId) {
+    var editForm = document.getElementById('edit-comment-' + commentId);
+    if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+    } else {
+        editForm.style.display = "none";
+    }
+}
+
+function showReplyForm(commentId) {
+    var replyForm = document.getElementById('reply-form-' + commentId);
+    if (replyForm.style.display === "none") {
+        replyForm.style.display = "block";
+    } else {
+        replyForm.style.display = "none";
+    }
+}

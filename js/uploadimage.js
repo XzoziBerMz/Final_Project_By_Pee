@@ -1,5 +1,4 @@
 function readURL(input) {
-  console.log("🚀 ~ readURL ~ input:", input.files)
   if (input.files && input.files[0]) {
     var reader;
     for (var i = 0; i < input.files.length; i++) {
