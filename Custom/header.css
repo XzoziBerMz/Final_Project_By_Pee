@@ -37,3 +37,8 @@
       display: block;
     }
   
+    /* navbar */
+    .navbar-head{
+      position: sticky;
+      top: 0;
+    }

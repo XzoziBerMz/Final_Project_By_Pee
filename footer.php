@@ -38,7 +38,7 @@ if (isset($_SESSION['user_login'])) {
 
 <body>
 
-    <nav
+    <div
         style=" box-shadow: 0 -10px 10px 0 rgba(0, 0, 0, 0.15), 0 -3px 10px 0 rgba(0, 0, 0, 0.15); margin-top: 60px; z-index: 1;">
         <footer class="footer">
             <div class="container">
@@ -88,7 +88,7 @@ if (isset($_SESSION['user_login'])) {
                 </div>
             </div>
         </footer>
-    </nav>
+    </div>
 
 
 </body>

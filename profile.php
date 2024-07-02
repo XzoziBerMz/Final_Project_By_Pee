@@ -105,6 +105,15 @@ function formatDate($date)
                         <a href="profile.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>" class="category-item">
                             <?php echo $row["type_name"]; ?></a>
                     <?php } ?>
+
+                    <!-- ปุ่มตามหา-ประกาศขาย -->
+                    <div class="div-btn" style="margin-left: 15%;">
+                        <a href="category_Sell-find_products.php" class="btn btn-post">
+                            <i class="fa-solid fa-circle fa-flip-vertical fa-2xs blink-2" style="color: #ffffff;"></i>
+                            ตามหา / ขายสินค้า
+                        </a>
+                    </div>
+
                 </div>
                 <hr class="hr-catagory">
             </div>

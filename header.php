@@ -45,7 +45,7 @@ if (isset($_SESSION['user_login'])) {
 
 <body>
   <!-- Navbar5 -->
-  <nav class="navbar navbar-expand-lg navbar-dark container-fluid"
+  <nav class="navbar-head navbar-expand-lg navbar-dark container-fluid"
     style=" background-color: #2C3539; height:fit-content;   box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.40), 0 6px 19px 0 rgba(0, 0, 0, 0.20); z-index: 1;">
 
     <div class=" navbar-collapse ">
@@ -53,150 +53,39 @@ if (isset($_SESSION['user_login'])) {
       <a href="index.php" style="margin-left: 3%; margin-right: 10px;"> <img src="image/logo.png" alt=""
           style=" margin-right: 10px;" width="35px" height="35px"></a>
 
-      <!-- หมวดหมู่1 -->
       <?php
-      $type1 = "SELECT * FROM types  
-    WHERE types.type_id=1";
-      $stmt = $conn->prepare($type1);
+      // เรียกข้อมูลประเภททั้งหมด
+      $types_query = "SELECT * FROM types";
+      $stmt = $conn->prepare($types_query);
       $stmt->execute();
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $types = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      foreach ($types as $type) {
+        $type_id = $type['type_id'];
+        $type_name = $type['type_name'];
+
+        echo '<li class="dropdown">';
+        echo '<a href="allcategory.php?act=showbytype&type_id=' . $type_id . '">' . $type_name . '</a>';
+        echo '<div class="dropdown-content">';
+
+        // เรียกข้อมูลประเภทย่อยของประเภทนั้น ๆ
+        $sub_type_query = "SELECT * FROM sub_type WHERE type_id = :type_id ORDER BY sub_type_id ASC";
+        $stmt_sub_type = $conn->prepare($sub_type_query);
+        $stmt_sub_type->bindParam(':type_id', $type_id, PDO::PARAM_INT);
+        $stmt_sub_type->execute();
+        $sub_types = $stmt_sub_type->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($sub_types as $sub_type) {
+          $sub_type_id = $sub_type['sub_type_id'];
+          $sub_type_name = $sub_type['sub_type_name'];
+
+          echo '<a class="dropdown-item" href="allcategory.php?act=showbytype&type_id=' . $type_id . '&sub_type_id=' . $sub_type_id . '">' . $sub_type_name . '</a>';
+        }
+
+        echo '</div>';
+        echo '</li>';
+      }
       ?>
-
-      <?php foreach ($result as $row) { ?>
-
-        <li class="dropdown">
-          <a href="book.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>"> <?php echo $row["type_name"]; ?></a>
-          <div class="dropdown-content">
-            <?php
-            $sub_type_query = "SELECT * FROM sub_type WHERE type_id = 1  ORDER BY sub_type_id ASC";
-            $stmt_sub_type = $conn->prepare($sub_type_query);
-            $stmt_sub_type->execute();
-            $result_sub_type = $stmt_sub_type->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($result_sub_type as $row_sub_type) {
-
-              echo '<a class="dropdown-item" href="book.php?act=showbytype&type_id=1&sub_type_id=' . $row_sub_type['sub_type_id'] . '">' . $row_sub_type['sub_type_name'] . '</a>';
-
-            }
-            ?>
-          </div>
-        </li>
-      <?php } ?>
-
-      <!-- หมวดหมู่2 -->
-      <?php
-      $type2 = "SELECT * FROM types WHERE type_id=2";
-      $stmt = $conn->prepare($type2);
-      $stmt->execute();
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      ?>
-
-      <?php foreach ($result as $row) { ?>
-        <li class="dropdown">
-          <a href="electronic_quipment.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>">
-            <?php echo $row["type_name"]; ?></a>
-          <div class="dropdown-content">
-            <?php
-            $sub_type_query = "SELECT * FROM sub_type WHERE type_id = 2  ORDER BY sub_type_id ASC";
-            $stmt_sub_type = $conn->prepare($sub_type_query);
-            $stmt_sub_type->execute();
-            $result_sub_type = $stmt_sub_type->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($result_sub_type as $row_sub_type) {
-
-              echo '<a class="dropdown-item" href="electronic_quipment.php?act=showbytype&type_id=2&sub_type_id=' . $row_sub_type['sub_type_id'] . '">' . $row_sub_type['sub_type_name'] . '</a>';
-
-            }
-            ?>
-          </div>
-        </li>
-      <?php } ?>
-
-      <!-- หมวดหมู่3 -->
-      <?php
-      $type3 = "SELECT * FROM types WHERE type_id=3";
-      $stmt = $conn->prepare($type3);
-      $stmt->execute();
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      ?>
-
-      <?php foreach ($result as $row) { ?>
-        <li class="dropdown">
-          <a href="clothes.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>">
-            <?php echo $row["type_name"]; ?></a>
-          <div class="dropdown-content">
-            <?php
-            $sub_type_query = "SELECT * FROM sub_type WHERE type_id = 3  ORDER BY sub_type_id ASC";
-            $stmt_sub_type = $conn->prepare($sub_type_query);
-            $stmt_sub_type->execute();
-            $result_sub_type = $stmt_sub_type->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($result_sub_type as $row_sub_type) {
-
-              echo '<a class="dropdown-item" href="clothes.php?act=showbytype&type_id=3&sub_type_id=' . $row_sub_type['sub_type_id'] . '">' . $row_sub_type['sub_type_name'] . '</a>';
-
-            }
-            ?>
-          </div>
-        </li>
-      <?php } ?>
-
-      <!-- หมวดหมู่4 -->
-      <?php
-      $type4 = "SELECT * FROM types WHERE type_id=4";
-      $stmt = $conn->prepare($type4);
-      $stmt->execute();
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      ?>
-
-      <?php foreach ($result as $row) { ?>
-        <li class="dropdown">
-          <a href="shoe.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>"> <?php echo $row["type_name"]; ?></a>
-          <div class="dropdown-content">
-            <?php
-            $sub_type_query = "SELECT * FROM sub_type WHERE type_id = 4  ORDER BY sub_type_id ASC";
-            $stmt_sub_type = $conn->prepare($sub_type_query);
-            $stmt_sub_type->execute();
-            $result_sub_type = $stmt_sub_type->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($result_sub_type as $row_sub_type) {
-
-              echo '<a class="dropdown-item" href="shoe.php?act=showbytype&type_id=4&sub_type_id=' . $row_sub_type['sub_type_id'] . '">' . $row_sub_type['sub_type_name'] . '</a>';
-
-            }
-            ?>
-          </div>
-        </li>
-      <?php } ?>
-
-      <!-- หมวดหมู่5 -->
-      <?php
-      $type5 = "SELECT * FROM types WHERE type_id=5";
-      $stmt = $conn->prepare($type5);
-      $stmt->execute();
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      ?>
-
-      <?php foreach ($result as $row) { ?>
-        <li class="dropdown">
-          <a href="vehicle.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>">
-            <?php echo $row["type_name"]; ?></a>
-          <div class="dropdown-content">
-            <?php
-            $sub_type_query = "SELECT * FROM sub_type WHERE type_id = 5  ORDER BY sub_type_id ASC";
-            $stmt_sub_type = $conn->prepare($sub_type_query);
-            $stmt_sub_type->execute();
-            $result_sub_type = $stmt_sub_type->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($result_sub_type as $row_sub_type) {
-
-              echo '<a class="dropdown-item" href="vehicle.php?act=showbytype&type_id=5&sub_type_id=' . $row_sub_type['sub_type_id'] . '">' . $row_sub_type['sub_type_name'] . '</a>';
-
-            }
-            ?>
-          </div>
-        </li>
-      <?php } ?>
 
       <!-- ปุ่มย่อจอ -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"

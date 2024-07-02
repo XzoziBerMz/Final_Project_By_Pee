@@ -56,60 +56,66 @@ if (isset($_SESSION['admin_login'])) {
     <div class="row">
       <div class="col-sm-3">
         <div class="card">
-          <i class="fa fa-users  mb-2" style="font-size: 70px;"></i>
-          <h4 style="color:white;">Total Users</h4>
-          <h5 style="color:white;">
-            <?php
-            $sql = "SELECT * FROM users WHERE urole='user'";
-            $result = $conn->query($sql);
-            $count = $result->rowCount();
-            if ($result > 0) {
-              while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $count = $count + 1;
+          <a href="#customers" style="text-decoration:none" onclick="showCustomers()">
+            <i class="fa fa-users  mb-2" style="font-size: 70px; color: black;"></i>
+            <h4 style="color:white;">Total Users</h4>
+            <h5 style="color:white;">
+              <?php
+              $sql = "SELECT * FROM users WHERE urole='user'";
+              $result = $conn->query($sql);
+              $count = $result->rowCount();
+              if ($result > 0) {
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                  $count = $count + 1;
+                }
               }
-            }
-            echo $count;
-            ?>
-          </h5>
+              echo $count;
+              ?>
+            </h5>
+          </a>
         </div>
       </div>
       <div class="col-sm-3">
         <div class="card">
-          <i class="fa fa-th-large mb-2" style="font-size: 70px;"></i>
-          <h4 style="color:white;">Total Post</h4>
-          <h5 style="color:white;">
-            <?php
-            $sql = "SELECT * from posts";
-            $result = $conn->query($sql);
-            $count = $result->rowCount();
-            if ($result > 0) {
-              while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $count = $count + 1;
+          <a href="#products" style="text-decoration:none" onclick="showAllPost()">
+            <i class="fa fa-th-large mb-2" style="font-size: 70px; color: black;"></i>
+            <h4 style="color:white;">Total Post</h4>
+            <h5 style="color:white;">
+              <?php
+              $sql = "SELECT * from posts";
+              $result = $conn->query($sql);
+              $count = $result->rowCount();
+              if ($result > 0) {
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                  $count = $count + 1;
+                }
               }
-            }
-            echo $count;
-            ?>
-          </h5>
+              echo $count;
+              ?>
+            </h5>
         </div>
+        </a>
       </div>
       <div class="col-sm-3">
         <div class="card">
-          <i class="fa fa-th mb-2" style="font-size: 70px;"></i>
-          <h4 style="color:white;">Total Category</h4>
-          <h5 style="color:white;">
-            <?php
-            $sql = "SELECT * from types";
-            $result = $conn->query($sql);
-            $count = $result->rowCount();
-            if ($result > 0) {
-              while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $count = $count + 1;
+          <a href="#category" style="text-decoration:none" onclick="showCategory()">
+            <i class="fa fa-th mb-2" style="font-size: 70px; color: black;"></i>
+            <h4 style="color:white;">Total Category</h4>
+            <h5 style="color:white;">
+              <?php
+              $sql = "SELECT * from types";
+              $result = $conn->query($sql);
+              $count = $result->rowCount();
+              if ($result > 0) {
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                  $count = $count + 1;
+                }
               }
-            }
-            echo $count;
-            ?>
-          </h5>
+              echo $count;
+              ?>
+            </h5>
         </div>
+        </a>
       </div>
       <div class="col-sm-3">
         <div class="card">
@@ -132,24 +138,6 @@ if (isset($_SESSION['admin_login'])) {
       </div>
     </div>
   </div>
-
-  <?php
-  if (isset($_GET['category']) && $_GET['category'] == "success") {
-    echo '<script> alert("Category Successfully Added")</script>';
-  } else if (isset($_GET['category']) && $_GET['category'] == "error") {
-    echo '<script> alert("Adding Unsuccess")</script>';
-  }
-  if (isset($_GET['size']) && $_GET['size'] == "success") {
-    echo '<script> alert("Size Successfully Added")</script>';
-  } else if (isset($_GET['size']) && $_GET['size'] == "error") {
-    echo '<script> alert("Adding Unsuccess")</script>';
-  }
-  if (isset($_GET['variation']) && $_GET['variation'] == "success") {
-    echo '<script> alert("Variation Successfully Added")</script>';
-  } else if (isset($_GET['variation']) && $_GET['variation'] == "error") {
-    echo '<script> alert("Adding Unsuccess")</script>';
-  }
-  ?>
 
   <script type="text/javascript" src="./assets/js/ajax_sc.js"></script>
   <script type="text/javascript" src="./assets/js/script.js"></script>

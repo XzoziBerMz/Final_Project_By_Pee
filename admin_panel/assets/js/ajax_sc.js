@@ -42,49 +42,28 @@ function showCustomers(){
     });
 }
 
- //add product data
-// function addItems(){
-//     var p_name=$('#p_name').val();
-//     var p_price=$('#p_price').val();
-//     var p_desc=$('#p_desc').val();
-//     var category=$('#category').val();
-//     var subcategory=$('#subcategory').val();
-//     var file=$('#file')[0].files[0];
-//     var upload=$('#upload').val();
-
-//     var fd = new FormData();
-//     fd.append('p_name', p_name);
-//     fd.append('p_price', p_price);
-//     fd.append('p_desc', p_desc);
-//     fd.append('category', category);
-//     fd.append('subcategory', subcategory);
-//     fd.append('file', file);
-//     fd.append('upload', upload);
+//edit product data
+// function PostEditForm(id){
 //     $.ajax({
-//         url:"./controller/addPostController.php",
+//         url:"./adminView/editPostForm.php",
 //         method:"post",
-//         data:fd,
-//         processData: false,
-//         contentType: false,
-//         success: function(data){
-//             alert('เพิ่มประกาศใหม่เรียบร้อยแล้ว');
-//             $('form').trigger('reset');
-//             showProductItems();
+//         data:{record:id},
+//         success:function(data){
+//             $('.allContent-section').html(data);
 //         }
 //     });
 // }
 
-//edit product data
-function PostEditForm(id){
-    $.ajax({
-        url:"./adminView/editPostForm.php",
-        method:"post",
-        data:{record:id},
-        success:function(data){
-            $('.allContent-section').html(data);
-        }
-    });
-}
+// function userEditForm(id){
+//     $.ajax({
+//         url:"./adminView/editUserForm.php",
+//         method:"post",
+//         data:{record:id},
+//         success:function(data){
+//             $('.allContent-section').html(data);
+//         }
+//     });
+// }
 
 //update post after submit
 function updatePost() {
@@ -92,6 +71,7 @@ function updatePost() {
     formData.append('posts_id', document.getElementById('posts_id').value);
     formData.append('p_name', document.getElementById('p_name').value);
     formData.append('p_desc', document.getElementById('p_desc').value);
+    formData.append('phone_number', document.getElementById('phone_number').value);
 
     var priceType = document.getElementById('p_price').value;
     formData.append('p_price', priceType);
@@ -144,13 +124,14 @@ function postDelete(id){
     });
 }
 
-function eachDetailsForm(id){
+function userDelete(id){
     $.ajax({
-        url:"./view/viewEachDetails.php",
+        url:"./controller/deleteUserController.php",
         method:"post",
         data:{record:id},
         success:function(data){
-            $('.allContent-section').html(data);
+            $('form').trigger('reset');
+            showCustomers();
         }
     });
 }

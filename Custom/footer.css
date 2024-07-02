@@ -1,14 +1,14 @@
-/* Sticky footer position and size
--------------------------------------------------- */
+
 html {
   position: relative;
   min-height: 100%;
 }
 .footer {
+ /* position: fixed; */
   bottom: 0;
   width: 100%;
-  /* Set the fixed height of the footer here */
   height: 300px;
+  display: block;
 }
 
 /* Taller footer on small screens */

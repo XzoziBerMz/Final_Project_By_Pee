@@ -7,15 +7,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $desc = $_POST['p_desc'];
   $category = $_POST['category'];
   $subcategory = $_POST['Subcategory'];
-  $priceType = $_POST['p_price'];
-  $price = '';
+  $phone_number = $_POST['phone_number'];
+
+  $target_dir = "../../image/";
+  $totalFiles = count($_FILES['photo_file']['name']);
+  $uploadOk = 1;
+  $filesArray = array();
 
   if ($priceType === "ราคาคงที่") {
     $price = $_POST['fixedPrice'];
   } elseif ($priceType === "ต่อรองได้") {
     $price = $_POST['negotiablePrice'];
   } else {
-    $price = 'ฟรี';
+    $price = '0';
   }
 
   // ตรวจสอบว่ามีการอัปโหลดไฟล์ใหม่หรือไม่
@@ -60,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   try {
-    $stmt = $conn->prepare("UPDATE posts SET product_name = :p_name, Product_detail = :p_desc, type_id = :category, sub_type_id = :subcategory, Product_img = :p_image, product_price = :p_price WHERE posts_id = :posts_id");
+    $stmt = $conn->prepare("UPDATE posts SET product_name = :p_name, Product_detail = :p_desc, type_id = :category, sub_type_id = :subcategory, Product_img = :p_image, product_price = :p_price ,phone_number = :phone_number WHERE posts_id = :posts_id");
 
     $stmt->bindParam(':p_name', $ProductName, PDO::PARAM_STR);
     $stmt->bindParam(':p_desc', $desc, PDO::PARAM_STR);
@@ -68,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindParam(':subcategory', $subcategory, PDO::PARAM_INT);
     $stmt->bindParam(':p_image', $image, PDO::PARAM_STR);
     $stmt->bindParam(':p_price', $price, PDO::PARAM_STR);
+    $stmt->bindParam(':phone_number', $phone_number, PDO::PARAM_INT);
     $stmt->bindParam(':posts_id', $posts_id, PDO::PARAM_INT);
 
     if ($stmt->execute()) {

@@ -1,20 +1,25 @@
 <?php
-include_once "../config/dbconnect.php";
+include_once "../config/dbconnect.php"; // เชื่อมต่อฐานข้อมูล
 
-if (isset($_POST['upload'])) {
+if (isset($_POST['upload'])) { // ตรวจสอบว่ามีการส่งข้อมูลแบบ POST มาหรือไม่
+    $user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : (isset($_SESSION['admin_login']) ? $_SESSION['admin_login'] : null);
+
+    // กำหนดค่าต่างๆที่รับมาจากฟอร์ม
     $ProductName = $_POST['p_name'];
     $desc = $_POST['p_desc'];
     $category = $_POST['category'];
     $subcategory = $_POST['subcategory'];
-    $priceType = $_POST['price'];
+    $priceType = $_POST['p_price'];
     $price_type = $_POST['price_type'];
+    $phone_number = $_POST['phone_number'];
     $price = '';
-    $image = $_FILES['file']['name'];
-    $target_dir = "../../image/";
-    $target_file = $target_dir . basename($image);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
+    $target_dir = "../../image/";
+    $totalFiles = count($_FILES['photo_file']['name']);
+    $uploadOk = 1;
+    $filesArray = array();
+
+    // กำหนดค่าราคาตามประเภท
     if ($priceType === "ราคาคงที่") {
         $price = $_POST['fixedPrice'];
     } elseif ($priceType === "ต่อรองได้") {
@@ -23,98 +28,93 @@ if (isset($_POST['upload'])) {
         $price = '0';
     }
 
-    // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นภาพจริงหรือไม่
-    if (isset($_POST["submit"])) {
-        $check = getimagesize($_FILES["file"]["tmp_name"]);
-        if ($check !== false) {
-            $uploadOk = 1;
-        } else {
+    // ตรวจสอบและอัปโหลดแต่ละไฟล์ภาพ
+    for ($i = 0; $i < $totalFiles; $i++) {
+        $imageName = $_FILES["photo_file"]["name"][$i];
+        $tmpName = $_FILES["photo_file"]["tmp_name"][$i];
+
+        // ตรวจสอบไฟล์ว่าเป็นภาพหรือไม่
+        $check = getimagesize($tmpName);
+        if ($check === false) {
             echo "<script>
-                    alert('ไฟล์นี้ไม่ใช่ภาพ');
-                    window.location.href = '../index.php';
-                  </script>";
-            $uploadOk = 0;
-        }
-    }
-
-    // เพิ่มตัวเลขไปข้างหลังชื่อไฟล์หากชื่อซ้ำกัน
-    $originalFileName = $image;
-    $i = 1;
-    while (file_exists($target_dir . $image)) {
-        $image = pathinfo($originalFileName, PATHINFO_FILENAME) . '_' . $i . '.' . $imageFileType;
-        $i++;
-    }
-    $target_file = $target_dir . $image;
-
-    // ตรวจสอบขนาดของไฟล์
-    if ($_FILES["file"]["size"] > 1000000) { // จำกัดขนาดไฟล์ที่ 10 mb
-        echo "<script>
-                alert('ขออภัย ไฟล์ของคุณมีขนาดใหญ่เกินไป');
+                alert('ไฟล์ {$imageName} ไม่ใช่ภาพ');
                 window.location.href = '../index.php';
               </script>";
-        $uploadOk = 0;
-    }
+            exit();
+        }
 
-    // อนุญาตเฉพาะไฟล์รูปภาพบางประเภท
-    if (
-        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif"
-    ) {
-        echo "<script>
+        // ตรวจสอบขนาดไฟล์
+        $fileSize = $_FILES["photo_file"]["size"][$i];
+        if ($fileSize > 20000000) { // 20MB
+            echo "<script>
+                alert('ขออภัย ไฟล์ {$imageName} มีขนาดใหญ่เกิน 20MB');
+                window.location.href = '../index.php';
+              </script>";
+            exit();
+        }
+
+        // อนุญาตเฉพาะประเภทของไฟล์ภาพที่อนุญาต
+        $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'JPG', 'PNG', 'jfif');
+        $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
+        if (!in_array($imageExtension, $allowTypes)) {
+            echo "<script>
                 alert('ขออภัย อนุญาตเฉพาะไฟล์ JPG, JPEG, PNG และ GIF เท่านั้น');
                 window.location.href = '../index.php';
               </script>";
-        $uploadOk = 0;
-    }
+            exit();
+        }
 
-    // ตรวจสอบว่า $uploadOk ถูกตั้งค่าเป็น 0 โดยข้อผิดพลาดหรือไม่
-    if ($uploadOk == 0) {
-        echo "<script>
-                alert('ขออภัย ไฟล์ของคุณไม่ได้ถูกอัปโหลด');
-                window.location.href = '../index.php';
-              </script>";
-        // ถ้าทุกอย่างถูกต้อง พยายามอัปโหลดไฟล์
-    } else {
-        if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-            try {
-                // เตรียมคำสั่ง SQL
-                $stmt = $conn->prepare("INSERT INTO posts (product_name, Product_detail, type_id, sub_type_id, Product_img, type_buy_or_sell, product_price_type, product_price) 
-                                        VALUES (:p_name, :p_desc, :category, :subcategory, :p_image, :price_type, :priceType, :price)");
+        // ตั้งชื่อใหม่ให้ไฟล์ภาพถ้ามีชื่อเดิม
+        $newImageName = uniqid() . '.' . $imageExtension;
+        $target_file = $target_dir . $newImageName;
 
-                // ผูกค่าพารามิเตอร์
-                $stmt->bindParam(':p_name', $ProductName, PDO::PARAM_STR);
-                $stmt->bindParam(':p_desc', $desc, PDO::PARAM_STR);
-                $stmt->bindParam(':category', $category, PDO::PARAM_INT);
-                $stmt->bindParam(':subcategory', $subcategory, PDO::PARAM_INT);
-                $stmt->bindParam(':p_image', $image, PDO::PARAM_STR);
-                $stmt->bindParam(':priceType', $priceType, PDO::PARAM_STR);
-                $stmt->bindParam(':price_type', $price_type, PDO::PARAM_STR);
-                $stmt->bindParam(':price', $price, PDO::PARAM_STR);
-
-                // ดำเนินการ statement
-                if ($stmt->execute()) {
-                    echo "<script>
-                            alert('เพิ่มข้อมูลโพสต์สำเร็จ');
-                            window.location.href = '../index.php';
-                          </script>";
-                } else {
-                    echo "<script>
-                            alert('ไม่สามารถเพิ่มข้อมูลโพสต์ได้');
-                            window.location.href = '../index.php';
-                          </script>";
-                }
-            } catch (PDOException $e) {
-                echo "<script>
-                        alert('Error: " . $e->getMessage() . "');
-                        window.location.href = '../index.php';
-                      </script>";
-            }
+        // อัปโหลดไฟล์ภาพ
+        if (move_uploaded_file($tmpName, $target_file)) {
+            $filesArray[] = $newImageName;
         } else {
             echo "<script>
-                    alert('ขออภัย มีข้อผิดพลาดในการอัปโหลดไฟล์ของคุณ');
+                alert('เกิดข้อผิดพลาดในการอัปโหลดไฟล์ {$imageName}');
+                window.location.href = '../index.php';
+              </script>";
+            exit();
+        }
+    }
+
+    // เชื่อมต่อฐานข้อมูลและบันทึกข้อมูลลงในตาราง posts
+    try {
+        $filesArrayJson = json_encode($filesArray);
+        $stmt = $conn->prepare("INSERT INTO posts (product_name, Product_detail, type_id, sub_type_id, Product_img, type_buy_or_sell, product_price_type, product_price, phone_number, user_id) 
+                                VALUES (:p_name, :p_desc, :category, :subcategory, :p_image, :price_type, :priceType, :price, :phone_number, :user_id)");
+        $stmt->bindParam(':p_name', $ProductName, PDO::PARAM_STR);
+        $stmt->bindParam(':p_desc', $desc, PDO::PARAM_STR);
+        $stmt->bindParam(':category', $category, PDO::PARAM_INT);
+        $stmt->bindParam(':subcategory', $subcategory, PDO::PARAM_INT);
+        $stmt->bindParam(':p_image', $filesArrayJson, PDO::PARAM_STR);
+        $stmt->bindParam(':priceType', $priceType, PDO::PARAM_STR);
+        $stmt->bindParam(':price_type', $price_type, PDO::PARAM_STR);
+        $stmt->bindParam(':price', $price, PDO::PARAM_STR);
+        $stmt->bindParam(':phone_number', $phone_number, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+
+        // ประมวลผลและเช็คการทำงานของคำสั่ง SQL
+        if ($stmt->execute()) {
+            echo "<script>
+                    alert('เพิ่มข้อมูลโพสต์สำเร็จ');
                     window.location.href = '../index.php';
                   </script>";
+            exit();
+        } else {
+            echo "<script>
+                    alert('ไม่สามารถเพิ่มข้อมูลโพสต์ได้');
+                    window.location.href = '../index.php';
+                  </script>";
+            exit();
         }
+    } catch (PDOException $e) {
+        echo "<script>
+                alert('Error: " . $e->getMessage() . "');
+                window.location.href = '../index.php';
+              </script>";
     }
 }
 ?>

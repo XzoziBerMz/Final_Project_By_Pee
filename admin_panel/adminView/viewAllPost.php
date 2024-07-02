@@ -81,9 +81,9 @@
               }
               ?>
             <td>
-              <button class="btn btn-warning" style="height:40px"
-                onclick="PostEditForm('<?= $row['posts_id'] ?>')">Edit</button>
-              <button class="btn btn-danger" style="height:40px; float: right;"
+              <!-- <button class="btn btn-warning" style="height:40px"
+                onclick="PostEditForm('<?= $row['posts_id'] ?>')">Edit</button> -->
+              <button class="btn btn-danger" style="height:40px;"
                 onclick="postDelete('<?= $row['posts_id'] ?>')">Delete</button>
             </td>
 
