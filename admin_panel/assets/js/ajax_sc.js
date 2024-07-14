@@ -20,9 +20,21 @@ function showCategory(){
     });
 }
 
-function showSubCategory(){  
+function showSubCategory(type_id) {
     $.ajax({
-        url:"./adminView/viewSubCategory.php",
+        url: "./adminView/viewSubCategory.php",
+        method: "post",
+        data: { type_id: type_id },
+        success: function(data) {
+            $('.allContent-section').html(data);
+        }
+    });
+}
+
+
+function showCustomers(){
+    $.ajax({
+        url:"./adminView/viewCustomers.php",
         method:"post",
         data:{record:1},
         success:function(data){
@@ -30,10 +42,9 @@ function showSubCategory(){
         }
     });
 }
-
-function showCustomers(){
+function showAllComments(){
     $.ajax({
-        url:"./adminView/viewCustomers.php",
+        url:"./adminView/viewComments.php",
         method:"post",
         data:{record:1},
         success:function(data){
@@ -66,49 +77,49 @@ function showCustomers(){
 // }
 
 //update post after submit
-function updatePost() {
-    var formData = new FormData();
-    formData.append('posts_id', document.getElementById('posts_id').value);
-    formData.append('p_name', document.getElementById('p_name').value);
-    formData.append('p_desc', document.getElementById('p_desc').value);
-    formData.append('phone_number', document.getElementById('phone_number').value);
+// function updatePost() {
+//     var formData = new FormData();
+//     formData.append('posts_id', document.getElementById('posts_id').value);
+//     formData.append('p_name', document.getElementById('p_name').value);
+//     formData.append('p_desc', document.getElementById('p_desc').value);
+//     formData.append('phone_number', document.getElementById('phone_number').value);
 
-    var priceType = document.getElementById('p_price').value;
-    formData.append('p_price', priceType);
+//     var priceType = document.getElementById('p_price').value;
+//     formData.append('p_price', priceType);
     
-    if (priceType === 'ราคาคงที่') {
-        formData.append('fixedPrice', document.getElementById('fixedPrice').value);
-    } else if (priceType === 'ต่อรองได้') {
-        formData.append('negotiablePrice', document.getElementById('negotiablePrice').value);
-    } else if (priceType === 'ฟรี') {
-        formData.append('freePrice', document.getElementById('freePrice').value);
-    }
+//     if (priceType === 'ราคาคงที่') {
+//         formData.append('fixedPrice', document.getElementById('fixedPrice').value);
+//     } else if (priceType === 'ต่อรองได้') {
+//         formData.append('negotiablePrice', document.getElementById('negotiablePrice').value);
+//     } else if (priceType === 'ฟรี') {
+//         formData.append('freePrice', document.getElementById('freePrice').value);
+//     }
     
-    formData.append('category', document.getElementById('category').value);
-    formData.append('Subcategory', document.getElementById('Subcategory').value);
+//     formData.append('category', document.getElementById('category').value);
+//     formData.append('Subcategory', document.getElementById('Subcategory').value);
 
-    var newImage = document.getElementById('newImage').files[0];
-    if (newImage) {
-        formData.append('newImage', newImage);
-    } else {
-        formData.append('existingImage', document.getElementById('existingImage').value);
-    }
+//     var newImage = document.getElementById('newImage').files[0];
+//     if (newImage) {
+//         formData.append('newImage', newImage);
+//     } else {
+//         formData.append('existingImage', document.getElementById('existingImage').value);
+//     }
 
-    $.ajax({
-        url: './controller/updatePostController.php',
-        method: 'post',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            alert('Post Update Success.');
-            $('form').trigger('reset');
-            showAllPost();
-        },
-    });
+//     $.ajax({
+//         url: './controller/updatePostController.php',
+//         method: 'post',
+//         data: formData,
+//         processData: false,
+//         contentType: false,
+//         success: function(data) {
+//             alert('Post Update Success.');
+//             $('form').trigger('reset');
+//             showAllPost();
+//         },
+//     });
 
-    return false; // Prevent default form submission
-}
+//     return false; // Prevent default form submission
+// }
 
 
 //delete post data
@@ -162,6 +173,19 @@ function SubcategoryDelete(id){
             alert('ลบข้อมูลหมวดหมู่ย่อยเรียบร้อยแล้ว');
             $('form').trigger('reset');
             showSubCategory();
+        }
+    });
+}
+//delete comments data
+function commentsDelete(id){
+    $.ajax({
+        url:"./controller/deleteCommentsController.php",
+        method:"post",
+        data:{record:id},
+        success:function(data){
+            alert('ลบข้อมูลการตอบกลับเรียบร้อยแล้ว');
+            $('form').trigger('reset');
+            showAllComments();
         }
     });
 }

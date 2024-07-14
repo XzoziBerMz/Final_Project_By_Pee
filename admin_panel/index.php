@@ -42,6 +42,8 @@ if (isset($_SESSION['admin_login'])) {
   <link rel="stylesheet" href="./assets/css/styles.css">
   <!-- datatable -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <!-- font awesome -->
+  <script src="https://kit.fontawesome.com/a94becc44e.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -53,7 +55,7 @@ if (isset($_SESSION['admin_login'])) {
   ?>
 
   <div id="main-content" class="container allContent-section py-4">
-    <div class="row">
+    <div class=" row">
       <div class="col-sm-3">
         <div class="card">
           <a href="#customers" style="text-decoration:none" onclick="showCustomers()">
@@ -117,24 +119,45 @@ if (isset($_SESSION['admin_login'])) {
         </div>
         </a>
       </div>
-      <div class="col-sm-3">
+      <!-- <div class="col-sm-3">
         <div class="card">
           <i class="fa fa-th-list mb-2" style="font-size: 70px;"></i>
           <h4 style="color:white;">Total SubCategory </h4>
           <h5 style="color:white;">
             <?php
-            $sql = "SELECT * from sub_type";
-            $result = $conn->query($sql);
-            $count = $result->rowCount();
-            if ($result > 0) {
-              while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $count = $count + 1;
-              }
-            }
-            echo $count;
+            // $sql = "SELECT * from sub_type";
+            // $result = $conn->query($sql);
+            // $count = $result->rowCount();
+            // if ($result > 0) {
+            //   while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            //     $count = $count + 1;
+            //   }
+            // }
+            // echo $count;
             ?>
           </h5>
         </div>
+      </div> -->
+      <div class="col-sm-3">
+        <div class="card">
+          <a href="#comments" style="text-decoration:none" onclick="showAllComments()">
+            <i class="fa-regular fa-comments" style="font-size: 70px; color: black;"></i>
+            <h4 style="color:white; margin-top: 10px;">Total Comments</h4>
+            <h5 style="color:white;">
+              <?php
+              $sql = "SELECT * from Comments";
+              $result = $conn->query($sql);
+              $count = $result->rowCount();
+              if ($result > 0) {
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                  $count = $count + 1;
+                }
+              }
+              echo $count;
+              ?>
+            </h5>
+        </div>
+        </a>
       </div>
     </div>
   </div>

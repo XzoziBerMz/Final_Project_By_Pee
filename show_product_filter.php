@@ -92,21 +92,24 @@ $_SESSION['filtered_products'] = $products;
                             </span>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-config fs-5">
-                                    <span href=""><?php echo $row_pro['product_name']; ?></span>
-                                </div>
-                                <div>
-                                    <?php
-                                    if ($row_pro['product_price_type'] === 'ต่อรองได้') {
-                                        echo '<p class="m-0">' . $row_pro['product_price_type'] . '</p class="m-0">';
-                                    }
-                                    ?>
+                                    <span href="">
+                                        <?php
+                                        $product_title = $row_pro['product_name'];
+                                        if (mb_strlen($product_title) > 35) {
+                                            $shortened_title = mb_substr($product_title, 0, 22) . '...';
+                                            echo $shortened_title;
+                                        } else {
+                                            echo $product_title;
+                                        }
+                                        ?>
+                                    </span>
                                 </div>
                             </div>
                             <p>
                                 <?php
                                 $product_detail = $row_pro['Product_detail'];
                                 if (mb_strlen($product_detail) > 40) {
-                                    $shortened_detail = mb_substr($product_detail, 0, 28) . '...';
+                                    $shortened_detail = mb_substr($product_detail, 0, 25) . '...';
                                     echo $shortened_detail;
                                 } else {
                                     echo $product_detail;

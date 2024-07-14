@@ -87,7 +87,17 @@ if (isset($_GET['type_id'])) {
             </span>
             <div class="d-flex justify-content-between align-items-center">
               <div class="text-config fs-5">
-                <span href=""><?php echo $row_pro['product_name']; ?></span>
+                <span href="">
+                  <?php
+                  $product_title = $row_pro['product_name'];
+                  if (mb_strlen($product_title) > 35) {
+                    $shortened_title = mb_substr($product_title, 0, 22) . '...';
+                    echo $shortened_title;
+                  } else {
+                    echo $product_title;
+                  }
+                  ?>
+                </span>
                 <!-- <h4></h4> -->
               </div>
               <div>

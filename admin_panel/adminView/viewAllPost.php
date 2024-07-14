@@ -1,6 +1,6 @@
 <div>
   <h2>All Post</h2>
-  <div style="margin-left: 5%; margin-right: -20%;">
+  <div style=" margin-right: -10%;">
     <table id="poststable" class="table">
       <thead>
         <tr>
@@ -50,7 +50,7 @@
             <td>
               <?php
               $product_title = $row['product_name'];
-              if (mb_strlen($product_title) > 40) {
+              if (mb_strlen($product_title) > 35) {
                 $shortened_title = mb_substr($product_title, 0, 13) . '...';
                 echo $shortened_title;
               } else {
@@ -84,7 +84,7 @@
               <!-- <button class="btn btn-warning" style="height:40px"
                 onclick="PostEditForm('<?= $row['posts_id'] ?>')">Edit</button> -->
               <button class="btn btn-danger" style="height:40px;"
-                onclick="postDelete('<?= $row['posts_id'] ?>')">Delete</button>
+                onclick="confirmDelete('<?= $row['posts_id'] ?>')">Delete</button>
             </td>
 
           </tr>
@@ -98,7 +98,7 @@
 
   <!-- Trigger the modal with a button -->
   <button type="button" class="btn btn-secondary"
-    style="height:50px; margin-top: 10px;margin-left: 5%;background-color: #009933; border: 0px;" data-bs-toggle="modal"
+    style="height:50px; margin-top: 10px;background-color: #009933; border: 0px;" data-bs-toggle="modal"
     data-bs-target="#myModal">Add Post</button>
 
   <!-- Modal -->
@@ -142,6 +142,11 @@
                 placeholder="กรุณาใส่ราคา">
               <input type="text" class="input-price" id="freePrice" name="freePrice" placeholder="ฟรี" disabled>
               <input type="hidden" id="hiddenFreePrice" name="hiddenFreePrice" value="ฟรี">
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+              <label for="phone_number">Phone Number:</label>
+              <input type="tel" class="form-control input-insert" name="phone_number" maxlength="10" id="phone_number"
+                oninput="validateInput(this)" required>
             </div>
             <div class="form-group" style="margin-top: 20px;">
               <label for="p_desc">Description:</label>
@@ -195,6 +200,8 @@
     </div>
   </div>
 
+  <!-- sweetalert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- สคริปการแสดงผลสำหรับ DataTable -->
   <script>
@@ -203,6 +210,7 @@
       preview.innerHTML = ''; // Clear the preview area
       const files = event.target.files;
 
+      //การโชว์รูป
       if (files) {
         Array.from(files).forEach((file, index) => {
           const reader = new FileReader();
@@ -300,4 +308,26 @@
       }
     });
 
+    // ส่วนของ input phone ตัวแปรนี้ทำให้ไม่สามารถใส่ข้อความได้ใส่ได้แค่ตัวเลขเท่านั้น
+    function validateInput(element) {
+      let value = element.value.replace(/\D/g, ''); // ลบอักขระที่ไม่ใช่ตัวเลข
+      element.value = value;
+    }
+
+    //sweet alert ทำการกดdeleteแล้วต้องถามก่อน
+    function confirmDelete(id) {
+      Swal.fire({
+        title: 'คุณแน่ใจหรือเปล่า?',
+        text: "คุณต้องการจะลบจริงๆใช่ไหม!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          postDelete(id);
+        }
+      });
+    }
   </script>

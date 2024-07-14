@@ -154,7 +154,7 @@ if (isset($_SESSION['user_login'])) {
                         </div>
                         <div class="position-absolute top-92 start-93 translate-middle contact">
                             <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal"
-                                data-bs-target="#phoneModal">โทรติดต่อ</button>
+                                data-bs-target="#phoneModal">เบอร์ติดต่อ</button>
                         </div>
                     </div>
                 </div>
@@ -365,6 +365,12 @@ if (isset($_SESSION['user_login'])) {
         </div>
     </div>
 
+
+    <!-- ส่วนประกาศที่คล้ายกัน
+    <div style="margin-left: 10%;">
+        <h6 class=" mt-5"> <b>ประกาศที่คุณอาจจะสนใจ</b></h6>
+    </div> -->
+
     <div class="d-flex justify-content-center gap-3 mt-5 px-5 mx-5">
         <?php
         // Assuming $row is already fetched from the previous query
@@ -393,8 +399,25 @@ if (isset($_SESSION['user_login'])) {
 
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title"><?php echo $post['product_name']; ?></h5>
-                    <p class="card-text"><?php echo $post['Product_detail']; ?></p>
+                    <h5 class="card-title"><?php
+                    $product_title = $post['product_name'];
+                    if (mb_strlen($product_title) > 40) {
+                        $shortened_title = mb_substr($product_title, 0, 13) . '...';
+                        echo $shortened_title;
+                    } else {
+                        echo $product_title;
+                    }
+                    ?></h5>
+                    <p class="card-text"><?php
+                    $product_detail = $post['Product_detail'];
+                    if (mb_strlen($product_detail) > 40) {
+                        $shortened_detail = mb_substr($product_detail, 0, 28) . '...';
+                        echo $shortened_detail;
+                    } else {
+                        echo $product_detail;
+                    }
+                    ?>
+                    </p>
 
 
                     <div class="d-flex justify-content-between">

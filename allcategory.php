@@ -12,7 +12,7 @@ require_once "header.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>หนังสือ</title>
+  <title>หมวดหมู่</title>
 
 
   <!-- Link to Font Awesome for icons -->
@@ -32,7 +32,27 @@ require_once "header.php";
       <img src="image/category.jpg" alt="*" class="img-banner">
       <!-- ข้อความด้านบนซ้าย -->
       <div class="top-left-text scale-up-hor-left ">
-        <p style="background-color: black;">หมวด หนังสือ</p>
+        <?php
+        // ตรวจสอบว่ามีการส่งค่า type_id ผ่าน URL ไหม
+        if (isset($_GET['type_id'])) {
+          $type_id = $_GET['type_id'];
+
+          // คำสั่ง SQL เพื่อดึงชื่อประเภท (type_name) จากฐานข้อมูล
+          $type_name_query = "SELECT type_name FROM types WHERE type_id = :type_id";
+          $stmt_type_name = $conn->prepare($type_name_query);
+          $stmt_type_name->bindParam(':type_id', $type_id, PDO::PARAM_INT);
+          $stmt_type_name->execute();
+          $type_name_result = $stmt_type_name->fetch(PDO::FETCH_ASSOC);
+
+          // ตรวจสอบว่าพบข้อมูลหรือไม่ก่อนแสดงผล
+          if ($type_name_result) {
+            $type_name = $type_name_result['type_name'];
+            echo '<p style="background-color: black;">หมวด ' . $type_name . '</p>';
+          } else {
+            echo '<p style="background-color: black;">ไม่มีหมวดหมู่ระบุ</p>';
+          }
+        }
+        ?>
       </div>
     </div>
 

@@ -1,7 +1,7 @@
 <div>
-  <h2 style="margin-bottom: 20px;">All Users</h2>
+  <h2 style="margin-bottom: 20px;margin-left: 5%;">All Users</h2>
 
-  <div style="margin-left: 15%;">
+  <div style="margin-left: 5%;">
     <table id="userTable" class="table">
       <thead>
         <tr>
@@ -33,7 +33,7 @@
             <td><?= $row["create_at"] ?></td>
 
             <td> <button class="btn btn-danger" style="height:40px;"
-                onclick="userDelete('<?= $row['user_id'] ?>')">Delete</button></td>
+                onclick="confirmDelete('<?= $row['user_id'] ?>')">Delete</button></td>
           </tr>
           <?php
           $count++; // เพิ่มขึ้นทีละ 1 สำหรับลำดับ ID
@@ -101,6 +101,9 @@
 
   </div>
 
+  <!-- sweetalert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <!-- สคริปการแสดงผลสำหรับ DataTable -->
   <script>
     $(document).ready(function () { //ใช้งาน DataTable เมื่อเว็บโหลดเสร็จ
@@ -108,4 +111,23 @@
       let table = new DataTable('#userTable'); //เลือกตารางข้อมูล และเปิดใช้งาน DataTable
 
     });
+
+
+
+    function confirmDelete(id) {
+      Swal.fire({
+        title: 'คุณแน่ใจหรือเปล่า?',
+        text: "คุณต้องการจะลบจริงๆใช่ไหม!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          userDelete(id);
+        }
+      });
+    }
+
   </script>

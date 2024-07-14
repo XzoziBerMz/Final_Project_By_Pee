@@ -104,7 +104,7 @@ if (isset($_SESSION['user_login'])) {
                 $user['firstname'] . ' ' . $user['lastname'] .
                 "</a>" .
                 "<ul class='dropdown-menu' aria-labelledby='navbarDropdown'>" .
-                "<li><a class='dropdown-item' href='profile.php'>ข้อมูลส่วนตัว</a></li>" .
+                "<li><a class='dropdown-item' href='profile.php'>รายการประกาศ</a></li>" .
                 "<li><a class='dropdown-item' href='signout.php'>ออกจากระบบ</a></li>" .
                 "</ul>" .
                 "</li>" .
@@ -116,7 +116,7 @@ if (isset($_SESSION['user_login'])) {
                 $admin['firstname'] . ' ' . $admin['lastname'] .
                 "</a>" .
                 "<ul class='dropdown-menu' aria-labelledby='navbarDropdown'>" .
-                "<li><a class='dropdown-item' href='profile.php'>ข้อมูลส่วนตัว</a></li>" .
+                "<li><a class='dropdown-item' href='profile.php'>รายการประกาศ</a></li>" .
                 "<li><a class='dropdown-item' href='admin_panel/index.php'>Admin</a></li>" .
                 "<li><a class='dropdown-item' href='signout.php'>ออกจากระบบ</a></li>" .
                 "</ul>" .
