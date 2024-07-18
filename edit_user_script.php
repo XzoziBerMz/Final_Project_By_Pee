@@ -19,7 +19,7 @@ if (isset($_POST['user_id']) && isset($_POST['firstname']) && isset($_POST['last
   if ($user && password_verify($current_password, $user['password'])) {
     // อัปโหลดรูปภาพถ้ามีการอัปโหลด
     if (isset($_FILES['user_photo']) && $_FILES['user_photo']['error'] == 0) {
-      $targetDir = "uploads/";
+      $targetDir = "image/";
       $fileName = basename($_FILES["user_photo"]["name"]);
       $targetFilePath = $targetDir . $fileName;
       $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
