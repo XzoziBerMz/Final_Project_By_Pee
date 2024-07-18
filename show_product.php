@@ -55,6 +55,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <img src="image/<?php echo $first_image; ?>" class="image-fix" alt="..." width="350" height="200">
             <?php } ?>
 
+
+            
           </div>
           <div class="product-details">
             <span class="product-catagory"> ประเภท : <?php echo $row_pro['type_name']; ?> /
@@ -62,7 +64,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </span>
             <div class="d-flex justify-content-between align-items-center">
               <div class="text-config fs-5">
-                <span href="">
+                 <span href="">
                   <?php
                   $product_title = $row_pro['product_name'];
                   if (mb_strlen($product_title) > 35) {

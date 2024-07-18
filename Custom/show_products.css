@@ -15,8 +15,23 @@ a {
     text-decoration: none;
 }
 
+.fs-14 {
+    font-size: 14px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
 .product-card {
     width: 350px;
+    position: relative;
+    box-shadow: 0 4px 7px #cdcdcd;
+    margin: 13px;
+    background: #ffffff;
+}
+.product-card-fix {
+    width: 340px;
     position: relative;
     box-shadow: 0 4px 7px #cdcdcd;
     margin: 13px;
