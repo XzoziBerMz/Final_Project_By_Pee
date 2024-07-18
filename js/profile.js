@@ -60,6 +60,7 @@ function saveChanges() {
     var lastname = $('#lastname').val();
     var email = $('#email').val();
     var currentPassword = $('#current_password').val();
+    console.log("🚀 ~ saveChanges ~ currentPassword:", currentPassword)
     var newPassword = $('#new_password').val();
     var fileInput = document.getElementById('fileInput');
     var formData = new FormData();
@@ -68,10 +69,17 @@ function saveChanges() {
     formData.append('firstname', firstname);
     formData.append('lastname', lastname);
     formData.append('email', email);
-    formData.append('current_password', currentPassword);
+
+    // ถ้า newPassword ไม่มีค่า ให้ set currentPassword เป็นค่าว่าง
     if (newPassword) {
         formData.append('new_password', newPassword);
+    } else {
+        currentPassword = '';
     }
+    console.log("🚀 ~ saveChanges ~ currentPassword:", currentPassword)
+
+    formData.append('current_password', currentPassword);
+
     if (fileInput.files[0]) {
         formData.append('user_photo', fileInput.files[0]);
     }
@@ -84,7 +92,6 @@ function saveChanges() {
         processData: false,
         success: function (response) {
             var jsonResponse = JSON.parse(response);
-            console.log("🚀 ~ saveChanges ~ response:", response)
             if (jsonResponse.status === 'success') {
                 Swal.fire({
                     position: "center",
@@ -106,7 +113,6 @@ function saveChanges() {
             }
         },
         error: function (xhr, status, error) {
-            console.log("🚀 ~ saveChanges ~ error:", error)
             Swal.fire({
                 position: "center",
                 icon: "error",

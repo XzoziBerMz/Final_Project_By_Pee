@@ -154,12 +154,12 @@ function formatDate($date)
                             <div class="mt-3" id="password_form_change" style="display: none;">
                                 <div class="mb-3">
                                     <label for="current_password" class="form-label">Current Password</label>
-                                    <input type="password" class="form-control" id="current_password"
+                                    <input type="password" value="" class="form-control" id="current_password"
                                         aria-describedby="passwordHelp">
                                 </div>
                                 <div class="mb-3">
                                     <label for="new_password" class="form-label">New Password</label>
-                                    <input type="password" class="form-control" id="new_password"
+                                    <input type="password" value="" class="form-control" id="new_password"
                                         aria-describedby="passwordHelp">
                                 </div>
                             </div>
