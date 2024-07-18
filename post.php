@@ -217,9 +217,10 @@ if (isset($_SESSION['user_login'])) {
                         $comment_text = htmlspecialchars($_POST['comment_text']);
                         $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
 
-                        $sql = "INSERT INTO comments (post_id, user_name, comment_text, parent_comment_id) VALUES (:post_id, :user_name, :comment_text, :parent_comment_id)";
+                        $sql = "INSERT INTO comments (post_id, user_id, user_name, comment_text, parent_comment_id) VALUES (:post_id, :user_id, :user_name, :comment_text, :parent_comment_id)";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':post_id', $product_id);
+                        $stmt->bindParam(':user_id', $user['user_id']);
                         $stmt->bindParam(':user_name', $user_name);
                         $stmt->bindParam(':comment_text', $comment_text);
                         $stmt->bindParam(':parent_comment_id', $parent_comment_id);
