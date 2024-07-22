@@ -74,7 +74,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
             <?php foreach ($result as $row_pro) { ?>
                 <div class="product-card-fix position-relative">
                     <div
-                        class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?>">
+                        class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดประกาศ') ? 'tag-close' : ''; ?>">
                         <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
                     </div>
                     <div class="position-absolute pointer top-0 tag-edit translate-middle"
@@ -98,14 +98,14 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
                             <div class="text-config fs-5">
                                 <span href="">
                                     <?php
-                                        $product_title = $row_pro['product_name'];
-                                        if (mb_strlen($product_title) > 35) {
-                                            $shortened_title = mb_substr($product_title, 0, 22) . '...';
-                                            echo $shortened_title;
-                                        } else {
-                                            echo $product_title;
-                                        }
-                                        ?>
+                                    $product_title = $row_pro['product_name'];
+                                    if (mb_strlen($product_title) > 35) {
+                                        $shortened_title = mb_substr($product_title, 0, 22) . '...';
+                                        echo $shortened_title;
+                                    } else {
+                                        echo $product_title;
+                                    }
+                                    ?>
                                 </span>
                                 <!-- <h4></h4> -->
                             </div>

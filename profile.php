@@ -193,7 +193,7 @@ function formatDate($date)
         ?>
 
         <div class="col-md-10">
-            <div class="mt-4">
+            <div class="mt-4" style="margin-bottom: 3%;">
                 <!-- หมวดหมู่ -->
                 <div class="categories-container">
 

@@ -38,8 +38,8 @@
               <td><?= $row["sub_type_name"] ?></td>
               <td>
                 <button class="btn btn-warning" style="height:40px" data-bs-toggle="modal"
-                  data-bs-target="#editcategoryModal" onclick="editcategoryModal data-id=" <?= $row['type_id'] ?>"
-                  data-name="<?= $row['type_name'] ?>">Update</button>
+                  data-bs-target="#editsubcategoryModal" data-id="<?= $row['sub_type_id'] ?>"
+                  data-name="<?= $row['sub_type_name'] ?>">Update</button>
 
                 <button class=" btn btn-danger" style="height: 40px"
                   onclick="confirmDelete('<?= $row['sub_type_id'] ?>', '<?= $type_id ?>')">Delete</button>
@@ -53,6 +53,42 @@
     </table>
   </div>
 
+  <!-- update Category Modal-->
+  <div class="modal fade" id="editsubcategoryModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">edit Sub Category Item</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form enctype='multipart/form-data' action="./controller/updateSubCatController.php" method="POST">
+            <input type="hidden" name="sub_type_id" value="">
+            <div class="form-group">
+              <label for="main_cat">Main Category</label>
+              <input type="text" class="form-control" id="main_category" name="main_category" disabled
+                value="<?php echo htmlspecialchars($type_name); ?>">
+              <label for="edit_sc_name" style="margin-top: 15px;">Edit Sub Category Name</label>
+              <input type="text" class="form-control" name="edit_sc_name" required>
+              <input type="hidden" name="main_category_hidden" value="<?php echo htmlspecialchars($type_id); ?>">
+            </div>
+            <div class="form-group">
+              <button type="submit" name="upload" class="btn btn-secondary mt-4"
+                style="height:40px;margin-top: 10px;background-color: #009933;height: 50px; border: 0px;">Update Sub
+                Category</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal" style="height: 40px;">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------------------------------------------------------------------------------- -->
+
+  <!-- ADD category Modal-->
   <button type="button" class="btn btn-secondary"
     style="height:40px;margin-top: 20px;margin-left: 5%;background-color: #009933;height: 50px; border: 0px;"
     data-bs-toggle="modal" data-bs-target="#myModalSub">Add Sub Category</button>
@@ -116,4 +152,16 @@
       }
     });
   }
+
+  $('#editsubcategoryModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var subtypeId = button.data('id'); // Extract info from data-* attributes
+    var subtypeName = button.data('name');
+
+    // Update the modal's content
+    var modal = $(this);
+    modal.find('.modal-title').text('Edit SubCategory Name');
+    modal.find('input[name="sub_type_id"]').val(subtypeId); // Set sub_type_id value
+    modal.find('input[name="edit_sc_name"]').val(subtypeName); // Set sub_type_name value
+  });
 </script>

@@ -45,7 +45,6 @@
   </div>
 
   <!-- update Category Modal-->
-  <!-- update Category Modal-->
   <div class="modal fade" id="editcategoryModal" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
