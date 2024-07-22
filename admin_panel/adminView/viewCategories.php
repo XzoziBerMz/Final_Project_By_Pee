@@ -27,8 +27,10 @@
                 </button>
               </td>
               <td>
-                <button class="btn btn-warning" style="height:40px"
-                  onclick="categoryUpdate('<?= $row['type_id'] ?>')">Update</button>
+                <button class="btn btn-warning" style="height:40px" data-bs-toggle="modal"
+                  data-bs-target="#editcategoryModal" data-id="<?= $row['type_id'] ?>"
+                  data-name="<?= $row['type_name'] ?>">Update</button>
+
                 <button class="btn btn-danger" style="height:40px"
                   onclick="confirmDelete('<?= $row['type_id'] ?>')">Delete</button>
               </td>
@@ -42,6 +44,38 @@
     </table>
   </div>
 
+  <!-- update Category Modal-->
+  <!-- update Category Modal-->
+  <div class="modal fade" id="editcategoryModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Category Name </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form enctype='multipart/form-data' action="./controller/updateCatController.php" method="POST">
+            <input type="hidden" name="type_id" value=""> <!-- Hidden field for type_id -->
+            <div class="form-group">
+              <label for="edit_c_name">Category Name:</label>
+              <input type="text" class="form-control" name="edit_c_name" value="">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-warning" name="upload"
+                style="height:40px;margin-top:20px;height: 50px; border: 0px;">Edit Category</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal" style="height:40px">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------------------------------------------------------------------------------- -->
+
+  <!-- ADD category Modal-->
   <button type="button" class="btn btn-secondary"
     style="height:40px;margin-top: 10px;margin-left: 5%;background-color: #009933;height: 50px; border: 0px;"
     data-bs-toggle="modal" data-bs-target="#myModal">
@@ -99,5 +133,17 @@
       }
     });
   }
+
+  $('#editcategoryModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var typeId = button.data('id'); // Extract info from data-* attributes
+    var typeName = button.data('name');
+
+    // Update the modal's content
+    var modal = $(this);
+    modal.find('.modal-title').text('Edit Category Name');
+    modal.find('input[name="edit_c_name"]').val(typeName);
+    modal.find('input[name="type_id"]').val(typeId); // Set type_id value
+  });
 
 </script>

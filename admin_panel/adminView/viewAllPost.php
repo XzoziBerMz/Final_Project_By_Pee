@@ -1,7 +1,7 @@
-<div>
+<div style="margin-left: 5%;">
   <h2>All Post</h2>
-  <div style=" margin-right: -10%;">
-    <table id="poststable" class="table">
+  <div>
+    <table id=" post_table" class="table" style="margin-left: 0px;">
       <thead>
         <tr>
           <th class="text-center">ลำดับที่</th>
@@ -97,14 +97,13 @@
   </div>
 
   <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-secondary"
+  <!-- <button type="button" class="btn btn-secondary"
     style="height:50px; margin-top: 10px;background-color: #009933; border: 0px;" data-bs-toggle="modal"
-    data-bs-target="#myModal">Add Post</button>
+    data-bs-target="#myModal">Add Post</button> -->
 
   <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <!-- <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-      <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">New Post Item</h4>
@@ -157,25 +156,25 @@
               <select id="category" name="category" onchange="filterSubCategories()" required>
                 <option disabled selected>กรุณาเลือกหมวดหมู่</option>
                 <?php
-                $sql = "SELECT * FROM types";
-                $result = $conn->query($sql);
-                if ($result->rowCount() > 0) {
-                  while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<option value='" . htmlspecialchars($row['type_id']) . "'>" . htmlspecialchars($row['type_name']) . "</option>";
-                  }
-                }
+                // $sql = "SELECT * FROM types";
+                // $result = $conn->query($sql);
+                // if ($result->rowCount() > 0) {
+                //   while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                //     echo "<option value='" . htmlspecialchars($row['type_id']) . "'>" . htmlspecialchars($row['type_name']) . "</option>";
+                //   }
+                // }
                 ?>
               </select>
               <select id="subcategory" name="subcategory" required>
                 <option disabled selected>หมวดหมู่ย่อย</option>
                 <?php
-                $sql = "SELECT * FROM sub_type";
-                $result = $conn->query($sql);
-                if ($result->rowCount() > 0) {
-                  while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<option value='" . htmlspecialchars($row['sub_type_id']) . "' data-type='" . htmlspecialchars($row['type_id']) . "'>" . htmlspecialchars($row['sub_type_name']) . "</option>";
-                  }
-                }
+                // $sql = "SELECT * FROM sub_type";
+                // $result = $conn->query($sql);
+                // if ($result->rowCount() > 0) {
+                //   while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                //     echo "<option value='" . htmlspecialchars($row['sub_type_id']) . "' data-type='" . htmlspecialchars($row['type_id']) . "'>" . htmlspecialchars($row['sub_type_name']) . "</option>";
+                //   }
+                // }
                 ?>
               </select>
             </div>
@@ -185,7 +184,6 @@
                 accept="image/gif, image/jpeg, image/png" required>
             </div>
             <div id="preview-images" style="margin-top: 20px;">
-              <!-- Images preview will be shown here -->
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-secondary" name="upload"
@@ -198,7 +196,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- sweetalert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -260,10 +258,8 @@
       input.nextElementSibling.innerText = `${fileCount} files selected`;
     }
 
-    $(document).ready(function () { //ใช้งาน DataTable เมื่อเว็บโหลดเสร็จ
-
-      let table = new DataTable('#poststable'); //เลือกตารางข้อมูล และเปิดใช้งาน DataTable
-
+    $(document).ready(function () {
+      let table = new DataTable('#post_table');
     });
 
     // การทำdropdown ส่วนของเลือกหมวดหมู่ตรง Add post

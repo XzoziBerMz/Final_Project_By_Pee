@@ -5,12 +5,17 @@ if (isset($_POST['record'])) {
     $c_id = $_POST['record'];
 
     try {
-        // เตรียม statement สำหรับการ delete
+        // เตรียม statement สำหรับการ delete main category
         $stmt = $conn->prepare("DELETE FROM types WHERE type_id = :c_id");
-        
         // ผูกตัวแปร
         $stmt->bindParam(':c_id', $c_id, PDO::PARAM_INT);
+        // ดำเนินการ statement
+        $stmt->execute();
 
+        // เมื่อลบแล้วให้ลบ sub_category ที่ตรงกับ main category ที่เลือกก้วย
+        $stmt = $conn->prepare("DELETE FROM sub_type WHERE type_id = :c_id");
+        // ผูกตัวแปร
+        $stmt->bindParam(':c_id', $c_id, PDO::PARAM_INT);
         // ดำเนินการ statement
         $stmt->execute();
 
@@ -25,6 +30,4 @@ if (isset($_POST['record'])) {
         echo "Error: " . $e->getMessage();
     }
 }
-?>
-
 ?>

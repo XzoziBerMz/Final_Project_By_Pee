@@ -5,12 +5,17 @@ if (isset($_POST['record'])) {
     $u_id = $_POST['record'];
 
     try {
-        // เตรียม statement สำหรับการ delete
+        // เตรียม statement สำหรับการ delete users
         $stmt = $conn->prepare("DELETE FROM users WHERE user_id = :u_id");
-
         // ผูกตัวแปร
         $stmt->bindParam(':u_id', $u_id, PDO::PARAM_INT);
+        // ดำเนินการ statement
+        $stmt->execute();
 
+        // ลบ posts ที่มีuser_idตรงกัน
+        $stmt = $conn->prepare("DELETE FROM posts WHERE user_id = :u_id");
+        // ผูกตัวแปร
+        $stmt->bindParam(':u_id', $u_id, PDO::PARAM_INT);
         // ดำเนินการ statement
         $stmt->execute();
 

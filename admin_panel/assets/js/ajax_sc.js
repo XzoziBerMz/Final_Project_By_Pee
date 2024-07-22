@@ -53,28 +53,9 @@ function showAllComments(){
     });
 }
 
-//edit product data
-// function PostEditForm(id){
-//     $.ajax({
-//         url:"./adminView/editPostForm.php",
-//         method:"post",
-//         data:{record:id},
-//         success:function(data){
-//             $('.allContent-section').html(data);
-//         }
-//     });
-// }
 
-// function userEditForm(id){
-//     $.ajax({
-//         url:"./adminView/editUserForm.php",
-//         method:"post",
-//         data:{record:id},
-//         success:function(data){
-//             $('.allContent-section').html(data);
-//         }
-//     });
-// }
+
+// category update
 
 //update post after submit
 // function updatePost() {
@@ -164,18 +145,19 @@ function categoryDelete(id){
 }
 
 //delete Subcategory data
-function SubcategoryDelete(id){
+function SubcategoryDelete(id, type_id) {
     $.ajax({
-        url:"./controller/SubcatDeleteController.php",
-        method:"post",
-        data:{record:id},
-        success:function(data){
+        url: "./controller/SubcatDeleteController.php",
+        method: "post",
+        data: { record: id },
+        success: function(data) {
             alert('ลบข้อมูลหมวดหมู่ย่อยเรียบร้อยแล้ว');
             $('form').trigger('reset');
-            showSubCategory();
+            showSubCategory(type_id);
         }
     });
 }
+
 //delete comments data
 function commentsDelete(id){
     $.ajax({
