@@ -29,18 +29,89 @@ function showImageModal(imageUrl) {
 
 function showEditForm(commentId) {
     var editForm = document.getElementById('edit-comment-' + commentId);
-    if (editForm.style.display === "none") {
-        editForm.style.display = "block";
+    if (editForm) {
+        if (editForm.style.display === "" || editForm.style.display === "none") {
+            editForm.style.display = "block";
+        } else {
+            editForm.style.display = "none";
+        }
     } else {
-        editForm.style.display = "none";
+        console.error('Edit form element not found for commentId:', commentId);
     }
 }
 
 function showReplyForm(commentId) {
     var replyForm = document.getElementById('reply-form-' + commentId);
-    if (replyForm.style.display === "none") {
-        replyForm.style.display = "block";
+    if (replyForm) {
+        if (replyForm.style.display === "" || replyForm.style.display === "none") {
+            replyForm.style.display = "block";
+        } else {
+            replyForm.style.display = "none";
+        }
     } else {
-        replyForm.style.display = "none";
+        console.error('Reply form element not found for commentId:', commentId);
     }
 }
+
+function toggleEditForm(commentId) {
+    const form = document.querySelector(`#edit-form-${commentId}`);
+    const formText = document.querySelector(`#text-edit-${commentId}`);
+
+    if (form && formText) {
+        if (form.style.display === 'none') {
+            form.style.display = 'flex';
+            formText.style.display = 'none';
+        } else {
+            form.style.display = 'none';
+            formText.style.display = 'block';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const section = document.querySelector('#comment-section');
+    const button = document.querySelector('#show-more-btn');
+
+    if (section && button) {
+        function checkContentHeight() {
+            section.style.height = 'auto'; 
+            const contentHeight = section.scrollHeight; 
+            section.style.height = '350px'; 
+
+            if (contentHeight > 350) {
+                button.style.display = 'block'; 
+            } else {
+                button.style.display = 'none';
+            }
+        }
+
+        checkContentHeight();
+    } else {
+        console.error('Elements not found.');
+    }
+});
+
+function toggleShowMore() {
+    const section = document.querySelector('#comment-section');
+    const button = document.querySelector('#show-more-btn');
+
+    if (section && button) { 
+        if (section.style.height === 'max-content') {
+            section.style.height = '350px';
+            button.textContent = 'Show More';
+        } else {
+            section.style.height = 'max-content';
+            button.textContent = 'Show Less';
+        }
+    } else {
+        console.error('Elements not found.');
+    }
+}
+
+function viewProductMore(value) {
+    console.log("🚀 ~ viewProductMore ~ value:", value)
+    window.location.href = `allcategory.php?act=showbytype&type_id=${value}`
+    
+}
+
+

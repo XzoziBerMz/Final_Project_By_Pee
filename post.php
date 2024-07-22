@@ -200,17 +200,27 @@ if (isset($_SESSION['user_login'])) {
     }
     ?>
     </div>
-    <div class="d-flex justify-content-center gap-5 mt-5 ">
-
-        <div class="col-5 bg-dark p-3">
+    <div class="d-flex justify-content-center mx-5 gap-5 mt-5">
+        <div class="col-5 bg-dark w-100 rounded-4 p-4" id="comment-section">
             <div>
-                <h5 class="text-white">Comment</h5>
+                <h5 class="text-white">Comments</h5>
             </div>
+            <div class="border my-3"></div>
+            <form method="POST" action="">
+                <div class="d-flex mb-3">
+                    <input type="text" id="user_name" name="user_name" hidden
+                        value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>">
+                    <input id="comment_text" name="comment_text" type="text" class="form-control"
+                        placeholder="พิมพ์ข้อความ................">
+                    <input type="hidden" name="parent_comment_id" value="0">
+                    <button type="submit" name="submit_comment" class="btn btn-success ms-2">ส่ง</button>
+                </div>
+            </form>
+
             <?php
             if (isset($_GET['product_id'])) {
                 $product_id = $_GET['product_id'];
 
-                // comment คอมเม้น นะแจะ
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (isset($_POST['submit_comment'])) {
                         $user_name = htmlspecialchars($_POST['user_name']);
@@ -243,7 +253,6 @@ if (isset($_SESSION['user_login'])) {
                     } else if (isset($_POST['submit_delete'])) {
                         $comment_id = $_POST['comment_id'];
 
-                        // Deleting the comment from the database
                         $sql = "DELETE FROM comments WHERE comment_id = :comment_id";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':comment_id', $comment_id);
@@ -253,27 +262,24 @@ if (isset($_SESSION['user_login'])) {
                         exit();
                     }
                 }
-                ob_end_flush();
 
-                // Fetch comments for the post
                 $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 ORDER BY created_at DESC";
                 $stmt = $conn->prepare($sqlComments);
                 $stmt->bindParam(':post_id', $product_id);
                 $stmt->execute();
                 $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                // print_r($comments);
             } else {
-                echo "<script>";
-                echo "Swal.fire({";
-                echo "position: 'top-center',";
-                echo "icon: 'error',";
-                echo "title: 'ไม่พบสินค้า',";
-                echo "showConfirmButton: false,";
-                echo "timer: 2000";
-                echo "}).then((result) => {";
-                echo "window.location.href = 'index.php';";
-                echo "});";
-                echo "</script>";
+                echo "<script>
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: 'ไม่พบสินค้า',
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then((result) => {
+                        window.location.href = 'index.php';
+                    });
+                  </script>";
             }
 
             if (isset($comments)) {
@@ -292,94 +298,74 @@ if (isset($_SESSION['user_login'])) {
             function displayComments($comments, $conn, $user)
             {
                 foreach ($comments as $comment) {
-                    echo '<div class="bg-secondary px-2 mb-2">';
-                    echo '<div class="d-flex gap-1 align-items-end ">';
-                    echo '<span class="text-white">' . htmlspecialchars($comment['user_name']) . '</span>';
-                    echo '<span class="text-white">' . $comment['created_at'] . '</span>';
-                    echo '</div>';
-                    echo '<div class="d-flex gap-3 text-white px-3">';
-                    echo '<span>' . nl2br(htmlspecialchars($comment['comment_text'])) . '</span>';
-
-                    // Add edit button if user_id matches
-                    if (isset($comment['user_id']) && $comment['user_id'] == $user['user_id']) {
-                        echo '<div id="edit-form-' . $comment['comment_id'] . '">';
-                        echo '<span class="pointer" onclick="showEditForm(' . $comment['comment_id'] . ')">แก้ไข</span>';
-                        echo '</div>';
-                        echo '<div id="edit-comment-' . $comment['comment_id'] . '" style="display:none; margin-top:10px;">';
-                        echo '<form method="POST" action="">';
-                        echo '<input type="hidden" name="comment_id" value="' . $comment['comment_id'] . '">';
-                        echo '<textarea class="form-control" name="edited_text" rows="3" required>' . htmlspecialchars($comment['comment_text']) . '</textarea>';
-                        echo '<button name="submit_edit" type="submit">Update</button>';
-                        echo '</form>';
-                        echo '</div>';
-
-                        echo '<form method="POST" action="">';
-                        echo '<input type="hidden" name="comment_id" value="' . $comment['comment_id'] . '">';
-                        echo '<button name="submit_delete" type="submit">Delete</button>';
-                        echo '</form>';
-                    }
-
-                    echo '<div>';
-                    echo '<span class="pointer" onclick="showReplyForm(' . $comment['comment_id'] . ')">ตอบกลับ</span>';
-                    echo '</div>';
-
-                    echo '<div id="reply-form-' . $comment['comment_id'] . '" style="display:none; margin-top:10px;">';
-                    echo '<form method="POST" action="">';
-                    echo '<input type="text" class="form-control" hidden value="' . htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) . '" id="user_name_' . $comment['comment_id'] . '" name="user_name" required>';
-                    echo '<div class="d-flex gap-2" style="width: 520px;">';
-                    echo '<div class="mb-3">';
-                    echo '<textarea class="form-control" style="width: 420px; height: 45px;" id="comment_text_' . $comment['comment_id'] . '" name="comment_text" rows="3" required></textarea>';
-                    echo '</div>';
-                    echo '<div class="mb-3 d-flex align-items-center">';
-                    echo '<button name="submit_comment">';
-                    echo '<div class="svg-wrapper-1">';
-                    echo '<div class="svg-wrapper">';
-                    echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">';
-                    echo '<path fill="none" d="M0 0h24v24H0z"></path>';
-                    echo '<path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>';
-                    echo '</svg>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '<span>Send</span>';
-                    echo '</button>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '<input type="hidden" name="parent_comment_id" value="' . $comment['comment_id'] . '">';
-                    echo '</form>';
-                    echo '</div>';
-                    echo '</div>';
-
-                    $replies = fetchReplies($comment['comment_id'], $conn);
-                    if (!empty($replies)) {
-                        echo '<div style="margin-left: 30px;">';
-                        displayComments($replies, $conn, $user);
-                        echo '</div>';
-                    }
-
-                    echo '</div>';
+                    ?>
+                    <div class="text-white">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong><?= htmlspecialchars($comment['user_name']); ?></strong>
+                                <span class="ms-2"><?= $comment['created_at']; ?></span>
+                            </div>
+                        </div>
+                        <form method="POST" action="" class="mt-2 gap-3" id="edit-form-<?= $comment['comment_id']; ?>"
+                            style="display: none;">
+                            <input type="hidden" name="comment_id" value="<?= $comment['comment_id']; ?>">
+                            <textarea class="form-control" style="height: 30px;"
+                                name="edited_text"><?= htmlspecialchars($comment['comment_text']); ?></textarea>
+                            <button name="submit_edit" type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                        <div class="mt-2 ps-3" id="text-edit-<?= $comment['comment_id']; ?>" style="display: block;">
+                            <?= nl2br(htmlspecialchars($comment['comment_text'])); ?>
+                        </div>
+                        <div class="mt-2 ps-3">
+                            <span class="pointer me-2" onclick="showReplyForm(<?= $comment['comment_id']; ?>)">Reply</span>
+                            <?php if (isset($comment['user_id']) && $comment['user_id'] == $user['user_id']) { ?>
+                                <span class="pointer me-2" onclick="toggleEditForm(<?= $comment['comment_id']; ?>)">Edit</span>
+                                <form method="POST" action="" class="d-inline">
+                                    <input type="hidden" name="comment_id" value="<?= $comment['comment_id']; ?>">
+                                    <button name="submit_delete" type="submit"
+                                        class="btn btn-link text-decoration-none p-0">Delete</button>
+                                </form>
+                            <?php } ?>
+                        </div>
+                        <div id="reply-form-<?= $comment['comment_id']; ?>" class="mt-2" style="display:none;">
+                            <form method="POST" action="">
+                                <input type="hidden"
+                                    value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>"
+                                    id="user_name_<?= $comment['comment_id']; ?>" name="user_name" required>
+                                <div class="d-flex gap-2">
+                                    <textarea class="form-control" id="comment_text_<?= $comment['comment_id']; ?>"
+                                        name="comment_text" rows="1" required></textarea>
+                                    <button name="submit_comment" class="btn btn-success">Send</button>
+                                </div>
+                                <input type="hidden" name="parent_comment_id" value="<?= $comment['comment_id']; ?>">
+                            </form>
+                        </div>
+                        <?php
+                        $replies = fetchReplies($comment['comment_id'], $conn);
+                        if (!empty($replies)) {
+                            ?>
+                            <div class="ms-5 mb-2">
+                                <?php displayComments($replies, $conn, $user); ?>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                    <?php
                 }
             }
             ?>
-
-
+            <span class="show-more" id="show-more-btn" onclick="toggleShowMore()">Show More</span>
         </div>
-        <div class="col-5 row align-items-center">
-            <div class="bg-body-secondary p-3">
-                <div>
-                    <h5 class="">ตอบกลับประกาศ</h5>
-                </div>
-                <form method="POST" action="">
-                    <div class="d-flex gap-2 px-3">
-                        <input type="text" id="user_name" name="user_name" hidden
-                            value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>">
-                        <input id="comment_text" name="comment_text" type="text" class="form-control"
-                            placeholder="พิมพ์ข้อความ................">
-                        <input type="hidden" name="parent_comment_id" value="0">
-                        <button type="submit" name="submit_comment" class="btn btn-success w-150px">ส่งข้อความ</button>
-                    </div>
-                </form>
-            </div>
+    </div>
+
+    <div class="d-flex border-bottom border-5 pb-3 border-dark justify-content-start mx-5 gap-5 mt-5">
+        <div>
+            <span class="fs-3 fw-bolder">สินค้าที่คุณอาจจะสนใจ</span>
         </div>
+    </div>
+    <div class="d-flex justify-content-end mx-5 mt-2 text-success fs-5">
+            <span class="pointer" onclick="viewProductMore(<?php echo $row->type_id; ?>)">ดูสินค้าเพิ่มเติม ></span>
     </div>
 
     <div class="d-flex justify-content-center gap-3 mt-5 px-5 mx-5">
