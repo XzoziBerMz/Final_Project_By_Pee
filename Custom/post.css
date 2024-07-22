@@ -175,3 +175,27 @@ button:active {
         transform: translateY(-0.1em);
     }
 }
+
+#comment-section {
+    /* height: 200px; */
+    overflow: hidden;
+    position: relative;
+    transition: height 5s ease;
+}
+
+#comment-section.expanded {
+    height: auto;
+    /* Allow full height expansion */
+}
+
+.show-more {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    /* background-color: rgba(0, 0, 0, 0.7); */
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
