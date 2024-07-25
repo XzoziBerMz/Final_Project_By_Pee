@@ -137,10 +137,11 @@ border-color:  #00aa44;
 }
 
 .file-upload-image {
-  max-height: 200px;
-  max-width: 200px;
+  max-height: max-content;
+  max-width: max-content;
   margin: auto;
   padding: 20px;
+  object-fit: cover;
 }
 
 .remove-image {

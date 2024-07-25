@@ -83,7 +83,7 @@ function formatDate($date)
                 </div>
                 <hr>
                 <div class="d-flex justify-content-center">
-                    <button class="btn btn-warning text-light"
+                    <button class="btn btn-personal-information"
                         onclick='viewProfile(<?php echo json_encode($user); ?>)'>ดูข้อมูลส่วนตัว</button>
                 </div>
             </div>
@@ -113,10 +113,10 @@ function formatDate($date)
                                 <span>ชื่อ : <?php echo $user['firstname'] . ' ' . $user['lastname'] ?></span>
                             </div>
                             <div class="mt-3">
-                                <span><?php echo $user['email'] ?></span>
+                                <span>Email : <?php echo $user['email'] ?></span>
                             </div>
 
-                            <div class="d-flex justify-content-end align-items-center mt-3">
+                            <div class="d-flex justify-content-end align-items-center mt-5">
                                 <div>
                                     <button class="btn btn-warning text-light" onclick="onEdit('edit')"
                                         id="edit_profile">แก้ไขข้อมูลส่วนตัว</button>
@@ -193,7 +193,7 @@ function formatDate($date)
         ?>
 
         <div class="col-md-10">
-            <div class="mt-4" style="margin-bottom: 3%;">
+            <div class="mt-4" style="margin-bottom: 2%;">
                 <!-- หมวดหมู่ -->
                 <div class="categories-container">
 

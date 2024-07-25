@@ -171,3 +171,36 @@ function commentsDelete(id){
         }
     });
 }
+
+
+    // ฟังก์ชั่น adduser ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
+    // function adduser(event) {
+    //     event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
+    //     let formData = new FormData(event.target);
+      
+    //     $.ajax({
+    //       url: "./controller/adduserController.php",
+    //       method: "post",
+    //       data: formData,
+    //       processData: false,
+    //       contentType: false,
+    //       success: function(data) {
+    //         alert('เพิ่มข้อมูลผู้ใช้เรียบร้อยแล้ว');
+    //         $('#addUserForm').trigger('reset'); // รีเซ็ตฟอร์ม
+    //         showCustomers();
+    //         $('#myModal').modal('hide'); // ปิด modal
+    //       }
+    //     });
+    //   }
+
+// detail post
+// function detailpost(postId) {  
+//     $.ajax({
+//         url: "../post.php",
+//         method: "post",
+//         data: { record: postId }, // ส่งค่า postId ไปที่ post.php
+//         success: function(data) {
+//             $('.allContent-section').html(data);
+//         }
+//     });
+// }

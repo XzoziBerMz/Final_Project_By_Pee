@@ -59,7 +59,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <form enctype='multipart/form-data' action="./controller/adduserController.php" method="POST">
+            <form enctype='multipart/form-data' id="addUserForm" method="POST"
+              action="./controller/adduserController.php">
               <div class="form-group">
                 <label for="f_name">Firstname :</label>
                 <input type="text" class="form-control" name="f_name" required>
@@ -85,10 +86,12 @@
               </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-secondary" name="upload"
-                  style="height:40px;margin-top: 20px;background-color: #009933;height: 50px; border: 0px;">Add
-                  Customer</button>
+                  style="height:40px;margin-top: 20px;background-color: #009933;height: 50px; border: 0px;">
+                  Add Customer
+                </button>
               </div>
             </form>
+
 
           </div>
           <div class="modal-footer">
@@ -112,8 +115,6 @@
 
     });
 
-
-
     function confirmDelete(id) {
       Swal.fire({
         title: 'คุณแน่ใจหรือเปล่า?',
@@ -130,4 +131,7 @@
       });
     }
 
+
+    // ใช้ฟังก์ชัน `adduser` เมื่อฟอร์มถูกส่ง
+    // $(document).on('submit', '#addUserForm', adduser);
   </script>

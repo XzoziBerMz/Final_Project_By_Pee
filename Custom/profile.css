@@ -15,9 +15,10 @@
 }
 
 .card-user{
+    margin-top: 65px;
     width: 100%; 
     margin-left: 5px;
-    height: 500px;
+    height: 320px;
     border: 0px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px;
 }
@@ -35,6 +36,20 @@
     
 }
 
+.btn-personal-information {
+    width: 100%;
+    margin-top: -16px;
+    border-radius: 0 0 15px 15px;
+    background-color: #08ae4b;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
+}
+
+.btn-personal-information:hover {
+    background-color: #0e8f2e;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
+}
 /* หมวดหมู่ */
 .category-item {
     background-color: #f8f9fa;

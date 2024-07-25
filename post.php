@@ -25,7 +25,6 @@ if (isset($_SESSION['user_login'])) {
         // print_r($user);
     }
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -154,7 +153,7 @@ if (isset($_SESSION['user_login'])) {
                         </div>
                         <div class="position-absolute top-92 start-93 translate-middle contact">
                             <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal"
-                                data-bs-target="#phoneModal">โทรติดต่อ</button>
+                                data-bs-target="#phoneModal">เบอร์ติดต่อ</button>
                         </div>
                     </div>
                 </div>
@@ -365,7 +364,7 @@ if (isset($_SESSION['user_login'])) {
         </div>
     </div>
     <div class="d-flex justify-content-end mx-5 mt-2 text-success fs-5">
-            <span class="pointer" onclick="viewProductMore(<?php echo $row->type_id; ?>)">ดูสินค้าเพิ่มเติม ></span>
+        <span class="pointer" onclick="viewProductMore(<?php echo $row->type_id; ?>)">ดูสินค้าเพิ่มเติม ></span>
     </div>
 
     <div class="d-flex justify-content-center gap-3 mt-5 px-5 mx-5">

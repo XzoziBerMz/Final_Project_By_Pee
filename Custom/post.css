@@ -63,8 +63,8 @@
     background-image: -webkit-gradient(linear,
             40% 0%,
             75% 84%,
-            from(#4D9C41),
-            to(#19911D),
+            from(#54DE5D),
+            to(#54DE5D),
             color-stop(.6, #54DE5D));
     margin: 10px;
 }
