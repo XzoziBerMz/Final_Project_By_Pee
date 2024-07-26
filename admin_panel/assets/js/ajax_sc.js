@@ -172,6 +172,34 @@ function commentsDelete(id){
     });
 }
 
+// update role users
+function updateUserRole(userId, newRole) {
+  $.ajax({
+    url: './controller/updateUserRole.php',
+    method: 'POST',
+    data: {
+      user_id: userId,
+      new_role: newRole
+    },
+    success: function (response) {
+      Swal.fire({
+        title: 'Role ของผู้ใช้ถูกอัพเดตเรียบร้อย',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    },
+    error: function () {
+      Swal.fire({
+        title: 'ไม่สามารถอัพเดต role ของผู้ใช้ได้',
+        icon: 'error',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    }
+  });
+}
+
     // ฟังก์ชั่น adduser ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
     function adduser(event) {
         event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
