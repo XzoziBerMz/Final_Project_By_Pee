@@ -1,6 +1,6 @@
 <div>
-  <h3 style="margin-bottom: 20px;">All Post</h3>
-  <div style="margin-left: 3%; margin-right: -4%">
+  <h3 style="margin-bottom: 20px;margin-left: 5%;">All Post</h3>
+  <div style="margin-left: 5%; margin-right: -10%">
     <table id="posttable" class="table">
       <thead>
         <tr>

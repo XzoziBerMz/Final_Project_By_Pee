@@ -53,11 +53,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form enctype='multipart/form-data' action="./controller/updateCatController.php" method="POST">
+          <form id="updateCatForm" enctype="multipart/form-data" method="POST">
             <input type="hidden" name="type_id" value=""> <!-- Hidden field for type_id -->
             <div class="form-group">
               <label for="edit_c_name">Category Name:</label>
-              <input type="text" class="form-control" name="edit_c_name" value="">
+              <input type="text" class="form-control" name="edit_c_name" value="" required>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-warning" name="upload"
@@ -89,7 +89,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form enctype='multipart/form-data' action="./controller/addCatController.php" method="POST">
+          <form id="addCatForm" enctype="multipart/form-data" method="POST">
             <div class="form-group">
               <label for="c_name">Category Name:</label>
               <input type="text" class="form-control" name="c_name" required>
@@ -145,4 +145,7 @@
     modal.find('input[name="type_id"]').val(typeId); // Set type_id value
   });
 
+  // ใช้ฟังก์ชัน `adduser` เมื่อฟอร์มถูกส่ง
+  $(document).off('submit', '#addCatForm').on('submit', '#addCatForm', addCat);
+  $(document).off('submit', '#updateCatForm').on('submit', '#updateCatForm', updateCat);
 </script>

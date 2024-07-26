@@ -2,7 +2,7 @@
 // รวมไฟล์เชื่อมต่อกับฐานข้อมูล
 include_once "../config/dbconnect.php";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ตรวจสอบว่ามีข้อมูลส่งมาจากฟอร์ม
     if (isset($_POST['sub_type_id']) && isset($_POST['edit_sc_name'])) {
         // รับค่า sub_type_id และชื่อหมวดหมู่ใหม่จากฟอร์ม
@@ -17,23 +17,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':new_sub_category_name', $new_sub_category_name);
         $stmt->bindParam(':sub_type_id', $sub_type_id);
 
-        if ($stmt->execute()) {
-            echo "<script>
-                alert('อัพเดตหมวดหมู่ย่อยสำเร็จ');
-                window.location.href = '../index.php'; 
-            </script>";
+        // ดำเนินการ statement
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            echo "อัพเดตหมวดหมู่ย่อยสำเร็จ";
         } else {
-            echo "<script>
-                alert('เกิดข้อผิดพลาดในการอัพเดตหมวดหมู่ย่อย');
-                window.location.href = '../index.php'; 
-            </script>";
+            echo "เกิดข้อผิดพลาดในการอัพเดตหมวดหมู่ย่อย";
         }
     } else {
         // ถ้าข้อมูลไม่ครบ ให้แสดงข้อความผิดพลาด
-        echo "<script>
-            alert('ระบุข้อมูลไม่ครบ');
-            window.location.href = '../../index.php'; 
-        </script>";
+        echo "ระบุข้อมูลไม่ครบ";
     }
 } else {
     echo "<script>

@@ -62,7 +62,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form enctype='multipart/form-data' action="./controller/updateSubCatController.php" method="POST">
+          <form id="updateSubCatForm" enctype="multipart/form-data" method="POST">
             <input type="hidden" name="sub_type_id" value="">
             <div class="form-group">
               <label for="main_cat">Main Category</label>
@@ -105,7 +105,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form enctype='multipart/form-data' action="./controller/addSubCatController.php" method="POST">
+          <form id="addSubCatForm" enctype="multipart/form-data" method="POST">
             <div class="form-group">
               <label for="main_cat">Main Category</label>
               <input type="text" class="form-control" id="main_category" name="main_category" disabled
@@ -121,9 +121,9 @@
             </div>
           </form>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-bs-dismiss="modal" style="height: 40px;">Close</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal" style="height: 40px;">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -137,7 +137,9 @@
     let table = new DataTable('#subtypetable');
   });
 
-  function confirmDelete(id) {
+  function confirmDelete(id, item) {
+    console.log("🚀 ~ confirmDelete ~ item:", item)
+    console.log("🚀 ~ confirmDelete ~ id:", id)
     Swal.fire({
       title: 'คุณแน่ใจหรือเปล่า?',
       text: "คุณต้องการจะลบจริงๆใช่ไหม!",
@@ -148,7 +150,7 @@
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        SubcategoryDelete(id);
+        SubcategoryDelete(id, item);
       }
     });
   }
@@ -163,5 +165,14 @@
     modal.find('.modal-title').text('Edit SubCategory Name');
     modal.find('input[name="sub_type_id"]').val(subtypeId); // Set sub_type_id value
     modal.find('input[name="edit_sc_name"]').val(subtypeName); // Set sub_type_name value
+  });
+
+  // $(document).off('submit', '#addSubCatForm').on('submit', '#addSubCatForm', addSubCat);
+  $(document).off('submit', '#addSubCatForm').on('submit', '#addSubCatForm', function (event) {
+    addSubCat(<?php echo $type_id ?>, event);
+  });
+  // $(document).off('submit', '#updateSubCatForm').on('submit', '#updateSubCatForm', updateSubCat);
+  $(document).off('submit', '#updateSubCatForm').on('submit', '#updateSubCatForm', function (event) {
+    updateSubCat(<?php echo $type_id ?>, event);
   });
 </script>

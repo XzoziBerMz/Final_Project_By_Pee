@@ -59,14 +59,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <form enctype='multipart/form-data' id="addUserForm" method="POST"
-              action="./controller/adduserController.php">
+            <form id="addUserForm" enctype="multipart/form-data" method="POST">
               <div class="form-group">
                 <label for="f_name">Firstname :</label>
                 <input type="text" class="form-control" name="f_name" required>
               </div>
               <div class="form-group">
-                <label for="l_name">lastname :</label>
+                <label for="l_name">Lastname :</label>
                 <input type="text" class="form-control" name="l_name" required>
               </div>
               <div class="form-group">
@@ -78,20 +77,17 @@
                 <input type="password" class="form-control" name="password" required>
               </div>
               <div class="form-group" style="margin-top: 20px;">
-                <label for="urole">urole :</label>
-                <select id="role_users" name="role_user" class=" form-control">
+                <label for="urole">Role :</label>
+                <select name="role_user" class="form-control">
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
               <div class="form-group">
-                <button type="submit" class="btn btn-secondary" name="upload"
-                  style="height:40px;margin-top: 20px;background-color: #009933;height: 50px; border: 0px;">
-                  Add Customer
-                </button>
+                <button type="submit" class="btn btn-secondary"
+                  style="margin-top: 20px; background-color: #009933; height: 50px; border: 0px;">Add User</button>
               </div>
             </form>
-
 
           </div>
           <div class="modal-footer">
@@ -131,7 +127,7 @@
       });
     }
 
-
     // ใช้ฟังก์ชัน `adduser` เมื่อฟอร์มถูกส่ง
-    // $(document).on('submit', '#addUserForm', adduser);
+    $(document).off('submit', '#addUserForm').on('submit', '#addUserForm', adduser);
+
   </script>

@@ -1,6 +1,6 @@
 <div>
-    <h3 style="margin-bottom: 20px;">Comments</h3>
-    <div style="margin-left: 3%;">
+    <h3 style="margin-bottom: 20px;margin-left: 5%;">Comments</h3>
+    <div style="margin-left: 5%;">
         <table id="commentstable" class="table">
             <thead>
                 <tr>

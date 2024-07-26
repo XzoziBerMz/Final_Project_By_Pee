@@ -172,35 +172,150 @@ function commentsDelete(id){
     });
 }
 
-
     // ฟังก์ชั่น adduser ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
-    // function adduser(event) {
-    //     event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
-    //     let formData = new FormData(event.target);
+    function adduser(event) {
+        event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
+        
+        let formData = new FormData(event.target);
+        let submitButton = $(event.target).find('button[type="submit"]');
+        submitButton.prop('disabled', true); // ปิดปุ่มส่งฟอร์มชั่วคราว
       
-    //     $.ajax({
-    //       url: "./controller/adduserController.php",
-    //       method: "post",
-    //       data: formData,
-    //       processData: false,
-    //       contentType: false,
-    //       success: function(data) {
-    //         alert('เพิ่มข้อมูลผู้ใช้เรียบร้อยแล้ว');
-    //         $('#addUserForm').trigger('reset'); // รีเซ็ตฟอร์ม
-    //         showCustomers();
-    //         $('#myModal').modal('hide'); // ปิด modal
-    //       }
-    //     });
-    //   }
+        $.ajax({
+          url: "./controller/adduserController.php",
+          method: "post",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
+            $('#addUserForm').trigger('reset'); // รีเซ็ตฟอร์ม
+            showCustomers();
+            $('#myModal').modal('hide'); // ปิด modal
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error: ' + textStatus, errorThrown); // แสดงข้อผิดพลาดใน console
+          },
+          complete: function() {
+            submitButton.prop('disabled', false); // เปิดปุ่มส่งฟอร์มอีกครั้ง
+          }
+        });
+      }
+      
+    // ฟังก์ชั่น addcategory ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
+    function addCat(event) {
+        event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
+        
+        let formData = new FormData(event.target);
+        let submitButton = $(event.target).find('button[type="submit"]');
+        submitButton.prop('disabled', true); // ปิดปุ่มส่งฟอร์มชั่วคราว
+      
+        $.ajax({
+          url: "./controller/addCatController.php",
+          method: "post",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
+            $('#addCatForm').trigger('reset'); // รีเซ็ตฟอร์ม
+            showCategory();
+            $('#myModal').modal('hide'); // ปิด modal
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error: ' + textStatus, errorThrown); // แสดงข้อผิดพลาดใน console
+          },
+          complete: function() {
+            submitButton.prop('disabled', false); // เปิดปุ่มส่งฟอร์มอีกครั้ง
+          }
+        });
+      }
+      
+    // ฟังก์ชั่น updatecategory ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
+    function updateCat(event) {
+        event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
+        
+        let formData = new FormData(event.target);
+        let submitButton = $(event.target).find('button[type="submit"]');
+        submitButton.prop('disabled', true); // ปิดปุ่มส่งฟอร์มชั่วคราว
+      
+        $.ajax({
+          url: "./controller/updateCatController.php",
+          method: "post",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
+            $('#updateCatForm').trigger('reset'); // รีเซ็ตฟอร์ม
+            showCategory();
+            $('#editcategoryModal').modal('hide'); // ปิด modal
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error: ' + textStatus, errorThrown); // แสดงข้อผิดพลาดใน console
+          },
+          complete: function() {
+            submitButton.prop('disabled', false); // เปิดปุ่มส่งฟอร์มอีกครั้ง
+          }
+        });
+      }
 
-// detail post
-// function detailpost(postId) {  
-//     $.ajax({
-//         url: "../post.php",
-//         method: "post",
-//         data: { record: postId }, // ส่งค่า postId ไปที่ post.php
-//         success: function(data) {
-//             $('.allContent-section').html(data);
-//         }
-//     });
-// }
+      
+    // ฟังก์ชั่น AddSubcategory ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
+    function addSubCat(type_id, event) {
+        event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
+        
+        let formData = new FormData(event.target);
+        let submitButton = $(event.target).find('button[type="submit"]');
+        submitButton.prop('disabled', true); // ปิดปุ่มส่งฟอร์มชั่วคราว
+      
+        $.ajax({
+          url: "./controller/addSubCatController.php",
+          method: "post",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
+            $('#addSubCatForm').trigger('reset'); // รีเซ็ตฟอร์ม
+            showSubCategory(type_id);
+            $('#myModalSub').modal('hide'); // ปิด modal
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error: ' + textStatus, errorThrown); // แสดงข้อผิดพลาดใน console
+          },
+          complete: function() {
+            submitButton.prop('disabled', false); // เปิดปุ่มส่งฟอร์มอีกครั้ง
+          }
+        });
+      }
+      
+    // ฟังก์ชั่น updateSubcategory ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
+    function updateSubCat(type_id, event) {
+        event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
+        
+        let formData = new FormData(event.target);
+        let submitButton = $(event.target).find('button[type="submit"]');
+        submitButton.prop('disabled', true); // ปิดปุ่มส่งฟอร์มชั่วคราว
+      
+        $.ajax({
+          url: "./controller/updateSubCatController.php",
+          method: "post",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
+            $('#updateSubCatForm').trigger('reset'); // รีเซ็ตฟอร์ม
+            showSubCategory(type_id);
+            $('#editsubcategoryModal').modal('hide'); // ปิด modal
+          },
+          
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error: ' + textStatus, errorThrown); // แสดงข้อผิดพลาดใน console
+          },
+          complete: function() {
+            submitButton.prop('disabled', false); // เปิดปุ่มส่งฟอร์มอีกครั้ง
+          }
+        });
+      }
+      
