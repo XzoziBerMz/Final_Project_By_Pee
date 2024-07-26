@@ -45,7 +45,7 @@ if (isset($_SESSION['user_login'])) {
 
 <body>
   <!-- Navbar5 -->
-  <nav class="navbar-head navbar-expand-lg navbar-dark container-fluid"
+  <nav class="navbar-head navbar-expand-lg navbar-dark container-fluid pe-5"
     style=" background-color: #2C3539; height:fit-content;   box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.40), 0 6px 19px 0 rgba(0, 0, 0, 0.20); z-index: 1;">
 
     <div class=" navbar-collapse ">
@@ -128,7 +128,27 @@ if (isset($_SESSION['user_login'])) {
             }
             ?>
             <a href="contact_admin.php" style="margin-right: 25px; margin-bottom: 5px;">
-              <i class="fa-solid fa-envelope" style="color: #d9d9d9; margin-top: 13px;"></i></a>
+              </a>
+            <div class="dropdown">
+              <i class="fa-solid fa-envelope" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #d9d9d9; margin-top: 13px;"></i>
+              <ul class="dropdown-menu rounded-4 notify p-3 shadow">
+                <div class="border mb-3 border-2 rounded-4 p-2 d-flex justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <span>test</span>
+                    </div>
+                    <div>
+                      <span>test</span>
+                    </div>
+                  </div>
+                  <div class="text-success">
+                    <span class="d-flex pointer">รายละเอียด</span>
+                  </div>
+                </div>
+                
+                
+              </ul>
+            </div>
           </li>
         </ul>
 

@@ -199,3 +199,65 @@ button:active {
     padding: 5px;
     cursor: pointer;
 }
+
+::-webkit-scrollbar {
+    width: 8px;
+    /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    /* Color of the scrollbar thumb on hover */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    /* Color of the scrollbar track */
+    border-radius: 10px;
+    /* Rounded corners for the track */
+}
+
+.containers input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.containers {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.containers svg {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 35px;
+    width: 35px;
+    transition: all 0.3s;
+    fill: #666;
+}
+
+.containers svg:hover {
+    transform: scale(1.1);
+}
+
+.containers input:checked~svg {
+    fill: #E3474F;
+}
+
+.fix-location {
+    top: 1%;
+    left: 95% !important;
+}

@@ -143,6 +143,17 @@ if (isset($_SESSION['user_login'])) {
                         <div>
                             <hr class="border-3">
                         </div>
+                        <div>
+                            <label class="containers position-absolute fix-location">
+                                <input type="checkbox">
+                                <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve"
+                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <path
+                                        d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z">
+                                    </path>
+                                </svg>
+                            </label>
+                        </div>
                         <div class="description">
                             <span>รายละเอียด</span>
                         </div>
@@ -226,11 +237,12 @@ if (isset($_SESSION['user_login'])) {
                         $comment_text = htmlspecialchars($_POST['comment_text']);
                         $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
 
-                        $sql = "INSERT INTO comments (post_id, user_id, user_name, comment_text, parent_comment_id) VALUES (:post_id, :user_id, :user_name, :comment_text, :parent_comment_id)";
+                        $sql = "INSERT INTO comments (post_id, user_id, user_name, image, comment_text, parent_comment_id) VALUES (:post_id, :user_id, :user_name, :image, :comment_text, :parent_comment_id)";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':post_id', $product_id);
                         $stmt->bindParam(':user_id', $user['user_id']);
                         $stmt->bindParam(':user_name', $user_name);
+                        $stmt->bindParam(':image', $user['user_photo']);
                         $stmt->bindParam(':comment_text', $comment_text);
                         $stmt->bindParam(':parent_comment_id', $parent_comment_id);
                         $stmt->execute();
@@ -299,7 +311,10 @@ if (isset($_SESSION['user_login'])) {
                 foreach ($comments as $comment) {
                     ?>
                     <div class="text-white">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex gap-3 align-items-center">
+                            <div>
+                                <img class="rounded-circle" src="<?= $comment['image'] ?>" alt="" width="50" height="50">
+                            </div>
                             <div>
                                 <strong><?= htmlspecialchars($comment['user_name']); ?></strong>
                                 <span class="ms-2"><?= $comment['created_at']; ?></span>
@@ -312,10 +327,10 @@ if (isset($_SESSION['user_login'])) {
                                 name="edited_text"><?= htmlspecialchars($comment['comment_text']); ?></textarea>
                             <button name="submit_edit" type="submit" class="btn btn-primary">Save</button>
                         </form>
-                        <div class="mt-2 ps-3" id="text-edit-<?= $comment['comment_id']; ?>" style="display: block;">
+                        <div class="ps-5 ms-5" id="text-edit-<?= $comment['comment_id']; ?>" style="display: block;">
                             <?= nl2br(htmlspecialchars($comment['comment_text'])); ?>
                         </div>
-                        <div class="mt-2 ps-3">
+                        <div class="ps-5 ms-5">
                             <span class="pointer me-2" onclick="showReplyForm(<?= $comment['comment_id']; ?>)">Reply</span>
                             <?php if (isset($comment['user_id']) && $comment['user_id'] == $user['user_id']) { ?>
                                 <span class="pointer me-2" onclick="toggleEditForm(<?= $comment['comment_id']; ?>)">Edit</span>
