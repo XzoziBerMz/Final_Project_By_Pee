@@ -23,7 +23,7 @@ function updateViewNotify(id, value) {
         .then(data => {
             // console.log('Success:', data);
             // คุณสามารถอัปเดต UI ที่นี่ถ้าต้องการ
-            window.location.reload();
+            window.location.href = `./post.php?product_id=${value}`;
         })
         .catch((error) => {
             console.error('Error:', error);
