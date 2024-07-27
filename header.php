@@ -145,7 +145,7 @@ if (isset($_SESSION['user_login'])) {
 
           ?>
           <i class="fa-solid fa-envelope position-relative" type="button" data-bs-toggle="dropdown"
-            onclick="updateViewNotify(<?= $user_id_get ?>)" aria-expanded="false" style="color: #d9d9d9;">
+            aria-expanded="false" style="color: #d9d9d9;">
             <?php if ($hasNotifications): ?>
               <span
                 class="position-absolute top-0 start-100 translate-middle border border-light rounded-circle bg-danger"
@@ -192,7 +192,7 @@ if (isset($_SESSION['user_login'])) {
                   </div>
                   <div class="text-success">
                     <span class="d-flex pointer"
-                      onclick="viewNotify(<?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span>
+                      onclick="updateViewNotify(<?= htmlspecialchars($item['id']) ?>, <?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span>
                   </div>
                 </div>
               <?php }
