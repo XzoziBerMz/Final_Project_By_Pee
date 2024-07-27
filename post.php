@@ -87,13 +87,12 @@ if (isset($_SESSION['user_login'])) {
                             <div class="d-flex justify-content-center">
                                 <?php
                                 $totalWidth = count($images) * 80; // Assuming each image has a width of 80px
-                                if ($totalWidth < 499) {
-                                    $totalWidth = 500;
-                                    $containerWidth = min($totalWidth, 500); // Maximum width of 500px
-                                    $containerClass = ($totalWidth <= 500) ? "justify-content-center gap-4" : "gap-4";
+                                if ($totalWidth < 479) {
+                                    $containerWidth = 498; // Set container width to 500px if total width is less than 499px
+                                    $containerClass = "justify-content-center gap-4"; // Only gap-4 class if less than 499px
                                 } else {
-                                    $containerWidth = min($totalWidth, 500); // Maximum width of 500px
-                                    $containerClass = ($totalWidth <= 500) ? "justify-content-center" : "gap-4";
+                                    $containerWidth = 500; // Maximum width of 500px
+                                    $containerClass = "gap-4"; // Add justify-content-center if more than 499px
                                 }
                                 ?>
                                 <div id="stylescrollbar" class="d-flex <?php echo $containerClass; ?> mt-4 overflow-auto"
@@ -106,6 +105,7 @@ if (isset($_SESSION['user_login'])) {
                                     <?php } ?>
                                 </div>
                             </div>
+
                         <?php } ?>
                     </div>
 
@@ -128,11 +128,12 @@ if (isset($_SESSION['user_login'])) {
 
                             <!-- แสดงชื่อผู้โพสต์ -->
                             <?php
-                            $sqlUser = "SELECT firstname , lastname FROM users WHERE user_id = :user_id";
+                            $sqlUser = "SELECT user_id , firstname , lastname FROM users WHERE user_id = :user_id";
                             $stmtUser = $conn->prepare($sqlUser);
                             $stmtUser->bindParam(':user_id', $row->user_id, PDO::PARAM_INT);
                             $stmtUser->execute();
                             $postUser = $stmtUser->fetch(PDO::FETCH_ASSOC);
+                            // echo $postUser['user_id'];
                             ?>
                             <p style="margin-top: 20px;">โพสต์โดย:
                                 <span
@@ -237,18 +238,38 @@ if (isset($_SESSION['user_login'])) {
                         $comment_text = htmlspecialchars($_POST['comment_text']);
                         $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
 
-                        $sql = "INSERT INTO comments (post_id, user_id, user_name, image, comment_text, parent_comment_id) VALUES (:post_id, :user_id, :user_name, :image, :comment_text, :parent_comment_id)";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->bindParam(':post_id', $product_id);
-                        $stmt->bindParam(':user_id', $user['user_id']);
-                        $stmt->bindParam(':user_name', $user_name);
-                        $stmt->bindParam(':image', $user['user_photo']);
-                        $stmt->bindParam(':comment_text', $comment_text);
-                        $stmt->bindParam(':parent_comment_id', $parent_comment_id);
-                        $stmt->execute();
+                        $conn->beginTransaction();
+                        try {
+                            // แทรกข้อมูลคอมเมนต์
+                            $sql = "INSERT INTO comments (post_id, user_id, user_name, image, comment_text, parent_comment_id) VALUES (:post_id, :user_id, :user_name, :image, :comment_text, :parent_comment_id)";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bindParam(':post_id', $product_id);
+                            $stmt->bindParam(':user_id', $user['user_id']);
+                            $stmt->bindParam(':user_name', $user_name);
+                            $stmt->bindParam(':image', $user['user_photo']);
+                            $stmt->bindParam(':comment_text', $comment_text);
+                            $stmt->bindParam(':parent_comment_id', $parent_comment_id);
+                            $stmt->execute();
 
-                        header("Location: post.php?product_id=" . $product_id);
-                        exit();
+                            // แทรกข้อมูลการแจ้งเตือน
+                            $sqlNotify = "INSERT INTO notify (notify_status, post_id, user_id, user_notify_id) VALUES (:notify_status, :post_id, :user_id, :user_notify_id)";
+                            $stmtNotify = $conn->prepare($sqlNotify);
+                            $stmtNotify->bindValue(':notify_status', true, PDO::PARAM_BOOL);
+                            $stmtNotify->bindParam(':post_id', $product_id);
+                            $stmtNotify->bindParam(':user_id', $postUser['user_id']); // User who made the comment
+                            $stmtNotify->bindParam(':user_notify_id', $user['user_id']); // User who will receive the notification
+                            $stmtNotify->execute();
+
+                            // คอมมิต transaction
+                            $conn->commit();
+
+                            header("Location: post.php?product_id=" . $product_id);
+                            exit();
+                        } catch (Exception $e) {
+                            // ย้อนกลับการทำงานของ transaction ในกรณีที่เกิดข้อผิดพลาด
+                            $conn->rollBack();
+                            echo "Failed: " . $e->getMessage();
+                        }
                     } else if (isset($_POST['submit_edit'])) {
                         $comment_id = $_POST['comment_id'];
                         $edited_text = htmlspecialchars($_POST['edited_text']);
@@ -312,11 +333,19 @@ if (isset($_SESSION['user_login'])) {
                     ?>
                     <div class="text-white">
                         <div class="d-flex gap-3 align-items-center">
+                            <?php
+                            $user_id_comment = $comment['user_id'];
+                            $stmt = $conn->query("SELECT * FROM users WHERE user_id = $user_id_comment");
+                            $stmt->execute();
+                            $user_comment = $stmt->fetch(PDO::FETCH_ASSOC);
+                            ?>
                             <div>
-                                <img class="rounded-circle" src="<?= $comment['image'] ?>" alt="" width="50" height="50">
+                                <img class="rounded-circle" src="<?= $user_comment['user_photo'] ?>" alt="" width="50"
+                                    height="50">
                             </div>
                             <div>
-                                <strong><?= htmlspecialchars($comment['user_name']); ?></strong>
+
+                                <strong><?= htmlspecialchars($user_comment['firstname'] . ' ' . $user_comment['lastname']); ?></strong>
                                 <span class="ms-2"><?= $comment['created_at']; ?></span>
                             </div>
                         </div>
@@ -466,7 +495,7 @@ if (isset($_SESSION['user_login'])) {
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
     <script src="js/post.js"></script>

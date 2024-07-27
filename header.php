@@ -18,7 +18,7 @@ if (isset($_SESSION['user_login'])) {
   $admin_id = $_SESSION['admin_login'];
   $stmt = $conn->query("SELECT * FROM users WHERE user_id = $admin_id");
   $stmt->execute();
-  $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 ?>
@@ -113,7 +113,7 @@ if (isset($_SESSION['user_login'])) {
             } else if (isset($_SESSION['admin_login'])) {
               echo "<li class='nav-item dropdown'>" .
                 "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false'>" .
-                $admin['firstname'] . ' ' . $admin['lastname'] .
+                $user['firstname'] . ' ' . $user['lastname'] .
                 "</a>" .
                 "<ul class='dropdown-menu' aria-labelledby='navbarDropdown'>" .
                 "<li><a class='dropdown-item' href='profile.php'>รายการประกาศ</a></li>" .
@@ -127,31 +127,78 @@ if (isset($_SESSION['user_login'])) {
               echo "<a href='signin.php' class='btn btn-outline-light mb-2' style='margin-right: 30px'>เข้าสู่ระบบ</a>";
             }
             ?>
-            <a href="contact_admin.php" style="margin-right: 25px; margin-bottom: 5px;">
-              </a>
-            <div class="dropdown">
-              <i class="fa-solid fa-envelope" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #d9d9d9; margin-top: 13px;"></i>
-              <ul class="dropdown-menu rounded-4 notify p-3 shadow">
+
+          </li>
+        </ul>
+        <div class="dropdown">
+          <?php
+          $user_id_get = $user['user_id'];
+          $notify = "SELECT * FROM notify WHERE user_id = :user_id AND notify_status = :notify_status";
+          $notify_stmt = $conn->prepare($notify);
+          $notify_status_filter = 1;
+          $notify_stmt->bindParam(':user_id', $user_id_get, PDO::PARAM_INT);
+          $notify_stmt->bindValue(':notify_status', true, PDO::PARAM_BOOL);
+          $notify_stmt->execute();
+          $notify_list = $notify_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+          $hasNotifications = !empty($notify_list);
+
+          ?>
+          <i class="fa-solid fa-envelope position-relative" type="button" data-bs-toggle="dropdown"
+            onclick="updateViewNotify(<?= $user_id_get ?>)" aria-expanded="false" style="color: #d9d9d9;">
+            <?php if ($hasNotifications): ?>
+              <span
+                class="position-absolute top-0 start-100 translate-middle border border-light rounded-circle bg-danger"
+                style="height: 11px; width: 11px;"></span>
+            <?php endif; ?>
+          </i>
+
+          <ul class="dropdown-menu rounded-4 notify p-3 shadow">
+            <?php
+            if (empty($notify_list)) { ?>
+              <div class="row text-center h-100 justify-content-center align-items-center">
+                <div>
+                  <span class="text-muted">ไม่มีการแจ้งเตือน</span>
+                  <div class="text-center mt-3">
+                    <span class="pointer text-info" style="color: #0DCAF0;" onclick="reloadPage()">รีเช็ต</span>
+
+                    <!-- <i class="bi bi-arrow-clockwise"></i> -->
+                  </div>
+                </div>
+              </div>
+            <?php } else {
+              // มีข้อมูลที่ notify_status เป็น true
+              foreach ($notify_list as $item) {
+                $post_notify = $item['post_id'];
+                $postNotifystmt = $conn->prepare("SELECT * FROM posts WHERE posts_id = :post_id");
+                $postNotifystmt->bindParam(':post_id', $post_notify, PDO::PARAM_INT);
+                $postNotifystmt->execute();
+                $notify_post = $postNotifystmt->fetch(PDO::FETCH_ASSOC);
+
+                $user_notify = $item['user_notify_id'];
+                $userNotify = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+                $userNotify->bindParam(':user_id', $user_notify, PDO::PARAM_INT);
+                $userNotify->execute();
+                $user_notify_list = $userNotify->fetch(PDO::FETCH_ASSOC);
+                ?>
                 <div class="border mb-3 border-2 rounded-4 p-2 d-flex justify-content-between align-items-center">
                   <div>
                     <div>
-                      <span>test</span>
+                      <span><?= htmlspecialchars($notify_post['product_name']) ?></span>
                     </div>
                     <div>
-                      <span>test</span>
+                      <span><?= htmlspecialchars($user_notify_list['firstname'] . ' ' . $user_notify_list['lastname']) ?></span>
                     </div>
                   </div>
                   <div class="text-success">
-                    <span class="d-flex pointer">รายละเอียด</span>
+                    <span class="d-flex pointer"
+                      onclick="viewNotify(<?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span>
                   </div>
                 </div>
-                
-                
-              </ul>
-            </div>
-          </li>
-        </ul>
-
+              <?php }
+            } ?>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -160,6 +207,7 @@ if (isset($_SESSION['user_login'])) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
+  <script src="js/header.js"></script>
 </body>
 
 </html>
