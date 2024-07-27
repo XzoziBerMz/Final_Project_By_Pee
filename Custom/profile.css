@@ -1,0 +1,99 @@
+
+/* profile users */
+.username{
+    color: #109c33;
+}
+
+.detaill_user{
+    color:#63636398 ;
+    margin-top: -8px;
+}
+
+.rounded-circle{
+    margin-left: 22%;
+    margin-top: 5%;
+}
+
+.card-user{
+    margin-top: 65px;
+    width: 100%; 
+    margin-left: 5px;
+    height: 320px;
+    border: 0px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px;
+}
+
+.profile-container {
+    padding: 20px;
+}
+
+.categories-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+    margin-left: 20px;
+    
+}
+
+.btn-personal-information {
+    width: 100%;
+    margin-top: -16px;
+    border-radius: 0 0 15px 15px;
+    background-color: #08ae4b;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
+}
+
+.btn-personal-information:hover {
+    background-color: #0e8f2e;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
+}
+/* หมวดหมู่ */
+.category-item {
+    background-color: #f8f9fa;
+    padding: 10px 30px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #495057;
+    margin-left: 10px;
+    border: 0px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.category-item:hover {
+    background-color: #4fd33ecc;
+    color: #2e3033;
+}
+
+.hr-catagory{
+    margin-left: 30px;
+    margin-right:60px;
+}
+
+/* ปุ่มโพสต์หา-ขายสินค้า */
+.div-btn {
+    position: absolute; 
+    right: 20px;
+    margin-right: 70px;
+    }
+    
+    .btn-post {
+    background-color: #09CD56;
+    color: #FFFFFF; 
+    width: 100%;
+    padding: 10px;  
+    transition: background-color 0.5s ease, color 0.5s ease;
+    }
+    
+    .btn-post:hover {
+    background-color: #08ae4b;
+    color: #FFFFFF;
+    }
+    
+    /* css ลูกเล่นตรงส่วน ปุ่มโพสต์หา-ขายสินค้า */
+    .blink-2{-webkit-animation:blink-2 1s 1s infinite both;animation:blink-2 1s 1s infinite both}
+    
+    @-webkit-keyframes blink-2{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}@keyframes blink-2{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}

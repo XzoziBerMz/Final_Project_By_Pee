@@ -1,205 +1,117 @@
-<div >
-  <h2>All Post</h2>
-  <div style="margin-left: 5%; margin-right: -20%;">
-  <table id="poststable" class="table">
-    <thead>
-      <tr>
-        <th class="text-center">ลำดับที่</th>
-        <th class="text-center">ID</th>
-        <th class="text-center">Product Image</th>
-        <th class="text-center">Product Name</th>
-        <th class="text-center">Product Detail</th>
-        <th class="text-center">Category</th>
-        <th class="text-center">Sub Category</th>
-        <th class="text-center">Product Price</th>
-        <th class="text-center">Action</th>
-      </tr>
-    </thead>
-    <?php
-      include_once "../config/dbconnect.php";
-      $sql="SELECT * FROM posts
-      INNER JOIN types ON posts.type_id = types.type_id
-      INNER JOIN sub_type ON posts.sub_type_id = sub_type.sub_type_id;
-      ";
-      $result = $conn->query($sql);
-      if ($result->rowCount() > 0) { // ตรวจสอบว่ามีแถวที่ส่งคืนจากคำสั่ง SQL SELECT หรือไม่
-      $No_Post = 1;
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    ?>
-    <tr>
-      <td><?=$No_Post?></td>
-      <td><?=$row["posts_id"]?></td>
-      <td><?php $imageURL = '../image/' . $row['Product_img']; ?>
-      <!-- เชื่อมต่อ URL ของรูปภาพจากฐานข้อมูล -->
-      <img height="100px" src="<?php echo $imageURL; ?>" alt=""></td>
-      <!-- ใส่หัวข้อและทำการย่อให้แสดงได้ไม่เกิน...ตัวอักษร -->
-      <td>
-       <?php
-            $product_title = $row['product_name']; 
-            if (mb_strlen($product_title) > 40) {
-                $shortened_title = mb_substr($product_title, 0, 13) . '...';
-                echo $shortened_title;
-            } else {
-                echo $product_title;
-            }
-            ?>
-      </td>
-      <!-- ใส่รายละเอียดและทำการย่อให้แสดงได้ไม่เกิน...ตัวอักษร -->
-      <td>
+<div>
+  <h3 style="margin-bottom: 20px;margin-left: 5%;">All Post</h3>
+  <div style="margin-left: 5%; margin-right: -10%">
+    <table id="posttable" class="table">
+      <thead>
+        <tr>
+          <th class="text-center">ลำดับที่</th>
+          <th class="text-center">ID</th>
+          <th class="text-center">Product Image</th>
+          <th class="text-center">Product Name</th>
+          <th class="text-center">Product Detail</th>
+          <th class="text-center">Category</th>
+          <th class="text-center">Sub Category</th>
+          <th class="text-center">Product Price</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
         <?php
-            $product_detail = $row['Product_detail'];
-            if (mb_strlen($product_detail) > 40) {
-                $shortened_detail = mb_substr($product_detail, 0, 13) . '...';
-                echo $shortened_detail;
-            } else {
-                echo $product_detail;
-            }
+        include_once "../config/dbconnect.php";
+        $sql = "SELECT * FROM posts
+                INNER JOIN types ON posts.type_id = types.type_id
+                INNER JOIN sub_type ON posts.sub_type_id = sub_type.sub_type_id;";
+        $result = $conn->query($sql);
+        if ($result->rowCount() > 0) {
+          $No_Post = 1;
+          while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             ?>
-      </td>
-      <td><?=$row["type_name"]?></td> 
-      <td><?=$row["sub_type_name"]?></td> 
-      <td><?=$row["product_price"]?> บาท </td>
-      <td>
-        <button class="btn btn-warning" style="height:40px" onclick="PostEditForm('<?=$row['posts_id']?>')">Edit</button>
-        <button class="btn btn-danger" style="height:40px; float: right;" onclick="postDelete('<?=$row['posts_id']?>')">Delete</button>
-      </td>
-
-      </tr>
-      <?php
-      $No_Post++;
+            <tr>
+              <td><?= $No_Post ?></td>
+              <td><?= htmlspecialchars($row["posts_id"]) ?></td>
+              <td>
+                <?php
+                $product_images = json_decode($row["Product_img"], true);
+                if (!empty($product_images) && is_array($product_images)) {
+                  $first_image = $product_images[0];
+                  $image_path = '../../image/' . $first_image;
+                  if (file_exists($image_path)) {
+                    echo '<img height="100px" src="' . ($image_path) . '" alt="Product Image">';
+                  } else {
+                    echo 'Image not found';
+                  }
+                } else {
+                  echo 'No images available';
+                }
+                ?>
+              </td>
+              <td>
+                <?php
+                $product_title = htmlspecialchars($row['product_name']);
+                echo mb_strlen($product_title) > 32 ? mb_substr($product_title, 0, 11) . '...' : $product_title;
+                ?>
+              </td>
+              <td>
+                <?php
+                $product_detail = htmlspecialchars($row['Product_detail']);
+                echo mb_strlen($product_detail) > 31 ? mb_substr($product_detail, 0, 15) . '...' : $product_detail;
+                ?>
+              </td>
+              <td><?= htmlspecialchars($row["type_name"]) ?></td>
+              <td><?= htmlspecialchars($row["sub_type_name"]) ?></td>
+              <td>
+                <?php
+                if ($row['product_price'] === '0') {
+                  echo '<div class="product-price">ฟรี</div>';
+                } else {
+                  echo '<div class="product-price">' . number_format($row['product_price']) . ' บาท</div>';
+                }
+                ?>
+              </td>
+              <td>
+                <!-- <button class="btn btn-warning" style="height:40px"
+                  onclick="PostEditForm('<?= htmlspecialchars($row['posts_id']) ?>')">Edit</button> -->
+                <!-- <button class="btn btn-success" style="height:40px;"
+                  onclick="detailpost('product_id=<?php echo $row['posts_id']; ?>')">detail</button> -->
+                <button class="btn btn-danger" style="height:40px;"
+                  onclick="confirmDelete('<?= htmlspecialchars($row['posts_id']) ?>')">Delete</button>
+              </td>
+            </tr>
+            <?php
+            $No_Post++;
           }
         }
-      ?>
-  </table>
-  </div>
-
-<!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-secondary" style="height:50px; margin-top: 10px;margin-left: 5%;background-color: #009933; border: 0px;" data-bs-toggle="modal" data-bs-target="#myModal">Add Post</button>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">New Post Item</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form enctype="multipart/form-data" action="./controller/addPostController.php" method="POST">
-          <div class="form-group">
-            <label for="p_name">Product Name:</label>
-            <input type="text" class="form-control" id="p_name" name="p_name" required>
-          </div>
-          <div class="form-group" style="margin-top: 20px;">
-            <label for="p_price" class="form-label label-insert" style="display: block;">Price:</label>
-            <select class="select-price" id="p_price" name="p_price">
-                <option value="ฟรี">ฟรี</option>
-                <option value="ต่อรองได้">ต่อรองได้</option>
-                <option value="ราคาคงที่">ราคาคงที่</option>
-            </select>
-              <input type="number" class="input-price" id="negotiablePrice" name="negotiablePrice" style="display: none;" placeholder="กรุณาใส่ราคา">
-              <input type="number" class="input-price" id="fixedPrice" name="fixedPrice" style="display: none;" placeholder="กรุณาใส่ราคา">
-              <input type="text" class="input-price" id="freePrice" name="freePrice" placeholder="ฟรี" disabled>
-              <input type="hidden" id="hiddenFreePrice" name="hiddenFreePrice" value="ฟรี">
-          </div>
-          <div class="form-group" style="margin-top: 20px;">
-            <label for="p_desc">Description:</label>
-            <input type="text" class="form-control" id="p_desc" name="p_desc" required>
-          </div>
-          <div class="form-group" style="margin-top: 25px;">
-            <label>Category:</label>
-            <select id="category" name="category" onchange="filterSubCategories()" required>
-              <option disabled selected>กรุณาเลือกหมวดหมู่</option>
-              <?php
-                $sql = "SELECT * FROM types";
-                $result = $conn->query($sql);
-                if ($result->rowCount() > 0) {
-                  while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<option value='" . htmlspecialchars($row['type_id']) . "'>" . htmlspecialchars($row['type_name']) . "</option>";
-                  }
-                }
-              ?>
-            </select>
-            <select id="subcategory" name="subcategory" required>
-              <option disabled selected>หมวดหมู่ย่อย</option>
-              <?php
-                $sql = "SELECT * FROM sub_type";
-                $result = $conn->query($sql);
-                if ($result->rowCount() > 0) {
-                  while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<option value='" . htmlspecialchars($row['sub_type_id']) . "' data-type='" . htmlspecialchars($row['type_id']) . "'>" . htmlspecialchars($row['sub_type_name']) . "</option>";
-                  }
-                }
-              ?>
-            </select>
-          </div>
-          <div class="form-group" style="margin-top: 30px;">
-            <label for="file">Choose Image:</label>
-            <input type="file" class="form-control-file" id="file" name="file" required>
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-secondary" name="upload" style="height: 50px; margin-top: 35px; background-color: #009933; border: 0px;">Add Post</button>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-bs-dismiss="modal" style="height: 40px">Close</button>
-      </div>
-    </div>
+        ?>
+      </tbody>
+    </table>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- สคริปการแสดงผลสำหรับ DataTable -->
-    <script>
-        $(document).ready(function(){ //ใช้งาน DataTable เมื่อเว็บโหลดเสร็จ
-        
-            let table = new DataTable('#poststable'); //เลือกตารางข้อมูล และเปิดใช้งาน DataTable
+<script>
 
-        });
-    
-    // การทำdropdown ส่วนของเลือกหมวดหมู่ตรง Add post
+  $(document).ready(function () {
+    $('#posttable').DataTable(); // Use jQuery DataTable for initialization
+  });
 
-        function filterSubCategories() {
-        const typeSelect = document.getElementById('category');
-        const subTypeSelect = document.getElementById('subcategory');
-        const selectedType = typeSelect.value;
+  function validateInput(element) {
+    element.value = element.value.replace(/\D/g, '');
+  }
 
-        for (let i = 0; i < subTypeSelect.options.length; i++) {
-          const option = subTypeSelect.options[i];
-          if (option.getAttribute('data-type') === selectedType) {
-            option.style.display = '';
-          } else {
-            option.style.display = 'none';
-          }
-        }
-        subTypeSelect.selectedIndex = 0; // Reset subcategory selection
+  function confirmDelete(id) {
+    Swal.fire({
+      title: 'คุณแน่ใจหรือเปล่า?',
+      text: "คุณต้องการจะลบจริงๆใช่ไหม!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        postDelete(id);
       }
-
-      // การเลือกราคา 
-    document.getElementById("p_price").addEventListener("change", function() {
-        var selectedValue = this.value;
-        if (selectedValue === "ราคาคงที่") {
-            document.getElementById("fixedPrice").style.display = "inline-block";
-            document.getElementById("negotiablePrice").style.display = "none";
-            document.getElementById("freePrice").style.display = "none";
-        } else if (selectedValue === "ต่อรองได้") {
-            document.getElementById("fixedPrice").style.display = "none";
-            document.getElementById("negotiablePrice").style.display = "inline-block";
-            document.getElementById("freePrice").style.display = "none";
-        } else if (selectedValue === "ฟรี") {
-            document.getElementById("fixedPrice").style.display = "none";
-            document.getElementById("negotiablePrice").style.display = "none";
-            document.getElementById("freePrice").style.display = "inline-block";
-            document.getElementById("freePrice").value = "ฟรี";
-            document.getElementById("hiddenFreePrice").value = "ฟรี";
-        } else {
-            document.getElementById("fixedPrice").style.display = "none";
-            document.getElementById("negotiablePrice").style.display = "none";
-            document.getElementById("freePrice").style.display = "none";
-        }
-      });
-      
-    </script>
-   
+    });
+  }
+</script>

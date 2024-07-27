@@ -1,26 +1,40 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
-*
-{
+
+* {
     -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body
-{
+body {
     font-family: 'Roboto', sans-serif;
 }
 
-a{
+a {
     text-decoration: none;
+}
+
+.fs-14 {
+    font-size: 14px;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .product-card {
     width: 350px;
     position: relative;
     box-shadow: 0 4px 7px #cdcdcd;
-    margin: 16px;
+    margin: 13px;
+    background: #ffffff;
+}
+.product-card-fix {
+    width: 340px;
+    position: relative;
+    box-shadow: 0 4px 7px #cdcdcd;
+    margin: 13px;
     background: #ffffff;
 }
 
@@ -30,14 +44,14 @@ a{
     justify-content: center;
     margin-top: 10px;
     background: #f0f0f0;
-    max-width: 100%; 
-    max-height: 185px; 
-    overflow: hidden; 
+    max-width: 100%;
+    max-height: 185px;
+    overflow: hidden;
 }
 
 .product-tumb img {
     max-width: 100%;
-    max-height:100%;
+    max-height: 100%;
     object-fit: contain;
 }
 
@@ -83,7 +97,7 @@ a{
 .product-bottom-details div {
     float: left;
     width: 50%;
-}   
+}
 
 .product-price {
     font-size: 18px;
@@ -92,15 +106,15 @@ a{
     margin-top: 5px;
 }
 
-.btn-more{
+.btn-more {
     background-color: #09CD56;
-    color: #FFFFFF; 
+    color: #FFFFFF;
     width: 100%;
-    padding: 5px;  
+    padding: 5px;
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.btn-more:hover{
+.btn-more:hover {
     background-color: #08ae4b;
     color: #FFFFFF;
 }
@@ -133,8 +147,51 @@ a{
     left: 96%
 }
 
+.tag-close {
+    border: 1px solid;
+    border-color: #ffae00;
+    background-color: #ffae00;
+    padding: 5px;
+    width: 150px;
+    border-radius: 7px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    margin-top: 30%;
+    font-size: x-large;
+}
+
 .text-config {
     width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.tag-edit {
+    border: 1px solid;
+    border-color: #FDD60D;
+    background-color: #FDD60D;
+    padding: 5px;
+    width: 60px;
+    border-radius: 7px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.tag-delete {
+    border: 1px solid;
+    border-color: red;
+    background-color: red;
+    padding: 5px;
+    width: 60px;
+    border-radius: 7px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }

@@ -1,0 +1,317 @@
+/* header */
+.nav-head {
+  height: 80px;
+}
+
+/* หลัก */
+.main-insert{
+  margin-left: 15%;
+  margin-top: 70px;
+  margin-right: 15%;
+  margin-bottom: 50px;
+  padding: 40px;
+  border-radius: 20px;
+  background-color: #fff;
+}
+
+/* ชื่อของform */
+.label-insert{
+  font-size: 20px;
+}
+
+/* ที่กรอกข้อมูล */
+.input-insert{
+  height: 55px;
+}
+
+.input-insert:hover{
+border-color: #00aa44;
+}
+
+/* ดอกจันแดง */
+.span-label{
+  color: red;
+}
+
+.btn-category{
+  border-color: rgba(0, 0, 0, 0.234);
+  width: 100%;
+  height: 80px;
+  text-align: left;
+}
+
+.btn-category:hover{
+  border-color:  #00aa44;
+  color: #00aa44;
+}
+
+.select-type {
+  border-color: rgba(0, 0, 0, 0.234);
+  height: 55px;
+  width: 100%;
+}
+
+.select-type:hover {
+  border-color: #00aa44;
+}
+/* price */
+.select-price{
+border-color: rgba(0, 0, 0, 0.234);
+height: 55px;
+width: 25%;
+}
+
+.select-price:hover{
+border-color:  #00aa44;
+}
+
+.select-price select {
+display: none;
+}
+
+.input-price{
+border-color: rgba(0, 0, 0, 0.234);
+height: 55px;
+width: 75%;
+margin-left: -5px;
+}
+
+.input-price:hover{
+border-color:  #00aa44;
+
+}
+
+/* upload image */
+.file-upload {
+  background-color: #ffffff;
+  width: 100%;
+  margin-top: 3px;
+}
+
+.file-upload-btn:active {
+  border: 0;
+  transition: all .2s ease;
+}
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+}
+
+.file-upload-input {
+  position: absolute;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  border: 2px dashed #3e3e3e;
+  position: relative;
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  background-color: #36af6e56;
+  border: 2px dashed #017d32;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text h5 {
+  font-size: small;
+  text-align: center;
+}
+
+.drag-text h5 {
+  font-weight: 60;
+  text-transform: uppercase;
+  color: #000000;
+  padding: 35px 0;
+}
+
+.file-upload-image {
+  max-height: max-content;
+  max-width: max-content;
+  margin: auto;
+  padding: 20px;
+  object-fit: cover;
+}
+
+.remove-image {
+  width: 200px;
+  margin: 0;
+  color: #fff;
+  background: #cd4535;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #b02818;
+  transition: all .2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.remove-image:hover {
+  background: #c13b2a;
+  color: #ffffff;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.remove-image:active {
+  border: 0;
+  transition: all .2s ease;
+}
+
+
+/* descrtion */
+textarea:hover{
+  border-color:  #00aa44;
+}
+
+/* ad type post */
+.image-preview {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/* เลือกประกาศ */
+.radio-input {
+  --container-width: 700px;
+  --selection-bg: #3ec550;
+  --border-radius: 10px;
+  --border-color: rgba(53, 52, 52, 0.226);
+  --font-color: #000;
+  --font-color-selected: #fff;
+  --transition-speed: 0.15s;
+
+  
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: var(--container-width);
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.radio-input input {
+  display: none;
+}
+
+.radio-input label {
+  height: 50px;
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: 16px;
+  color: var(--font-color);
+  z-index: 1;
+  transition: color var(--transition-speed);
+}
+
+.radio-input .selection {
+  position: absolute;
+  height: 100%;
+  width: calc(var(--container-width) / 2);
+  background-color: var(--selection-bg);
+  top: 0;
+  left: 0;
+  z-index: 0;
+  transition: transform var(--transition-speed), background-color var(--transition-speed);
+}
+
+.radio-input label:has(input:checked) {
+  color: var(--font-color-selected);
+}
+
+.radio-input label:nth-of-type(1):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container-width) * 0 / 2));
+}
+
+.radio-input label:nth-of-type(2):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container-width) * 1 / 2));
+}
+
+
+.radio-input-edit {
+  --container-width: 700px;
+  --selection-bg: #3ec550;
+  --border-radius: 10px;
+  --border-color: rgba(53, 52, 52, 0.226);
+  --font-color: #000;
+  --font-color-selected: #fff;
+  --transition-speed: 0.15s;
+
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: var(--container-width);
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.radio-input-edit input {
+  display: none;
+}
+
+.radio-input-edit label {
+  height: 50px;
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: 16px;
+  color: var(--font-color);
+  z-index: 1;
+  transition: color var(--transition-speed);
+}
+
+.radio-input-edit .selection {
+  position: absolute;
+  height: 100%;
+  width: calc(var(--container-width) / 3);
+  background-color: var(--selection-bg);
+  top: 0;
+  left: 0;
+  z-index: 0;
+  transition: transform var(--transition-speed), background-color var(--transition-speed);
+}
+
+.radio-input-edit label:has(input:checked) {
+  color: var(--font-color-selected);
+}
+
+.radio-input-edit label:nth-of-type(1):has(input:checked)~.selection {
+  transform: translateX(calc(var(--container-width) * 0 / 3));
+}
+
+.radio-input-edit label:nth-of-type(2):has(input:checked)~.selection {
+  transform: translateX(calc(var(--container-width) * 1 / 3));
+}
+
+.radio-input-edit label:nth-of-type(3):has(input:checked)~.selection {
+  transform: translateX(calc(var(--container-width) * 2 / 3));
+}

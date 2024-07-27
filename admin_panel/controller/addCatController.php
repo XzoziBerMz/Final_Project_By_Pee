@@ -1,29 +1,34 @@
 <?php
 include_once "../config/dbconnect.php";
+session_start();
 
-if (isset($_POST['upload'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ตรวจสอบว่าคำขอนี้ได้ถูกประมวลผลแล้วหรือยัง
+    // if (isset($_SESSION['processed']) && $_SESSION['processed'] === true) {
+    //     exit("Request already processed");
+    // }
+
+    // รับค่าจาก POST
     $catname = $_POST['c_name'];
 
     try {
+        // เตรียม statement สำหรับการ insert ข้อมูล
         $stmt = $conn->prepare("INSERT INTO types (type_name) VALUES (:catname)");
         $stmt->bindParam(':catname', $catname, PDO::PARAM_STR);
+
         // ดำเนินการ statement
-        if ($stmt->execute()) {
-            echo "<script>
-                    alert('เพิ่มข้อมูลหมวดหมู่สำเร็จ');
-                    window.location.href = '../index.php' ;
-                  </script>";
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            echo "เพิ่ม หมวดหมู่ เรียบร้อยแล้ว";
         } else {
-            echo "<script>
-                    alert('ไม่สามารถเพิ่มข้อมูลหมวดหมู่ได้');
-                    window.location.href = '../index.php';
-                  </script>";
+            echo "เกิดข้อผิดพลาดในการเพิ่ม หมวดหมู่";
         }
+
     } catch (PDOException $e) {
-        echo "<script>
-                alert('Error: " . $e->getMessage() . "');
-                window.location.href = '../index.php';
-              </script>";
+        // บันทึกข้อผิดพลาดในไฟล์ log
+        error_log("PDOException: " . $e->getMessage());
+        echo "Error: " . $e->getMessage();
     }
 }
 ?>

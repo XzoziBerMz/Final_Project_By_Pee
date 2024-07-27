@@ -1,9 +1,10 @@
 <?php
 include_once "../config/dbconnect.php";
 
-if (isset($_POST['upload'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $subcatname = $_POST['sc_name'];
-    $maincategory = $_POST['main_category'];
+    $maincategory = $_POST['main_category_hidden']; // type_id
 
     try {
         $stmt = $conn->prepare("INSERT INTO sub_type (type_id, sub_type_name) VALUES (:type_id, :subcatname)");
@@ -13,22 +14,18 @@ if (isset($_POST['upload'])) {
         $stmt->bindParam(':subcatname', $subcatname, PDO::PARAM_STR);
 
         // ดำเนินการ statement
-        if ($stmt->execute()) {
-            echo "<script>
-                    alert('เพิ่มข้อมูลหมวดหมู่ย่อยสำเร็จ');
-                    window.location.href = '../index.php' ;
-                  </script>";
+        $stmt->execute();
+
+        // ดำเนินการ statement
+        if ($stmt->rowCount() > 0) {
+            echo "เพิ่มข้อมูลหมวดหมู่ย่อยสำเร็จ";
         } else {
-            echo "<script>
-                    alert('ไม่สามารถเพิ่มข้อมูลหมวดหมู่ย่อยได้');
-                    window.location.href = '../index.php';
-                  </script>";
+            echo "เกิดข้อผิดพลาดในการเพิ่มข้อมูลหมวดหมู่ย่อย";
         }
     } catch (PDOException $e) {
-        echo "<script>
-                alert('Error: " . $e->getMessage() . "');
-                window.location.href = '../index.php';
-              </script>";
+        // บันทึกข้อผิดพลาดในไฟล์ log
+        error_log("PDOException: " . $e->getMessage());
+        echo "Error: " . $e->getMessage();
     }
 }
 ?>

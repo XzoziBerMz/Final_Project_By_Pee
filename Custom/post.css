@@ -1,0 +1,263 @@
+.top-92 {
+    top: 92% !important;
+}
+
+.start-93 {
+    left: 93% !important;
+}
+
+.w-150px {
+    width: 150px;
+}
+
+.username_post{
+    color: #4D9C41;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.post-name {
+    width: 700px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 40px;
+    font-weight: 500;
+}
+
+.description {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.contact {
+    width: 100px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+#stylescrollbar {
+    	min-height: 100px;
+}
+
+#stylescrollbar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #F5F5F5;
+    margin: 10px;
+    border-radius: 10px;
+    /* margin: 5px; */
+}
+
+#stylescrollbar::-webkit-scrollbar {
+    height: 10px;
+    margin: 10px;
+    width: 10px;
+    background-color: #F5F5F5;
+}
+
+#stylescrollbar::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    margin: 5px;
+    background-color: #FFF;
+    background-image: -webkit-gradient(linear,
+            40% 0%,
+            75% 84%,
+            from(#54DE5D),
+            to(#54DE5D),
+            color-stop(.6, #54DE5D));
+    margin: 10px;
+}
+
+.image-fix {
+    object-fit: contain;
+}
+
+.input-container {
+    position: relative;
+    /* margin: 50px auto; */
+    width: 200px;
+}
+
+.input-container input[type="text"] {
+    font-size: 15px;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    padding: 5px 0;
+    background-color: transparent;
+    outline: none;
+}
+
+.input-container .label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #ccc;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.input-container input[type="text"]:focus~.label,
+.input-container input[type="text"]:valid~.label {
+    top: -20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.input-container .underline {
+    position: absolute;
+    top: 74%;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #333;
+    transform: scaleX(0);
+    transition: all 0.3s ease;
+}
+
+.input-container input[type="text"]:focus~.underline,
+.input-container input[type="text"]:valid~.underline {
+    transform: scaleX(1);
+}
+
+button {
+    font-family: inherit;
+    font-size: 15px;
+    background: royalblue;
+    color: white;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+button span {
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+}
+
+button svg {
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+}
+
+button:hover .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+button:hover svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+button:hover span {
+    transform: translateX(5em);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+    from {
+        transform: translateY(0.1em);
+    }
+
+    to {
+        transform: translateY(-0.1em);
+    }
+}
+
+#comment-section {
+    /* height: 200px; */
+    overflow: hidden;
+    position: relative;
+    transition: height 5s ease;
+}
+
+#comment-section.expanded {
+    height: auto;
+    /* Allow full height expansion */
+}
+
+.show-more {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    /* background-color: rgba(0, 0, 0, 0.7); */
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    /* Color of the scrollbar thumb on hover */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    /* Color of the scrollbar track */
+    border-radius: 10px;
+    /* Rounded corners for the track */
+}
+
+.containers input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.containers {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.containers svg {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 35px;
+    width: 35px;
+    transition: all 0.3s;
+    fill: #666;
+}
+
+.containers svg:hover {
+    transform: scale(1.1);
+}
+
+.containers input:checked~svg {
+    fill: #E3474F;
+}
+
+.fix-location {
+    top: 1%;
+    left: 95% !important;
+}

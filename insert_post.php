@@ -39,7 +39,7 @@ ob_end_flush()
   <!-- css -->
   <link rel="stylesheet" href="Custom/mains.css">
   <link rel="stylesheet" href="Custom/body.css">
-  <link rel="stylesheet" href="Custom/insertposts.css">
+  <link rel="stylesheet" href="Custom/insertpost.css">
 
 </head>
 
@@ -151,7 +151,7 @@ ob_end_flush()
       <!-- Title -->
       <div class="mb-2" style="margin-top: 30px;">
         <label for="Title" class="form-label label-insert">Title <span class="span-label">*</span></label>
-        <input type="text" class="form-control input-insert" name="title">
+        <input type="text" class="form-control input-insert" name="title" maxlength="120">
       </div>
 
       <!-- price -->
@@ -174,26 +174,34 @@ ob_end_flush()
           <!-- สร้าง input hidden เพื่อเก็บค่า "ฟรี" -->
           <input type="hidden" id="hiddenFreePrice" name="hiddenFreePrice" value="ฟรี">
         </div>
-        <div class="col-1">
-          <label for="price" class=" form-label label-insert" style="display: block;"> ประเภท <span
-              class="span-label">*</span></label>
-          <select class="select-type" id="price_type" name="price_type">
-            <option>ซื้อ</option>
-            <option>ขาย</option>
-          </select>
-        </div>
+
       </div>
 
+      <!-- ประเภท ประกาศ -->
+      <div>
+        <label for="price" class=" form-label label-insert" style="display: block; margin-top: 30px;"> ประเภทของประกาศ
+          <span class="span-label">*</span></label>
+        <div class="radio-input" style="margin-top: 15px;">
 
+          <label style=>
+            <input type="radio" id="price_type" name="price_type" value="ซื้อ" checked>
+            <span>ซื้อ</span>
+          </label>
+          <label>
+            <input type="radio" id="price_type" name="price_type" value="ขาย">
+            <span>ขาย</span>
+          </label>
+          <span class="selection"></span>
+        </div>
 
+      </div>
 
       <!-- upload image -->
-      <div class="mb-2" style="margin-top: 40px;">
+      <div class="mb-2" style="margin-top: 35px;">
         <label for="price" class="form-label label-insert" style="display: block;"> รูปภาพ <span
             class="span-label">*</span></label>
-        <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 10MB</p>
+        <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 20MB</p>
 
-        <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
         <div class="file-upload">
           <div class="image-upload-wrap">
@@ -212,23 +220,24 @@ ob_end_flush()
         </div>
       </div>
 
+      <!-- phone_number -->
+      <div class="mb-2" style="margin-top: 30px;">
+        <label for="Phone" class="form-label label-insert">เบอร์โทรศัพท์ <span class="span-label">*</span></label>
+        <input type="tel" class="form-control input-insert" name="phone_number" maxlength="10" id="phone_number"
+          placeholder="กรุณากรอกหมายเลขโทรศัพท์" oninput="validateInput(this)">
+      </div>
 
       <!-- Description -->
       <div class="mb-2" style="margin-top: 30px;">
         <label for="price" class="form-label label-insert" style="display: block;"> คำอธิบาย <span
             class="span-label">*</span></label>
-        <textarea id="description" name="description" rows="4" cols="131"
-          placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..."></textarea>
-        <!-- <p>คำที่พิมพ์ได้: <span id="wordCount" style="color:#09CD56;">1000</span> คำ</p> -->
+        <textarea id="description" name="description" rows="5" cols="167"
+          placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..." oninput="limitTextarea(this, 200)"></textarea>
+        <p>คุณพิมพ์ได้อีก <span id="charCount" style="color:#09BA00;"></span> ตัวอักษร</p>
       </div>
 
-      <!-- type post -->
-      <!-- <div class="mb-2" style="margin-top: 30px;">
-    <label for="price" class="form-label label-insert" style="display: block;"> ประเภทประกาศ <span class="span-label">*</span></label> -->
-
-
       <!-- summit -->
-      <div class="d-grid" style="margin-top: 40px;">
+      <div class="d-grid" style="margin-top: 30px;">
         <button type="submit" name="submit" class="button-27" role="button">เพิ่มประกาศสินค้า</button>
       </div>
 
@@ -237,6 +246,7 @@ ob_end_flush()
 
 
   <!-- ส่วน js ของ price -->
+        <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script>
     document.getElementById("price").addEventListener("change", function () {
       var selectedValue = this.value;
@@ -261,21 +271,29 @@ ob_end_flush()
       }
     });
 
+    // ส่วนของ input phone ตัวแปรนี้ทำให้ไม่สามารถใส่ข้อความได้ใส่ได้แค่ตัวเลขเท่านั้น
+    function validateInput(element) {
+      let value = element.value.replace(/\D/g, ''); // ลบอักขระที่ไม่ใช่ตัวเลข
+      element.value = value;
+    }
+
+    <!-- ส่วน description -->
+    function limitTextarea(element, maxLength) {
+      let value = element.value;
+      if (value.length > maxLength) {
+        element.value = value.slice(0, maxLength);
+      }
+      const remainingChars = Math.max(0, maxLength - value.length);
+      document.getElementById('charCount').innerText = ` ${remainingChars} `;
+    }
+
+    // Initialize character count display
+    document.getElementById('charCount').innerText = '200';
+
   </script>
 
   <!-- ส่วน js ของ image -->
   <script src="js/uploadimage.js"></script>
-
-  <!-- ส่วน description -->
-  <!-- <script>
-        function updateRemaining() {
-            var maxLength = 1000;
-            var currentLength = document.getElementById("description").value.length;
-            var remaining = maxLength - currentLength;
-            document.getElementById("wordCount").textContent = remaining;
-
-        }
-    </script> -->
 
 </body>
 
