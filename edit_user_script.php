@@ -7,6 +7,8 @@ if (isset($_POST['user_id']) && isset($_POST['firstname']) && isset($_POST['last
   $firstname = $_POST['firstname'];
   $lastname = $_POST['lastname'];
   $email = $_POST['email'];
+  $phone_number = $_POST['user_tel'];
+  $address = $_POST['user_address'];
 
   $current_password = isset($_POST['current_password']) ? $_POST['current_password'] : null;
 
@@ -47,10 +49,12 @@ if (isset($_POST['user_id']) && isset($_POST['firstname']) && isset($_POST['last
   }
 
   // อัปเดตข้อมูลผู้ใช้
-  $stmt = $conn->prepare("UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email WHERE user_id = :user_id");
+  $stmt = $conn->prepare("UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, user_address = :user_address, user_tel = :user_tel WHERE user_id = :user_id");
   $stmt->bindParam(':firstname', $firstname);
   $stmt->bindParam(':lastname', $lastname);
   $stmt->bindParam(':email', $email);
+  $stmt->bindParam(':user_address', $address);
+  $stmt->bindParam(':user_tel', $phone_number);
   $stmt->bindParam(':user_id', $user_id);
 
   if ($stmt->execute()) {

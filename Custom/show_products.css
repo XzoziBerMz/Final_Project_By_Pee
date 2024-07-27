@@ -182,3 +182,16 @@ a {
     align-items: center;
     
 }
+.tag-delete {
+    border: 1px solid;
+    border-color: red;
+    background-color: red;
+    padding: 5px;
+    width: 60px;
+    border-radius: 7px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}

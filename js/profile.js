@@ -19,6 +19,8 @@ function viewProfile(data) {
     document.getElementById('firstname').value = data.firstname;
     document.getElementById('lastname').value = data.lastname;
     document.getElementById('email').value = data.email;
+    document.getElementById('phone_number').value = data.user_tel;
+    document.getElementById('address').value = data.user_address;
     myModal.show();
 }
 
@@ -27,6 +29,8 @@ function clearValue() {
     document.getElementById('firstname').value = data_user.firstname;
     document.getElementById('lastname').value = data_user.lastname;
     document.getElementById('email').value = data_user.email;
+    document.getElementById('phone_number').value = data.user_tel;
+    document.getElementById('address').value = data.user_address;
 }
 
 function closeModal() {
@@ -59,6 +63,8 @@ function saveChanges() {
     var firstname = $('#firstname').val();
     var lastname = $('#lastname').val();
     var email = $('#email').val();
+    var phone = $('#phone_number').val();
+    var address = $('#address').val();
     var currentPassword = $('#current_password').val();
     console.log("🚀 ~ saveChanges ~ currentPassword:", currentPassword)
     var newPassword = $('#new_password').val();
@@ -69,6 +75,8 @@ function saveChanges() {
     formData.append('firstname', firstname);
     formData.append('lastname', lastname);
     formData.append('email', email);
+    formData.append('user_tel', phone);
+    formData.append('user_address', address);
 
     // ถ้า newPassword ไม่มีค่า ให้ set currentPassword เป็นค่าว่าง
     if (newPassword) {
@@ -124,6 +132,22 @@ function saveChanges() {
     });
 }
 
+function confirmDelete(id) {
+    Swal.fire({
+        title: 'คุณแน่ใจหรือเปล่า?',
+        text: "คุณต้องการจะลบจริงๆใช่ไหม!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            userDelete(id);
+        }
+    });
+}
+
 document.getElementById('fileInput').addEventListener('change', function () {
     const file = this.files[0];
     if (file) {
@@ -134,3 +158,29 @@ document.getElementById('fileInput').addEventListener('change', function () {
         reader.readAsDataURL(file);
     }
 });
+
+function userDelete(id) {
+    // ส่งคำร้องขอ AJAX ไปยังไฟล์ PHP
+    $.ajax({
+        url: 'delete_post.php', // ปรับให้ตรงกับไฟล์ PHP ของคุณ
+        type: 'POST',
+        data: {
+            action: 'delete',
+            post_id: id
+        },
+        success: function (response) {
+            let result = JSON.parse(response);
+            if (result.status === 'success') {
+                // อัปเดตหน้าเว็บหรือรีเฟรช
+                Swal.fire('ลบสำเร็จ!', 'โพสต์ถูกลบแล้ว.', 'success').then(() => {
+                    location.reload(); // หรืออัปเดตส่วนที่ต้องการบนหน้าเว็บ
+                });
+            } else {
+                Swal.fire('เกิดข้อผิดพลาด!', result.message, 'error');
+            }
+        },
+        error: function () {
+            Swal.fire('เกิดข้อผิดพลาด!', 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์.', 'error');
+        }
+    });
+}

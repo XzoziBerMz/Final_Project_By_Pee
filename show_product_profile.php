@@ -13,9 +13,11 @@ $type_id = isset($_GET['type_id']) ? intval($_GET['type_id']) : 0;
 if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
     $user_id = null;
     if (isset($_SESSION['user_login'])) {
-        $user_id = $_SESSION['user_login'];
+        // ใช้ empty() เพื่อเช็คว่าตัวแปรเป็นค่าว่างหรือไม่
+        $user_id = !empty($profile_id) ? $profile_id : $_SESSION['user_login'];
     } elseif (isset($_SESSION['admin_login'])) {
-        $user_id = $_SESSION['admin_login'];
+        // ใช้ empty() เพื่อเช็คว่าตัวแปรเป็นค่าว่างหรือไม่
+        $user_id = !empty($profile_id) ? $profile_id : $_SESSION['admin_login'];
     }
 
     // คิวรีเพื่อดึงโพสท์ที่ user_id ตรงกับผู้ใช้งานปัจจุบัน
@@ -76,10 +78,6 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
                     <div
                         class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดประกาศ') ? 'tag-close' : ''; ?>">
                         <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
-                    </div>
-                    <div class="position-absolute pointer top-0 tag-edit translate-middle"
-                        onclick="editpage(<?php echo $row_pro['posts_id']; ?>)">
-                        <span>แก้ไข</span>
                     </div>
                     <div class="product-tumb">
                         <?php
@@ -143,6 +141,18 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
                             </div>
                         </div>
                     </div>
+                    <?php if (empty($profile_id)): ?>
+                        <div class="d-flex justify-content-end mb-2 gap-3">
+                            <div class="pointer tag-edit"
+                                onclick="editpage(<?php echo $row_pro['posts_id']; ?>)">
+                                <span>แก้ไข</span>
+                            </div>
+                            <div class="pointer tag-delete"
+                                onclick="confirmDelete(<?php echo $row_pro['posts_id']; ?>)">
+                                <span>ลบ</span>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php } ?>
         </div>

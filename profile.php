@@ -47,6 +47,7 @@ function formatDate($date)
 
     return " $ThaiMonth $year ";
 }
+$profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
 
 ?>
 
@@ -115,6 +116,13 @@ function formatDate($date)
                             <div class="mt-3">
                                 <span>Email : <?php echo $user['email'] ?></span>
                             </div>
+                            <div class="mt-3">
+                                <span>Phone Number : <?php echo $user['user_tel'] ?></span>
+                            </div>
+                            <div class="mt-3">
+                                <span>ที่อยู่ :
+                                    <?php echo !empty($user['user_address']) ? htmlspecialchars($user['user_address']) : '-'; ?></span>
+                            </div>
 
                             <div class="d-flex justify-content-end align-items-center mt-5">
                                 <div>
@@ -144,6 +152,14 @@ function formatDate($date)
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
                                 <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" aria-describedby="emailHelp">
                             </div>
                             <div>
                                 <div>

@@ -137,7 +137,7 @@ if (isset($_SESSION['user_login'])) {
                             ?>
                             <p style="margin-top: 20px;">โพสต์โดย:
                                 <span
-                                    class="username_post"><?php echo $postUser['firstname'] . ' ' . $postUser['lastname']; ?></span>
+                                    class="username_post pointer" onclick="viewProfileBy('<?=$postUser['user_id']?>')"><?php echo $postUser['firstname'] . ' ' . $postUser['lastname']; ?></span>
                             </p>
 
                         </div>
