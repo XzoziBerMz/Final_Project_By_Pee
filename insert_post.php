@@ -246,7 +246,7 @@ ob_end_flush()
 
 
   <!-- ส่วน js ของ price -->
-        <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script>
     document.getElementById("price").addEventListener("change", function () {
       var selectedValue = this.value;

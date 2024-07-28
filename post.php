@@ -111,21 +111,9 @@ if (isset($_SESSION['user_login'])) {
 
                     <div class="border col-5 p-4 position-relative">
                         <div>
-                            <div class="post-name">
+                            <div class="post-name row">
                                 <span><?php echo $row->product_name; ?></span>
                             </div>
-                            <?php
-                            $formatted_price = number_format($row->product_price);
-                            ?>
-                            <?php
-                            // เช็คค่าว่าเป็น 0 ไหมถ้าเป็น 0 ให้โชว์ ฟรี
-                            if ($formatted_price === '0') {
-                                echo '<div class="product-price">ฟรี</div>';
-                            } else {
-                                echo '<div class="product-price">ราคา: ' . $formatted_price . ' บาท</div>';
-                            }
-                            ?>
-
                             <!-- แสดงชื่อผู้โพสต์ -->
                             <?php
                             $sqlUser = "SELECT user_id , firstname , lastname FROM users WHERE user_id = :user_id";
@@ -136,8 +124,9 @@ if (isset($_SESSION['user_login'])) {
                             // echo $postUser['user_id'];
                             ?>
                             <p style="margin-top: 20px;">โพสต์โดย:
-                                <span
-                                    class="username_post pointer" onclick="viewProfileBy('<?=$postUser['user_id']?>')"><?php echo $postUser['firstname'] . ' ' . $postUser['lastname']; ?></span>
+                                <span class="username_post pointer"
+                                    onclick="viewProfileBy('<?= $postUser['user_id'] ?>')"><?php echo $postUser['firstname'] . ' ' . $postUser['lastname']; ?>
+                                </span>
                             </p>
 
                         </div>
@@ -158,10 +147,24 @@ if (isset($_SESSION['user_login'])) {
                         <div class="description">
                             <span>รายละเอียด</span>
                         </div>
+
                         <div>
-                            <div>
+                            <div class="detail-description">
                                 <span class="px-2"><?php echo $row->Product_detail; ?></span>
                             </div>
+                        </div>
+                        <div class="">
+                            <?php
+                            $formatted_price = number_format($row->product_price);
+                            ?>
+                            <?php
+                            // เช็คค่าว่าเป็น 0 ไหมถ้าเป็น 0 ให้โชว์ ฟรี
+                            if ($formatted_price === '0') {
+                                echo '<div class="product-price"> <span style ="color:#08ae4b;"><b> ฟรี </b></span></div>';
+                            } else {
+                                echo '<div class="product-price">ราคา: <span style ="color:#08ae4b;"><b> ' . $formatted_price . '</b></span> บาท</div>';
+                            }
+                            ?>
                         </div>
                         <div class="position-absolute top-92 start-93 translate-middle contact">
                             <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal"
@@ -443,16 +446,16 @@ if (isset($_SESSION['user_login'])) {
                     <p class="card-text"><?php echo $post['Product_detail']; ?></p>
 
 
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between" style="overflow: hidden;border-top: 1px solid #eee;">
                         <?php
                         if ($post['product_price'] === '0') {
-                            echo '<div class="product-price">ฟรี</div>';
+                            echo '<div class="product-price-more mt-3">ฟรี</div>';
                         } else {
                             $formatted_price_list = number_format($post['product_price']);
-                            echo '<div class="product-price">' . $formatted_price_list . ' บาท</div>';
+                            echo '<div class="product-price-more  mt-3">' . $formatted_price_list . ' บาท</div>';
                         }
                         ?>
-                        <a class="btn btn-success"
+                        <a class="btn btn-success mt-2"
                             href="post.php?product_id=<?php echo $post['posts_id']; ?>">รายละเอียดเพิ่มเติม</a>
                     </div>
 

@@ -142,14 +142,15 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
                         </div>
                     </div>
                     <?php if (empty($profile_id)): ?>
-                        <div class="d-flex justify-content-end mb-2 gap-3">
-                            <div class="pointer tag-edit"
-                                onclick="editpage(<?php echo $row_pro['posts_id']; ?>)">
-                                <span>แก้ไข</span>
-                            </div>
-                            <div class="pointer tag-delete"
-                                onclick="confirmDelete(<?php echo $row_pro['posts_id']; ?>)">
-                                <span>ลบ</span>
+                        <hr>
+                        <div class=" d-flex justify-content-end mb-2 gap-3">
+                            <div class="d-flex gap-3">
+                                <div class="pointer tag-edit" onclick="editpage(<?php echo $row_pro['posts_id']; ?>)">
+                                    <span>แก้ไข</span>
+                                </div>
+                                <div class="pointer tag-delete" onclick="confirmDelete(<?php echo $row_pro['posts_id']; ?>)">
+                                    <span>ลบ</span>
+                                </div>
                             </div>
                         </div>
                     <?php endif; ?>

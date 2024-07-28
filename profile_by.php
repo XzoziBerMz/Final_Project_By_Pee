@@ -102,11 +102,12 @@ $userDetail = $user_stmt->fetch(PDO::FETCH_ASSOC);
                 <!-- หมวดหมู่ -->
                 <div class="categories-container">
 
-                    <a href="profile.php" class="category-item">ทั้งหมด </a>
+                    <a href="profile_by.php?profile_id=<?php echo $profile_id ?>" class=" category-item">ทั้งหมด </a>
 
                     <?php
                     foreach ($result as $row) { ?>
-                        <a href="profile_by.php?profile_id=<?php echo $profile_id ?>&act=showbytype&type_id=<?php echo $row['type_id']; ?>" class="category-item">
+                        <a href="profile_by.php?profile_id=<?php echo $profile_id ?>&act=showbytype&type_id=<?php echo $row['type_id']; ?>"
+                            class="category-item">
                             <?php echo $row["type_name"]; ?></a>
                     <?php } ?>
 

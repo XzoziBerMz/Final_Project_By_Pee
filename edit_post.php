@@ -189,10 +189,10 @@ ob_end_flush()
 
 
           <!-- input ราคา -->
-          <input type="number" class="input-price" value="<?php echo $result['product_price'] ?>" id="negotiablePrice" name="negotiablePrice" style="display: none;"
-            placeholder="กรุณาใส่ราคา">
-          <input type="number" class="input-price" value="<?php echo $result['product_price'] ?>" id="fixedPrice" name="fixedPrice" style="display: none;"
-            placeholder="กรุณาใส่ราคา">
+          <input type="number" class="input-price" value="<?php echo $result['product_price'] ?>" id="negotiablePrice"
+            name="negotiablePrice" style="display: none;" placeholder="กรุณาใส่ราคา">
+          <input type="number" class="input-price" value="<?php echo $result['product_price'] ?>" id="fixedPrice"
+            name="fixedPrice" style="display: none;" placeholder="กรุณาใส่ราคา">
           <input type="text" class="input-price" id="freePrice" name="freePrice" placeholder="ฟรี" disabled>
           <!-- สร้าง input hidden เพื่อเก็บค่า "ฟรี" -->
           <input type="hidden" id="hiddenFreePrice" name="hiddenFreePrice" value="ฟรี">

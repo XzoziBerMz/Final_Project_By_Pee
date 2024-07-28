@@ -17,6 +17,11 @@ if (isset($_POST['record'])) {
         $stmt_posts->bindParam(':p_id', $p_id, PDO::PARAM_INT);
         $stmt_posts->execute();
 
+        // ลบข้อมูลโพสที่มี notify เท่ากับ p_id ในตาราง posts
+        $stmt_posts = $conn->prepare("DELETE FROM notify WHERE post_id = :p_id");
+        $stmt_posts->bindParam(':p_id', $p_id, PDO::PARAM_INT);
+        $stmt_posts->execute();
+
         // commit การเปลี่ยนแปลงทั้งหมด
         $conn->commit();
 

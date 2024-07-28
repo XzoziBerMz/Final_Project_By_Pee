@@ -14,9 +14,17 @@ if (isset($_POST['record'])) {
 
         // ลบ posts ที่มีuser_idตรงกัน
         $stmt = $conn->prepare("DELETE FROM posts WHERE user_id = :u_id");
-        // ผูกตัวแปร
         $stmt->bindParam(':u_id', $u_id, PDO::PARAM_INT);
-        // ดำเนินการ statement
+        $stmt->execute();
+
+        // ลบ comments ที่มีuser_idตรงกัน
+        $stmt = $conn->prepare("DELETE FROM comments WHERE user_id = :u_id");
+        $stmt->bindParam(':u_id', $u_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // ลบ notifly ที่มีuser_idตรงกัน
+        $stmt = $conn->prepare("DELETE FROM notify WHERE user_id = :u_id");
+        $stmt->bindParam(':u_id', $u_id, PDO::PARAM_INT);
         $stmt->execute();
 
         // ตรวจสอบว่าการลบสำเร็จหรือไม่

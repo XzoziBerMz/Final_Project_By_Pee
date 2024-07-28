@@ -117,7 +117,7 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                                 <span>Email : <?php echo $user['email'] ?></span>
                             </div>
                             <div class="mt-3">
-                                <span>Phone Number : <?php echo $user['user_tel'] ?></span>
+                                <span>เบอร์โทรศัพท์ : <?php echo $user['user_tel'] ?></span>
                             </div>
                             <div class="mt-3">
                                 <span>ที่อยู่ :
@@ -142,23 +142,23 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                                 <span>หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
                             </div>
                             <div class="mb-3">
-                                <label for="firstname" class="form-label">Frist Name</label>
+                                <label for="firstname" class="form-label">ชื่อ</label>
                                 <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="lastname" class="form-label">Last Name</label>
+                                <label for="lastname" class="form-label">นามสกุล</label>
                                 <input type="text" class="form-control" id="lastname" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email address</label>
+                                <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="phone" class="form-label">Phone Number</label>
+                                <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
                                 <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                                <label for="address" class="form-label">Address</label>
+                                <label for="address" class="form-label">ที่อยู่</label>
                                 <input type="text" class="form-control" id="address" aria-describedby="emailHelp">
                             </div>
                             <div>
@@ -208,7 +208,7 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
 
-        <div class="col-md-10">
+        <div class="col-md-10 ">
             <div class="mt-4" style="margin-bottom: 2%;">
                 <!-- หมวดหมู่ -->
                 <div class="categories-container">

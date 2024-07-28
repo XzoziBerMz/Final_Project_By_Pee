@@ -68,11 +68,11 @@
             <form id="addUserForm" enctype="multipart/form-data" method="POST">
               <div class="form-group">
                 <label for="f_name">Firstname :</label>
-                <input type="text" class="form-control" name="f_name" required>
+                <input type="text" class="form-control" name="f_name" maxlength="15" required>
               </div>
               <div class="form-group">
                 <label for="l_name">Lastname :</label>
-                <input type="text" class="form-control" name="l_name" required>
+                <input type="text" class="form-control" name="l_name" maxlength="15" required>
               </div>
               <div class="form-group">
                 <label for="email">Email :</label>

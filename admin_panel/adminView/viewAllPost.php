@@ -6,7 +6,6 @@
         <tr>
           <th class="text-center">ลำดับที่</th>
           <th class="text-center">ID</th>
-          <th class="text-center">Product Image</th>
           <th class="text-center">Product Name</th>
           <th class="text-center">Product Detail</th>
           <th class="text-center">Category</th>
@@ -29,22 +28,6 @@
             <tr>
               <td><?= $No_Post ?></td>
               <td><?= htmlspecialchars($row["posts_id"]) ?></td>
-              <td>
-                <?php
-                $product_images = json_decode($row["Product_img"], true);
-                if (!empty($product_images) && is_array($product_images)) {
-                  $first_image = $product_images[0];
-                  $image_path = '../../image/' . $first_image;
-                  if (file_exists($image_path)) {
-                    echo '<img height="100px" src="' . ($image_path) . '" alt="Product Image">';
-                  } else {
-                    echo 'Image not found';
-                  }
-                } else {
-                  echo 'No images available';
-                }
-                ?>
-              </td>
               <td>
                 <?php
                 $product_title = htmlspecialchars($row['product_name']);
@@ -71,8 +54,8 @@
               <td>
                 <!-- <button class="btn btn-warning" style="height:40px"
                   onclick="PostEditForm('<?= htmlspecialchars($row['posts_id']) ?>')">Edit</button> -->
-                <!-- <button class="btn btn-success" style="height:40px;"
-                  onclick="detailpost('product_id=<?php echo $row['posts_id']; ?>')">detail</button> -->
+                <a href="./adminView/detailPost.php?posts_id=<?= htmlspecialchars($row['posts_id']) ?>"
+                  class="btn btn-success" style="height:40px;">detail</a>
                 <button class="btn btn-danger" style="height:40px;"
                   onclick="confirmDelete('<?= htmlspecialchars($row['posts_id']) ?>')">Delete</button>
               </td>
