@@ -1,6 +1,5 @@
 <?php
 session_start();
-ob_start();
 include_once "../config/dbconnect.php";
 
 if (!isset($_SESSION['admin_login'])) {
@@ -17,13 +16,33 @@ if (!isset($_SESSION['admin_login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายละเอียดประกาศ</title>
+
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/a94becc44e.js" crossorigin="anonymous"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- ajax -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- css -->
     <link rel="stylesheet" href="../assets/css/detailPost.css">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
+
+    <div style="margin-top: 30px;margin-left: 30px;">
+        <a href="javascript:void(0);" class="btn btn-primary" onclick="showAllPost()">
+            <i class="fa-solid fa-arrow-left" style="margin-right: 10px;"></i>กลับไปหน้าหลัก
+        </a>
+
+    </div>
+
     <?php
     if (isset($_GET['posts_id'])) {
         $posts_id = $_GET['posts_id'];
@@ -148,9 +167,10 @@ if (!isset($_SESSION['admin_login'])) {
             </div>
 
             <div class="mt-5" style="display: flex; justify-content:end; margin-right: 7%;">
-                <button class="btn btn-danger" style="margin-right: 10px;"
+                <a href="../../post.php?product_id=<?php echo $row->posts_id; ?>" class="btn btn-success"
+                    style="margin-right: 10px;">ไปยังหน้าประกาศนี้</a>
+                <button class="btn btn-danger"
                     onclick="confirmDelete('<?= htmlspecialchars($row->posts_id) ?>')">ลบประกาศนี้</button>
-                <a href="../index.php#products" class="btn btn-primary" onclick="showAllPost()">กลับไปหน้าหลัก</a>
             </div>
 
             <?php
@@ -168,9 +188,7 @@ if (!isset($_SESSION['admin_login'])) {
         crossorigin="anonymous"></script>
 
     <script src="../assets/js/detailPost.js"></script>
-    <script type="text/javascript" src="./assets/js/ajax_sc.js"></script>
-    <script type="text/javascript" src="./assets/js/script.js"></script>
-
+    <script type="text/javascript" src="../assets/js/ajax_sc.js"></script>
 
     <script>  function confirmDelete(id) {
             Swal.fire({

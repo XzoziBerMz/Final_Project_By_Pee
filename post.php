@@ -405,7 +405,7 @@ if (isset($_SESSION['user_login'])) {
         </div>
     </div>
 
-    <div class="d-flex border-bottom border-5 pb-3 border-dark justify-content-start mx-5 gap-5 mt-5">
+    <div class="d-flex border-bottom border-3 pb-3 border-dark justify-content-start mx-5 gap-5 mt-5">
         <div>
             <span class="fs-3 fw-bolder">สินค้าที่คุณอาจจะสนใจ</span>
         </div>
@@ -442,8 +442,26 @@ if (isset($_SESSION['user_login'])) {
 
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title"><?php echo $post['product_name']; ?></h5>
-                    <p class="card-text"><?php echo $post['Product_detail']; ?></p>
+
+                    <h5 class="card-title"> <?php
+                    $product_title = $post['product_name'];
+                    if (mb_strlen($product_title) > 35) {
+                        $shortened_title = mb_substr($product_title, 0, 22) . '...';
+                        echo $shortened_title;
+                    } else {
+                        echo $product_title;
+                    }
+                    ?></h5>
+
+                    <p class="card-text"> <?php
+                    $product_detail = $post['Product_detail'];
+                    if (mb_strlen($product_detail) > 40) {
+                        $shortened_detail = mb_substr($product_detail, 0, 28) . '...';
+                        echo $shortened_detail;
+                    } else {
+                        echo $product_detail;
+                    }
+                    ?></p>
 
 
                     <div class="d-flex justify-content-between" style="overflow: hidden;border-top: 1px solid #eee;">
