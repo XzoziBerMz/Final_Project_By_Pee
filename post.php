@@ -288,7 +288,14 @@ if (isset($_SESSION['user_login'])) {
                     } else if (isset($_POST['submit_delete'])) {
                         $comment_id = $_POST['comment_id'];
 
+                        // ลบ comment ที่มี comment_id
                         $sql = "DELETE FROM comments WHERE comment_id = :comment_id";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':comment_id', $comment_id);
+                        $stmt->execute();
+
+                        // ลบ comment ที่มี parent_comment_id เท่ากับ comment_id ที่ถูกลบ
+                        $sql = "DELETE FROM comments WHERE parent_comment_id = :comment_id";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':comment_id', $comment_id);
                         $stmt->execute();
