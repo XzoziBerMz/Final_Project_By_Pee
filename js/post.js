@@ -118,3 +118,27 @@ function viewProfileBy(id) {
     console.log("🚀 ~ viewProfileBy ~ id:", id)
     window.location.href = `./profile_by.php?profile_id=${id}`
 }
+
+function pointCheck(checkbox, user_id, user_post_id, post_id) {
+    const isChecked = checkbox.checked;
+
+    const data = {
+        user_id: user_id,        // User ID ของผู้ใช้
+        point: isChecked,        // ค่า point ที่เป็น true หรือ false ขึ้นอยู่กับ checkbox
+        post_id: post_id,        // Post ID ที่เกี่ยวข้อง
+        user_post_id: user_post_id // User ID ของเจ้าของโพสต์
+    };
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "points_update.php", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText); // ดูผลลัพธ์จากเซิร์ฟเวอร์
+        } else if (xhr.readyState === 4) {
+            console.error("เกิดข้อผิดพลาดในการส่งข้อมูล");
+        }
+    };
+    xhr.send(JSON.stringify(data));
+}

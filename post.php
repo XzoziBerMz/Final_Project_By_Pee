@@ -121,12 +121,23 @@ if (isset($_SESSION['user_login'])) {
                             $stmtUser->bindParam(':user_id', $row->user_id, PDO::PARAM_INT);
                             $stmtUser->execute();
                             $postUser = $stmtUser->fetch(PDO::FETCH_ASSOC);
-                            // echo $postUser['user_id'];
+
+                            $sqlPointView = "SELECT * FROM points WHERE user_post_id = :user_id";
+                            $stmtPointView = $conn->prepare($sqlPointView);
+                            $stmtPointView->bindParam(':user_id', $postUser['user_id'], PDO::PARAM_INT);
+                            $stmtPointView->execute();
+                            $pointsData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
+
+                            $totalPoints = 0;
+                            foreach ($pointsData as $rowPoint) {
+                                $totalPoints += $rowPoint['point']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
+                            }
                             ?>
                             <p style="margin-top: 20px;">โพสต์โดย:
                                 <span class="username_post pointer"
                                     onclick="viewProfileBy('<?= $postUser['user_id'] ?>')"><?php echo $postUser['firstname'] . ' ' . $postUser['lastname']; ?>
-                                </span>
+                                </span> 
+                                <span>คะแนนความนิยม (<?php echo $totalPoints ?>)</span>
                             </p>
 
                         </div>
@@ -135,7 +146,18 @@ if (isset($_SESSION['user_login'])) {
                         </div>
                         <div>
                             <label class="containers position-absolute fix-location">
-                                <input type="checkbox">
+                                <?php
+                                // เตรียมคำสั่ง SQL เพื่อตรวจสอบข้อมูลในตาราง points
+                                $sqlPoint = "SELECT * FROM points WHERE post_id = :product_id AND user_id = :user_id";
+                                $stmtPoint = $conn->prepare($sqlPoint);
+                                $stmtPoint->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+                                $stmtPoint->bindParam(':user_id', $user['user_id'], PDO::PARAM_INT);
+                                $stmtPoint->execute();
+                                $rowPoint = $stmtPoint->fetch(PDO::FETCH_OBJ);
+                                ?>
+                                <input type="checkbox"
+                                    onclick="pointCheck(this, '<?php echo $user['user_id']; ?>', '<?php echo $row->user_id; ?>', '<?php echo $product_id; ?>')"
+                                    <?php echo !empty($rowPoint) && $rowPoint->point ? 'checked' : ''; ?>>
                                 <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <path
@@ -143,6 +165,7 @@ if (isset($_SESSION['user_login'])) {
                                     </path>
                                 </svg>
                             </label>
+
                         </div>
                         <div class="description">
                             <span>รายละเอียด</span>

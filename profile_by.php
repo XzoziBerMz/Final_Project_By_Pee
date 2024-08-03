@@ -83,8 +83,20 @@ $userDetail = $user_stmt->fetch(PDO::FETCH_ASSOC);
                 <div class="d-flex justify-content-center mb-3">
                     <span class="detaill_user">หมายเลขสมาชิก : <?php echo $userDetail['user_id'] ?></span>
                 </div>
+                <?php
+                $sqlPointView = "SELECT * FROM points WHERE user_post_id = :user_id";
+                $stmtPointView = $conn->prepare($sqlPointView);
+                $stmtPointView->bindParam(':user_id', $profile_id, PDO::PARAM_INT);
+                $stmtPointView->execute();
+                $pointsData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
+
+                $totalPoints = 0;
+                foreach ($pointsData as $rowPoint) {
+                    $totalPoints += $rowPoint['point']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
+                }
+                ?>
                 <div class="d-flex justify-content-center">
-                    <span class="detaill_user">คะแนนความนิยม (10)</span>
+                    <span class="detaill_user">คะแนนความนิยม (<?php echo $totalPoints ?>)</span>
                 </div>
             </div>
         </div>
