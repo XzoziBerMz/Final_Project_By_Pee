@@ -49,7 +49,10 @@ if (isset($_SESSION['user_login'])) {
         $product_id = $_GET['product_id'];
 
         // Database connection (assuming $conn is already set)
-        $sqlAll = "SELECT * FROM posts WHERE posts_id = :product_id";
+        $sqlAll = "SELECT posts.*, positions.position_name 
+        FROM posts 
+        JOIN positions ON posts.position_id = positions.position_id 
+        WHERE posts.posts_id = :product_id";
         $stmt = $conn->prepare($sqlAll);
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -130,14 +133,15 @@ if (isset($_SESSION['user_login'])) {
 
                             $totalPoints = 0;
                             foreach ($pointsData as $rowPoint) {
-                                $totalPoints += $rowPoint['point']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
+                                $totalPoints += $rowPoint['point'];
                             }
                             ?>
                             <p style="margin-top: 20px;">โพสต์โดย:
                                 <span class="username_post pointer"
                                     onclick="viewProfileBy('<?= $postUser['user_id'] ?>')"><?php echo $postUser['firstname'] . ' ' . $postUser['lastname']; ?>
-                                </span> 
-                                <span>คะแนนความนิยม (<?php echo $totalPoints ?>)</span>
+                                </span>
+                                <span style="float: right;">คะแนนความนิยม : <b
+                                        style="color: #09CD56;"><?php echo $totalPoints ?></b></span>
                             </p>
 
                         </div>
@@ -173,9 +177,16 @@ if (isset($_SESSION['user_login'])) {
 
                         <div>
                             <div class="detail-description">
-                                <span class="px-2"><?php echo $row->Product_detail; ?></span>
+                                <span class="px-1"><?php echo $row->Product_detail; ?></span>
                             </div>
                         </div>
+
+                        <!-- positions -->
+                        <div class="positions">
+                            <span><i class="fa-solid fa-location-dot fa-xl" style="color: #f104a6;"></i> จุดนัดพบ :
+                                <b><?php echo $row->position_name; ?></b></span>
+                        </div>
+
                         <div class="">
                             <?php
                             $formatted_price = number_format($row->product_price);
@@ -387,19 +398,20 @@ if (isset($_SESSION['user_login'])) {
                             <input type="hidden" name="comment_id" value="<?= $comment['comment_id']; ?>">
                             <textarea class="form-control" style="height: 30px;"
                                 name="edited_text"><?= htmlspecialchars($comment['comment_text']); ?></textarea>
-                            <button name="submit_edit" type="submit" class="btn btn-primary">Save</button>
+                            <button name="submit_edit" type="submit" class="btn btn-success">แก้ไข</button>
                         </form>
                         <div class="ps-5 ms-5" id="text-edit-<?= $comment['comment_id']; ?>" style="display: block;">
                             <?= nl2br(htmlspecialchars($comment['comment_text'])); ?>
                         </div>
                         <div class="ps-5 ms-5">
-                            <span class="pointer me-2" onclick="showReplyForm(<?= $comment['comment_id']; ?>)">Reply</span>
+                            <span class="pointer me-2" onclick="showReplyForm(<?= $comment['comment_id']; ?>)">ตอบกลับ</span>
                             <?php if (isset($comment['user_id']) && $comment['user_id'] == $user['user_id']) { ?>
-                                <span class="pointer me-2" onclick="toggleEditForm(<?= $comment['comment_id']; ?>)">Edit</span>
+                                <span class="pointer me-2" onclick="toggleEditForm(<?= $comment['comment_id']; ?>)"
+                                    style="color: yellow;">แก้ไข</span>
                                 <form method="POST" action="" class="d-inline">
                                     <input type="hidden" name="comment_id" value="<?= $comment['comment_id']; ?>">
-                                    <button name="submit_delete" type="submit"
-                                        class="btn btn-link text-decoration-none p-0">Delete</button>
+                                    <button name="submit_delete" type="submit" class="btn btn-link text-decoration-none p-0"
+                                        style="color: red;">ลบ</button>
                                 </form>
                             <?php } ?>
                         </div>
@@ -411,7 +423,7 @@ if (isset($_SESSION['user_login'])) {
                                 <div class="d-flex gap-2">
                                     <textarea class="form-control" id="comment_text_<?= $comment['comment_id']; ?>"
                                         name="comment_text" rows="1" required></textarea>
-                                    <button name="submit_comment" class="btn btn-success">Send</button>
+                                    <button name="submit_comment" class="btn btn-success">ส่ง</button>
                                 </div>
                                 <input type="hidden" name="parent_comment_id" value="<?= $comment['comment_id']; ?>">
                             </form>
@@ -431,7 +443,7 @@ if (isset($_SESSION['user_login'])) {
                 }
             }
             ?>
-            <span class="show-more" id="show-more-btn" onclick="toggleShowMore()">Show More</span>
+            <span class="show-more" id="show-more-btn" onclick="toggleShowMore()">แสดงเพิ่มเติม</span>
         </div>
     </div>
 

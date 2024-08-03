@@ -14,6 +14,7 @@
     <a href="#customers" onclick="showCustomers()"><i class="fa fa-users"></i> Users</a>
     <a href="#category" onclick="showCategory()"> <i class="fa fa-th"></i> Category</a>
     <a href="#products" onclick="showAllPost()"><i class="fa fa-th-large"></i> Post</a>
+    <a href="#positions" onclick="showPositions()"> <i class="fa-solid fa-map-location-dot "></i> Position</a>
     <a href="#comments" onclick="showAllComments()"><i class="fa-regular fa-comments"></i> Comment</a>
     <a href="../index.php"><i class="fa-solid fa-arrow-right-from-bracket"></i> Enter user page</a>
 

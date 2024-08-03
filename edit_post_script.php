@@ -18,6 +18,7 @@ if (isset($_POST["submit"])) {
   $price = '';
   $p_number = $_POST['phone_number'];
   $description = $_POST['description'];
+  $positions = $_POST['positions'];
   $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : null;
   $sub_type_id = isset($_POST['sub_type_id']) ? $_POST['sub_type_id'] : null;
 
@@ -103,19 +104,20 @@ if (isset($_POST["submit"])) {
       $filesArrayJson = json_encode($filesArray);
 
       // Perform database update
-      $query = "UPDATE posts SET product_name = ?, type_id = ?, sub_type_id = ?, phone_number = ?, Product_detail = ?, type_buy_or_sell = ?, product_price_type = ?, product_price = ?, Product_img = ?, datasave = NOW() WHERE posts_id = ? AND user_id = ?";
+      $query = "UPDATE posts SET product_name = ?, type_id = ?, sub_type_id = ?, phone_number = ?, Product_detail = ?, position_id = ?, type_buy_or_sell = ?, product_price_type = ?, product_price = ?, Product_img = ?, datasave = NOW() WHERE posts_id = ? AND user_id = ?";
       $stmt = $conn->prepare($query);
       $stmt->bindParam(1, $title);
       $stmt->bindParam(2, $type_id);
       $stmt->bindParam(3, $sub_type_id);
       $stmt->bindParam(4, $p_number);
       $stmt->bindParam(5, $description);
-      $stmt->bindParam(6, $price_type);
-      $stmt->bindParam(7, $priceType);
-      $stmt->bindParam(8, $price);
-      $stmt->bindParam(9, $filesArrayJson);
-      $stmt->bindParam(10, $product_id);
-      $stmt->bindParam(11, $user_id);
+      $stmt->bindParam(6, $positions);
+      $stmt->bindParam(7, $price_type);
+      $stmt->bindParam(8, $priceType);
+      $stmt->bindParam(9, $price);
+      $stmt->bindParam(10, $filesArrayJson);
+      $stmt->bindParam(11, $product_id);
+      $stmt->bindParam(12, $user_id);
       $result = $stmt->execute();
 
       if ($result) {

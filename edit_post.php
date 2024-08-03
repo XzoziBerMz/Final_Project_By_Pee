@@ -261,6 +261,25 @@ ob_end_flush()
           value="<?php echo $result['phone_number'] ?>">
       </div>
 
+      <!-- position -->
+      <div class="mb-2" style="margin-top: 30px;">
+        <?php
+        $positions = "SELECT position_id, position_name FROM positions";
+        $stmt = $conn->prepare($positions);
+        $stmt->execute();
+        $positionsResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+        <label for="positions" class="form-label label-insert">จุดนัดพบ <span class="span-label">*</span></label>
+        <select class="form-control input-insert" name="positions" id="positions">
+          <option value="" disabled selected>กรุณาเลือกจุดนัดพบ !</option>
+          <?php foreach ($positionsResults as $row): ?>
+            <option value="<?= htmlspecialchars($row['position_id']); ?>" <?= isset($result['position_id']) && $result['position_id'] == $row['position_id'] ? 'selected' : ''; ?>>
+              <?= htmlspecialchars($row['position_name']); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
       <!-- Description -->
       <div class="mb-2" style="margin-top: 30px;">
         <label for="price" class="form-label label-insert" style="display: block;"> คำอธิบาย <span
@@ -327,6 +346,12 @@ ob_end_flush()
         document.getElementById("fixedPrice").style.display = "none";
         document.getElementById("negotiablePrice").style.display = "none";
         document.getElementById("freePrice").style.display = "none";
+      }
+    }
+
+    function validatePrice(input) {
+      if (input.value.length > 7) {
+        input.value = input.value.slice(0, 7);
       }
     }
 

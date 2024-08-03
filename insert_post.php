@@ -167,9 +167,9 @@ ob_end_flush()
 
           <!-- input ราคา -->
           <input type="number" class="input-price" id="negotiablePrice" name="negotiablePrice" style="display: none;"
-            placeholder="กรุณาใส่ราคา">
+            placeholder="กรุณาใส่ราคา" max="9999999" oninput="validatePrice(this)">
           <input type="number" class="input-price" id="fixedPrice" name="fixedPrice" style="display: none;"
-            placeholder="กรุณาใส่ราคา">
+            placeholder="กรุณาใส่ราคา" max="9999999" oninput="validatePrice(this)">
           <input type="text" class="input-price" id="freePrice" name="freePrice" placeholder="ฟรี" disabled>
           <!-- สร้าง input hidden เพื่อเก็บค่า "ฟรี" -->
           <input type="hidden" id="hiddenFreePrice" name="hiddenFreePrice" value="ฟรี">
@@ -227,6 +227,25 @@ ob_end_flush()
           placeholder="กรุณากรอกหมายเลขโทรศัพท์" oninput="validateInput(this)">
       </div>
 
+      <!-- position -->
+      <div class="mb-2" style="margin-top: 30px;">
+        <?php
+        $positions = "SELECT position_id, position_name FROM positions";
+        $stmt = $conn->prepare($positions);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+        <label for="positions" class="form-label label-insert">จุดนัดพบ <span class="span-label">*</span></label>
+        <select class="form-control input-insert" name="positions" id="positions">
+          <option value="" disabled selected>กรุณาเลือกจุดนัดพบ !</option>
+          <?php foreach ($results as $row): ?>
+            <option value="<?= htmlspecialchars($row['position_id']); ?>">
+              <?= htmlspecialchars($row['position_name']); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
       <!-- Description -->
       <div class="mb-2" style="margin-top: 30px;">
         <label for="price" class="form-label label-insert" style="display: block;"> คำอธิบาย <span
@@ -270,6 +289,12 @@ ob_end_flush()
         document.getElementById("freePrice").style.display = "none";
       }
     });
+
+    function validatePrice(input) {
+      if (input.value.length > 7) {
+        input.value = input.value.slice(0, 7);
+      }
+    }
 
     // ส่วนของ input phone ตัวแปรนี้ทำให้ไม่สามารถใส่ข้อความได้ใส่ได้แค่ตัวเลขเท่านั้น
     function validateInput(element) {

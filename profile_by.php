@@ -92,11 +92,12 @@ $userDetail = $user_stmt->fetch(PDO::FETCH_ASSOC);
 
                 $totalPoints = 0;
                 foreach ($pointsData as $rowPoint) {
-                    $totalPoints += $rowPoint['point']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
+                    $totalPoints += $rowPoint['point'];
                 }
                 ?>
-                <div class="d-flex justify-content-center">
-                    <span class="detaill_user">คะแนนความนิยม (<?php echo $totalPoints ?>)</span>
+                <div class="d-flex justify-content-center mb-3">
+                    <span class="detaill_user">คะแนนความนิยม : <b
+                            style="color: #09CD56;"><?php echo $totalPoints ?></b></span>
                 </div>
             </div>
         </div>

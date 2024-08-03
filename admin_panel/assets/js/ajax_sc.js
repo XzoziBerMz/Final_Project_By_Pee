@@ -42,6 +42,18 @@ function showCustomers(){
         }
     });
 }
+
+function showPositions(){
+  $.ajax({
+      url:"./adminView/viewpositions.php",
+      method:"post",
+      data:{record:1},
+      success:function(data){
+          $('.allContent-section').html(data);
+      }
+  });
+}
+
 function showAllComments(){
     $.ajax({
         url:"./adminView/viewComments.php",
@@ -124,6 +136,18 @@ function userDelete(id){
         success:function(data){
             $('form').trigger('reset');
             showCustomers();
+        }
+    });
+}
+
+function positionsDelete(id){
+    $.ajax({
+        url:"./controller/deletePositonsController.php",
+        method:"post",
+        data:{record:id},
+        success:function(data){
+            $('form').trigger('reset');
+            showPositions();
         }
     });
 }
@@ -228,6 +252,64 @@ function updateUserRole(userId, newRole) {
           }
         });
       }
+
+    // ฟังก์ชั่น addpositions ที่ใช้ AJAX สำหรับเพิ่มจุดนัดพบ
+    function addpositions(event) {
+        event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
+        
+        let formData = new FormData(event.target);
+        let submitButton = $(event.target).find('button[type="submit"]');
+        submitButton.prop('disabled', true); // ปิดปุ่มส่งฟอร์มชั่วคราว
+      
+        $.ajax({
+          url: "./controller/addpositionsController.php",
+          method: "post",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+            alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
+            $('#addpositionsForm').trigger('reset'); // รีเซ็ตฟอร์ม
+            showPositions();
+            $('#myModal').modal('hide'); // ปิด modal
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error: ' + textStatus, errorThrown); // แสดงข้อผิดพลาดใน console
+          },
+          complete: function() {
+            submitButton.prop('disabled', false); // เปิดปุ่มส่งฟอร์มอีกครั้ง
+          }
+        });
+      }
+
+    // ฟังก์ชั่น updatepositions ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
+    function updatepositions(event) {
+      event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
+      
+      let formData = new FormData(event.target);
+      let submitButton = $(event.target).find('button[type="submit"]');
+      submitButton.prop('disabled', true); // ปิดปุ่มส่งฟอร์มชั่วคราว
+    
+      $.ajax({
+        url: "./controller/updatePositonsController.php",
+        method: "post",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+          alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
+          $('#updatepositionForm').trigger('reset'); // รีเซ็ตฟอร์ม
+          showPositions();
+          $('#editpositionsModal').modal('hide'); // ปิด modal
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error('Error: ' + textStatus, errorThrown); // แสดงข้อผิดพลาดใน console
+        },
+        complete: function() {
+          submitButton.prop('disabled', false); // เปิดปุ่มส่งฟอร์มอีกครั้ง
+        }
+      });
+    }
       
     // ฟังก์ชั่น addcategory ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
     function addCat(event) {

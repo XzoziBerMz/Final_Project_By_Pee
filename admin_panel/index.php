@@ -119,25 +119,26 @@ if (isset($_SESSION['admin_login'])) {
         </div>
         </a>
       </div>
-      <!-- <div class="col-sm-3">
+      <div class="col-sm-3">
         <div class="card">
-          <i class="fa fa-th-list mb-2" style="font-size: 70px;"></i>
-          <h4 style="color:white;">Total SubCategory </h4>
-          <h5 style="color:white;">
-            <?php
-            // $sql = "SELECT * from sub_type";
-            // $result = $conn->query($sql);
-            // $count = $result->rowCount();
-            // if ($result > 0) {
-            //   while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            //     $count = $count + 1;
-            //   }
-            // }
-            // echo $count;
-            ?>
-          </h5>
+          <a href="#positions" style="text-decoration:none" onclick="showPositions()">
+            <i class="fa-solid fa-map-location-dot mb-2" style="font-size: 70px; color: black;"></i>
+            <h4 style=" color:white;">Total Positions </h4>
+            <h5 style="color:white;">
+              <?php
+              $sql = "SELECT * from positions";
+              $result = $conn->query($sql);
+              $count = $result->rowCount();
+              if ($result > 0) {
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                  $count = $count + 1;
+                }
+              }
+              echo $count;
+              ?>
+            </h5>
         </div>
-      </div> -->
+      </div>
       <div class="col-sm-3">
         <div class="card">
           <a href="#comments" style="text-decoration:none" onclick="showAllComments()">

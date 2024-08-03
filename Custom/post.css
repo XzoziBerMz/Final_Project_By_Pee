@@ -34,6 +34,11 @@
     font-weight: 500;
 }
 
+.positions {
+    margin-top: 125px;
+    margin-bottom: 70px;
+}
+
 .detail-description{
     white-space: normal; /* อนุญาตให้มีการตัดบรรทัด */
     word-wrap: break-word; /* ตัดคำถ้าคำยาวเกินไป */

@@ -92,7 +92,8 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                 }
                 ?>
                 <div class="d-flex justify-content-center mb-3">
-                    <span class="detaill_user">คะแนนความนิยม (<?php echo $totalPoints ?>)</span>
+                    <span class="detaill_user">คะแนนความนิยม : <b
+                            style="color: #09CD56;"><?php echo $totalPoints ?></b></span>
                 </div>
                 <div class="d-flex justify-content-center">
                     <span class="detaill_user">เข้าร่วมเมื่อ : <?php echo formatDate($user['create_at']); ?></span>
@@ -128,16 +129,6 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                             <div class="mt-3">
                                 <span>ชื่อ : <?php echo $user['firstname'] . ' ' . $user['lastname'] ?></span>
                             </div>
-                            <div class="mt-3">
-                                <span>Email : <?php echo $user['email'] ?></span>
-                            </div>
-                            <div class="mt-3">
-                                <span>เบอร์โทรศัพท์ : <?php echo $user['user_tel'] ?></span>
-                            </div>
-                            <div class="mt-3">
-                                <span>ที่อยู่ :
-                                    <?php echo !empty($user['user_address']) ? htmlspecialchars($user['user_address']) : '-'; ?></span>
-                            </div>
 
                             <div class="d-flex justify-content-end align-items-center mt-5">
                                 <div>
@@ -148,8 +139,8 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                         </div>
                         <div class="" id="form_edit_input" style="display: none;">
                             <div class="mt-3 text-center">
-                                <img class="m-0 rounded-circle pointer" id="profilePic" src="<?php echo $user['user_photo']; ?>"
-                                    alt="" width="200" height="200"
+                                <img class="m-0 rounded-circle pointer" id="profilePic"
+                                    src="<?php echo $user['user_photo']; ?>" alt="" width="200" height="200"
                                     onclick="document.getElementById('fileInput').click();">
                                 <input type="file" id="fileInput" hidden>
                             </div>
