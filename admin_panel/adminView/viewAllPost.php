@@ -54,8 +54,10 @@
               <td>
                 <!-- <button class="btn btn-warning" style="height:40px"
                   onclick="PostEditForm('<?= htmlspecialchars($row['posts_id']) ?>')">Edit</button> -->
-                <a href="./adminView/detailPost.php?posts_id=<?= htmlspecialchars($row['posts_id']) ?>"
-                  class="btn btn-success" style="height:40px;">detail</a>
+                <a href="javascript:void(0);" style="text-decoration:none; height:40px;"
+                  onclick="showAllPostDetail(<?= htmlspecialchars($row['posts_id']) ?>)" class="btn btn-success">detail</a>
+                <!-- <a href="./adminView/detailPost.php?posts_id=<?= htmlspecialchars($row['posts_id']) ?>"
+                  class="btn btn-success" style="height:40px;">detail</a> -->
                 <button class="btn btn-danger" style="height:40px;"
                   onclick="confirmDelete('<?= htmlspecialchars($row['posts_id']) ?>')">Delete</button>
               </td>

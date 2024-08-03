@@ -38,15 +38,15 @@ if (!isset($_SESSION['admin_login'])) {
 <body>
 
     <div style="margin-top: 30px;margin-left: 30px;">
-        <a href="javascript:void(0);" class="btn btn-primary" onclick="showAllPost()">
+        <a href="#products" class="btn btn-primary" onclick="showAllPost()">
             <i class="fa-solid fa-arrow-left" style="margin-right: 10px;"></i>กลับไปหน้าหลัก
         </a>
 
     </div>
 
     <?php
-    if (isset($_GET['posts_id'])) {
-        $posts_id = $_GET['posts_id'];
+    if (isset($_POST['posts_id'])) {
+        $posts_id = $_POST['posts_id'];
         // ใช้ $posts_id ในการดึงข้อมูลโพสต์จากฐานข้อมูลหรือการดำเนินการอื่น ๆ
     } else {
         echo '<div class="alert alert-danger">ไม่พบ posts_id</div>';
@@ -68,7 +68,7 @@ if (!isset($_SESSION['admin_login'])) {
                 <div class="col-5">
                     <div class="d-flex justify-content-center">
                         <?php if (!empty($images)) {
-                            $firstImageURL = '../../image/' . trim($images[0]);
+                            $firstImageURL = '../image/' . trim($images[0]);
                             ?>
 
                             <img id="mainImage" class="image-fix" src="<?php echo $firstImageURL; ?>" alt="" width="400"
@@ -102,7 +102,7 @@ if (!isset($_SESSION['admin_login'])) {
                             <div id="stylescrollbar" class="d-flex <?php echo $containerClass; ?> mt-4 overflow-auto"
                                 style="max-height: 100px; width: <?php echo $containerWidth; ?>px">
                                 <?php foreach ($images as $image) {
-                                    $imageURL = '../../image/' . trim($image); // Display each image
+                                    $imageURL = '../image/' . trim($image); // Display each image
                                     ?>
                                     <img class="pointer image-fix" src="<?php echo $imageURL; ?>" alt="" width="80" height="80"
                                         onclick="changeImage('<?php echo $imageURL; ?>')">
@@ -168,7 +168,7 @@ if (!isset($_SESSION['admin_login'])) {
             </div>
 
             <div class="mt-5" style="display: flex; justify-content:end; margin-right: 7%;">
-                <a href="../../post.php?product_id=<?php echo $row->posts_id; ?>" class="btn btn-success"
+                <a href="../post.php?product_id=<?php echo $row->posts_id; ?>" class="btn btn-success"
                     style="margin-right: 10px;">ไปยังหน้าประกาศนี้</a>
                 <button class="btn btn-danger"
                     onclick="confirmDelete('<?= htmlspecialchars($row->posts_id) ?>')">ลบประกาศนี้</button>

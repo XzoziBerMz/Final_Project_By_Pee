@@ -321,3 +321,18 @@
   color: #ECDAC9;
   text-decoration: none;
 }
+
+
+.post-name {
+  width: 700px;
+  text-overflow: ellipsis;
+  font-size: 40px;
+  font-weight: 500;
+  margin-left: 10px;
+  overflow-x: auto;
+}
+
+.post-name::-webkit-scrollbar {
+  height: 7px;
+  /* ความสูงของ scrollbar */
+}
