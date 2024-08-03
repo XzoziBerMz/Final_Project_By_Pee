@@ -68,7 +68,7 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
 
         <!-- profile user -->
         <div class="col-md-2 profile-container ">
-            <div class="card card-user">
+            <div class="card card-user rounded-4">
                 <div class="mb-4">
                     <img src="<?php echo $user['user_photo']; ?>" class="rounded-circle" alt="" width="150"
                         height="150">
@@ -78,6 +78,21 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                 </div>
                 <div class="d-flex justify-content-center mb-3">
                     <span class="detaill_user">หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
+                </div>
+                <?php
+                $sqlPointView = "SELECT * FROM points WHERE user_post_id = :user_id";
+                $stmtPointView = $conn->prepare($sqlPointView);
+                $stmtPointView->bindParam(':user_id', $profile_id, PDO::PARAM_INT);
+                $stmtPointView->execute();
+                $pointsData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
+
+                $totalPoints = 0;
+                foreach ($pointsData as $rowPoint) {
+                    $totalPoints += $rowPoint['point']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
+                }
+                ?>
+                <div class="d-flex justify-content-center mb-3">
+                    <span class="detaill_user">คะแนนความนิยม (<?php echo $totalPoints ?>)</span>
                 </div>
                 <div class="d-flex justify-content-center">
                     <span class="detaill_user">เข้าร่วมเมื่อ : <?php echo formatDate($user['create_at']); ?></span>
@@ -133,7 +148,7 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                         </div>
                         <div class="" id="form_edit_input" style="display: none;">
                             <div class="mt-3 text-center">
-                                <img class="m-0 rounded-circle" id="profilePic" src="<?php echo $user['user_photo']; ?>"
+                                <img class="m-0 rounded-circle pointer" id="profilePic" src="<?php echo $user['user_photo']; ?>"
                                     alt="" width="200" height="200"
                                     onclick="document.getElementById('fileInput').click();">
                                 <input type="file" id="fileInput" hidden>
