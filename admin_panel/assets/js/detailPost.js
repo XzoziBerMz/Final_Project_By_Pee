@@ -93,5 +93,5 @@ function viewProductMore(value) {
 
 function viewProfileBy(id) {
     console.log("🚀 ~ viewProfileBy ~ id:", id)
-    window.location.href = `../../profile_by.php?profile_id=${id}`
+    window.location.href = `../profile_by.php?profile_id=${id}`
 }

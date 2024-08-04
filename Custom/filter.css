@@ -90,6 +90,7 @@
       .range-slider {
         width: 90%;
         position: relative;
+        z-index: 0;
         margin-left: 15px;
       }
       

@@ -17,11 +17,11 @@
 }
 
 .post-name {
-    width: 700px;
+    width: 550px;
     text-overflow: ellipsis;
     font-size: 40px;
     font-weight: 500;
-    margin-left: 10px;
+    margin-left: -10px;
     overflow-x: auto;
 }
 

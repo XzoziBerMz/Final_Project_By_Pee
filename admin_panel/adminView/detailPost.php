@@ -17,28 +17,17 @@ if (!isset($_SESSION['admin_login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายละเอียดประกาศ</title>
 
-    <!-- font awesome -->
-    <script src="https://kit.fontawesome.com/a94becc44e.js" crossorigin="anonymous"></script>
-
-    <!-- bootstrap 5.3.0 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
-    <!-- ajax -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <!-- css -->
-    <link rel="stylesheet" href="../assets/css/detailPost.css">
+    <link rel="stylesheet" href="./assets/css/detailPost.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
 
-    <div style="margin-top: 30px;margin-left: 30px;">
-        <a href="#products" class="btn btn-primary" onclick="showAllPost()">
+    <div style="margin-left: 30px;">
+        <a href="#products" class="btn btn-primary p-1" onclick="showAllPost()">
             <i class="fa-solid fa-arrow-left" style="margin-right: 10px;"></i>กลับไปหน้าหลัก
         </a>
 
@@ -64,7 +53,7 @@ if (!isset($_SESSION['admin_login'])) {
         if ($row) {
             $images = json_decode($row->Product_img);
             ?>
-            <div class="d-flex justify-content-center gap-5 mt-5">
+            <div class="d-flex justify-content-center gap-5 mt-5" style="margin-bottom: -25px; width: 110%;">
                 <div class="col-5">
                     <div class="d-flex justify-content-center">
                         <?php if (!empty($images)) {
@@ -115,7 +104,7 @@ if (!isset($_SESSION['admin_login'])) {
 
                 <div class="border col-5 p-4 position-relative">
                     <div>
-                        <div class="post-name row">
+                        <div class="post-name row ">
                             <span><?php echo $row->product_name; ?></span>
                         </div>
                         <!-- แสดงชื่อผู้โพสต์ -->
@@ -167,7 +156,7 @@ if (!isset($_SESSION['admin_login'])) {
                 </div>
             </div>
 
-            <div class="mt-5" style="display: flex; justify-content:end; margin-right: 7%;">
+            <div class="mt-5" style="display: flex; justify-content:end; margin-right: -3%;">
                 <a href="../post.php?product_id=<?php echo $row->posts_id; ?>" class="btn btn-success"
                     style="margin-right: 10px;">ไปยังหน้าประกาศนี้</a>
                 <button class="btn btn-danger"
@@ -185,13 +174,6 @@ if (!isset($_SESSION['admin_login'])) {
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script> -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
-
-    <script src="../assets/js/detailPost.js"></script>
-    <script type="text/javascript" src="../assets/js/ajax_sc.js"></script>
-
     <script>  function confirmDelete(id) {
             Swal.fire({
                 title: 'คุณแน่ใจหรือเปล่า?',
@@ -208,12 +190,6 @@ if (!isset($_SESSION['admin_login'])) {
             });
         }
     </script>
-
-    <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 </body>
 
