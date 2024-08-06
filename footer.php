@@ -40,9 +40,9 @@ if (isset($_SESSION['user_login'])) {
 
     <div
         style=" box-shadow: 0 -10px 10px 0 rgba(0, 0, 0, 0.15), 0 -3px 10px 0 rgba(0, 0, 0, 0.15); margin-top: 60px; z-index: 1;">
-        <footer class="footer">
+        <footer class="footer" style="background-color: #454955;">
             <div class="container">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between text-white">
                     <div class="row col-6">
                         <div>
                             <h2>เกี่ยวกับ BY P</h2>
@@ -63,10 +63,10 @@ if (isset($_SESSION['user_login'])) {
                         <div>
                             <h2>ติดต่อกับเรา</h2>
                         </div>
-                        <div style="max-width: 600px; word-wrap: break-word; word-break: break-all;" class="my-4">
+                        <div style="max-width: 600px; word-wrap: break-word; word-break: break-all;" class="my-3">
                             <span>aksljdlaskdjaslkjalksjaskdjasldjkaslaskljdaijoqwnlkdansoiushskjbfdkldawdejsuirhfykbnlaksljdlaskdjaslkjalksjaskdjasldjkaslaskljdaijoqwnlkdansoiushskjbfdkldawdejsuirhfykbnlaksljdlaskdjaslkjalksjaskdjasldjkaslaskljdaijoqwnlkdansoiushskjbfdkldawdejsuirhfykbnlaksljdlaskdjaslkjalksjaskdjasldjkaslaskljdaijoqwnlkdansoiushskjbfdkldawdejsuirhfykbnl</span>
                         </div>
-                        <div class="mb-4 d-flex gap-3 align-items-center">
+                        <div class="mb-3 d-flex gap-3 align-items-center">
                             <img src="./image/telephone.png" alt="" width="40" height="40">
                             <span>088-8888888</span>
                         </div>
@@ -76,6 +76,11 @@ if (isset($_SESSION['user_login'])) {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="my-2 w-100 border border-2 border-white"></div>
+
+            <div class="d-flex justify-content-center text-white align-items-center">
+                <h2>© NPRU BY P</h2>
             </div>
         </footer>
     </div>
