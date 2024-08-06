@@ -23,15 +23,41 @@ if (isset($_POST["submit"])) {
   $sub_type_id = isset($_POST['sub_type_id']) ? $_POST['sub_type_id'] : null;
 
   // Handle existing images correctly
-  $existingImages = isset($_POST['existing_images']) ? $_POST['existing_images'] : '[]'; // Default to empty array if not set
+  $existingImagesJson = isset($_POST['existing_images']) ? $_POST['existing_images'] : '[]';
+  $deletedImagesJson = isset($_POST['deleted_images']) ? $_POST['deleted_images'] : '[]';
 
-  // Decode existing images if it's a JSON string
-  if (is_string($existingImages)) {
-    $existingImages = json_decode($existingImages, true);
-    if ($existingImages === null) {
-      $_SESSION['error'] = 'Error decoding existing images data.';
-      header("location: edit_post.php?product_id={$product_id}");
-      exit();
+  // Ensure these are strings
+  if (is_array($existingImagesJson)) {
+    $existingImagesJson = json_encode($existingImagesJson);
+  }
+  if (is_array($deletedImagesJson)) {
+    $deletedImagesJson = json_encode($deletedImagesJson);
+  }
+
+  $existingImages = json_decode($existingImagesJson, true);
+  $deletedImages = json_decode($deletedImagesJson, true);
+
+  // Ensure that $existingImages and $deletedImages are arrays
+  if (!is_array($existingImages)) {
+    $existingImages = [];
+  }
+  if (!is_array($deletedImages)) {
+    $deletedImages = [];
+  }
+
+  // Remove deleted images from existing images
+  $updatedImages = array_diff($existingImages, $deletedImages);
+
+  // Delete files from the server
+  foreach ($deletedImages as $image) {
+    $filePaths = [
+      'image/' . $image,
+      'admin_panel/assets/image_post/' . $image
+    ];
+    foreach ($filePaths as $filePath) {
+      if (file_exists($filePath)) {
+        unlink($filePath);
+      }
     }
   }
 
@@ -46,7 +72,6 @@ if (isset($_POST["submit"])) {
     $price = '0';
   }
 
-  // ดักการกรอกข้อมูลใน form
   if (empty($title)) {
     $_SESSION['error'] = 'กรุณากรอกหัวข้อสิ่งที่ต้องการประกาศ';
     header("location: edit_post.php?product_id={$product_id}");
@@ -76,7 +101,6 @@ if (isset($_POST["submit"])) {
           $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
           $newImageName = uniqid() . '.' . $imageExtension;
 
-          // ตรวจสอบว่าไฟล์เป็นรูปภาพหรือไม่
           $fileType = pathinfo($imageName, PATHINFO_EXTENSION);
           $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'JPG', 'PNG', 'jfif');
 
@@ -87,7 +111,7 @@ if (isset($_POST["submit"])) {
               move_uploaded_file($tmpName, 'admin_panel/assets/image_post/' . $newImageName);
               $filesArray[] = $newImageName;
             } else {
-              $_SESSION['warning'] = "ขนาดไฟล์ใหญ่เกิน 20MB";
+              $_SESSION['warning'] = "ขนาดไฟล์ภาพควรไม่เกิน 20MB";
               header("location: edit_post.php?product_id={$product_id}");
               exit();
             }
@@ -99,8 +123,8 @@ if (isset($_POST["submit"])) {
         }
       }
 
-      // Merge existing and new image filenames
-      $filesArray = array_merge($existingImages, $filesArray);
+      // Merge existing images with new images
+      $filesArray = array_merge($updatedImages, $filesArray);
       $filesArrayJson = json_encode($filesArray);
 
       // Perform database update
@@ -122,41 +146,53 @@ if (isset($_POST["submit"])) {
 
       if ($result) {
         $conn->commit();
-
         echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
         echo '<script>
-                        setTimeout(function() {
-                            Swal.fire({
-                                position: "center",
-                                icon: "success",
-                                title: "แก้ไขข้อมูลการประกาศสำเร็จ",
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(function() {
+                    setTimeout(function() {
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "แก้ไขประกาศเรียบร้อย",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function() {
                                 window.location = "index.php"; 
-                            });
-                        }, 1000);  
-                        </script>';
+                        });
+                    }, 100);
+                </script>';
       } else {
         $conn->rollBack();
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
         echo '<script>
-                        setTimeout(function() {
-                            Swal.fire({
-                                position: "center",
-                                icon: "error",
-                                title: "เกิดข้อผิดพลาด",
-                                showConfirmButton: true,
-                            }).then(function() {
-                                window.location = "category_Sell-find_products.php"; 
-                            });
-                        }, 1000);  
-                        </script>';
+                    setTimeout(function() {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function() {
+                            window.location = "edit_post.php?product_id=' . $product_id . '";
+                        });
+                    }, 100);
+                </script>';
       }
     } catch (PDOException $e) {
       $conn->rollBack();
-      $_SESSION['error'] = "มีบางอย่างผิดพลาด " . $e->getMessage();
-      header("location: edit_post.php?product_id={$product_id}");
-      exit();
+      echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
+      echo '<script>
+                setTimeout(function() {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location = "edit_post.php?product_id=' . $product_id . '";
+                    });
+                }, 100);
+            </script>';
     }
   }
 }

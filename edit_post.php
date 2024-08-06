@@ -248,6 +248,7 @@ ob_end_flush()
           </div>
         </div>
       </div>
+      <input type="hidden" name="deleted_images" id="deleted_images">
 
       <?php foreach ($product_imgs as $img): ?>
         <input type="hidden" name="existing_images[]" value="<?php echo htmlspecialchars($img); ?>">
