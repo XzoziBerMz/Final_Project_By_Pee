@@ -82,7 +82,7 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                 <?php
                 $sqlPointView = "SELECT * FROM points WHERE user_post_id = :user_id";
                 $stmtPointView = $conn->prepare($sqlPointView);
-                $stmtPointView->bindParam(':user_id', $profile_id, PDO::PARAM_INT);
+                $stmtPointView->bindParam(':user_id', $user['user_id'], PDO::PARAM_INT);
                 $stmtPointView->execute();
                 $pointsData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
 
