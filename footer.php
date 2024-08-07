@@ -40,7 +40,7 @@ if (isset($_SESSION['user_login'])) {
 
     <div
         style=" box-shadow: 0 -10px 10px 0 rgba(0, 0, 0, 0.15), 0 -3px 10px 0 rgba(0, 0, 0, 0.15); margin-top: 60px; z-index: 1;">
-        <footer class="footer" style="background-color: #454955;">
+        <footer class="footer h-100" style="background-color: #454955;">
             <div class="container">
                 <div class="d-flex justify-content-between text-white">
                     <div class="row col-6">
@@ -72,7 +72,7 @@ if (isset($_SESSION['user_login'])) {
                 </div>
             </div>
 
-            <div class="d-flex flex-column justify-content-end align-items-center" style="height: 180px;">
+            <div class="d-flex flex-column justify-content-end align-items-center mt-3">
                 <h6>© NPRU</h6>
             </div>
 
