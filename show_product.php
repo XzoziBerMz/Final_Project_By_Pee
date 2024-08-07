@@ -7,12 +7,13 @@ if (!isset($_SESSION)) {
 
 require_once 'connetdatabase/conn_db.php';
 
-$qurey_product = "SELECT * FROM posts as p 
-INNER JOIN types as t
-ON p.type_id = t.type_id
+$query_product = "SELECT * FROM posts as p 
+INNER JOIN types as t ON p.type_id = t.type_id
 INNER JOIN sub_type as s ON p.sub_type_id = s.sub_type_id
+WHERE p.type_buy_or_sell NOT IN ('ปิดประกาศ', 'ปิดการขาย')
 ORDER BY p.posts_id ASC";
-$stmt = $conn->prepare($qurey_product);
+
+$stmt = $conn->prepare($query_product);
 $stmt->execute();
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

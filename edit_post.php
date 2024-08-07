@@ -1,10 +1,8 @@
 <?php
+session_start();
 
 // ตรวจสอบว่า session ยังไม่ได้เปิด ถึงจะทำการเปิด session
-if (!isset($_SESSION)) {
-  session_start();
-
-}
+$user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : (isset($_SESSION['admin_login']) ? $_SESSION['admin_login'] : null);
 
 ob_start();
 
@@ -24,6 +22,10 @@ $stmt->bindParam(':posts_id', $product_id, PDO::PARAM_INT);
 $stmt->execute();
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if ($user_id !== $result['user_id']) {
+  header("Location: index.php");
+  exit();
+}
 $product_imgs = json_decode($result['Product_img'], true);
 
 $type_id = isset($_GET['type_id']) ? $_GET['type_id'] : $result['type_id'];

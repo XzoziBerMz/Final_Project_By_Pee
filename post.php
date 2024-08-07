@@ -272,6 +272,7 @@ if (isset($_SESSION['user_login'])) {
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (isset($_POST['submit_comment'])) {
                         $user_name = htmlspecialchars($_POST['user_name']);
+                        $user_id_reply = isset($_POST['user_id_reply']) ? (int) $_POST['user_id_reply'] : null;
                         $comment_text = htmlspecialchars($_POST['comment_text']);
                         $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
 
@@ -289,11 +290,15 @@ if (isset($_SESSION['user_login'])) {
                             $stmt->execute();
 
                             // แทรกข้อมูลการแจ้งเตือน
-                            $sqlNotify = "INSERT INTO notify (notify_status, post_id, user_id, user_notify_id) VALUES (:notify_status, :post_id, :user_id, :user_notify_id)";
+                            $sqlNotify = "INSERT INTO notify (notify_status, titles, post_id, user_id, user_notify_id) VALUES (:notify_status, :titles, :post_id, :user_id, :user_notify_id)";
                             $stmtNotify = $conn->prepare($sqlNotify);
+                            $titles = '';
+
                             $stmtNotify->bindValue(':notify_status', true, PDO::PARAM_BOOL);
                             $stmtNotify->bindParam(':post_id', $product_id);
-                            $stmtNotify->bindParam(':user_id', $postUser['user_id']); // User who made the comment
+                            $stmtNotify->bindParam(':titles', $titles);
+                            $user_id_for_notify = $user_id_reply ?: $postUser['user_id'];
+                            $stmtNotify->bindParam(':user_id', $user_id_for_notify);
                             $stmtNotify->bindParam(':user_notify_id', $user['user_id']); // User who will receive the notification
                             $stmtNotify->execute();
 
@@ -387,7 +392,7 @@ if (isset($_SESSION['user_login'])) {
                                 <img class="rounded-circle" src="<?= $user_comment['user_photo'] ?>" alt="" width="50"
                                     height="50">
                             </div>
-                            <div>
+                            <div class="">
 
                                 <strong><?= htmlspecialchars($user_comment['firstname'] . ' ' . $user_comment['lastname']); ?></strong>
                                 <span class="ms-2"><?= $comment['created_at']; ?></span>
@@ -417,6 +422,8 @@ if (isset($_SESSION['user_login'])) {
                         </div>
                         <div id="reply-form-<?= $comment['comment_id']; ?>" class="mt-2" style="display:none;">
                             <form method="POST" action="">
+                                <input type="hidden" value="<?= $comment['user_id']; ?>"
+                                    id="user_id_<?= $comment['user_id']; ?>" name="user_id_reply">
                                 <input type="hidden"
                                     value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>"
                                     id="user_name_<?= $comment['comment_id']; ?>" name="user_name" required>

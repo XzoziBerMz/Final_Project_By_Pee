@@ -144,6 +144,34 @@ if (isset($_POST["submit"])) {
       $stmt->bindParam(12, $user_id);
       $result = $stmt->execute();
 
+      if ($price_type === 'ปิดประกาศ') {
+        $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 AND user_id != :user_id ORDER BY created_at DESC";
+        $stmtComment = $conn->prepare($sqlComments);
+        $stmtComment->bindParam(':post_id', $product_id, PDO::PARAM_INT);
+        $stmtComment->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmtComment->execute();
+        $comments = $stmtComment->fetchAll(PDO::FETCH_ASSOC);
+
+        $uniqueComments = [];
+        foreach ($comments as $comment) {
+          $uniqueComments[$comment['user_id']] = $comment;
+        }
+
+          $sqlNotify = "INSERT INTO notify (notify_status, titles, post_id, user_id, user_notify_id) 
+              VALUES (:notify_status, :titles, :post_id, :user_id, :user_notify_id)";
+          $stmtNotify = $conn->prepare($sqlNotify);
+          $titles = 'ปิดการขาย';
+        foreach ($uniqueComments as $comment) {
+          $stmtNotify->execute([
+            ':notify_status' => true,
+            ':titles' => $titles,
+            ':post_id' => $product_id,
+            ':user_id' => $comment['user_id'],
+            ':user_notify_id' => $user_id
+          ]);
+        }
+      }
+
       if ($result) {
         $conn->commit();
         echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';

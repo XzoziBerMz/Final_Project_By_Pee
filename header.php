@@ -181,6 +181,8 @@ if (isset($_SESSION['user_login'])) {
                   $userNotify->bindParam(':user_id', $user_notify, PDO::PARAM_INT);
                   $userNotify->execute();
                   $user_notify_list = $userNotify->fetch(PDO::FETCH_ASSOC);
+
+                  $hasTitle = !empty($item['titles']);
                   ?>
                   <div class="border mb-3 border-2 rounded-4 p-2 d-flex justify-content-between align-items-center">
                     <div>
@@ -195,7 +197,7 @@ if (isset($_SESSION['user_login'])) {
                         }
                         ?></span>
                       </div>
-                      <div>
+                      <div style="display: <?= $hasTitle ? 'none' : 'block' ?>;">
                         <span>ตอบกลับโดย : <?php
                         $user_fullname = htmlspecialchars($user_notify_list['firstname'] . ' ' . $user_notify_list['lastname']);
                         if (mb_strlen($user_fullname) > 35) {
@@ -205,6 +207,9 @@ if (isset($_SESSION['user_login'])) {
                           echo $user_fullname;
                         }
                         ?></span>
+                      </div>
+                      <div style="display: <?= $hasTitle ? 'block' : 'none' ?>;">
+                        <span class="text-danger"><?= $item['titles'] ?></span>
                       </div>
                     </div>
                     <div class="text-success">
