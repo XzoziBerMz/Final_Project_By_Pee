@@ -148,7 +148,8 @@ if (isset($_SESSION['user_login'])) {
                         <div>
                             <hr class="border-3">
                         </div>
-                        <div>
+                       
+                        <div style="<?php echo $user['user_id'] === $row->user_id ? 'display: none;' : ''; ?>">
                             <label class="containers position-absolute fix-location">
                                 <?php
                                 // เตรียมคำสั่ง SQL เพื่อตรวจสอบข้อมูลในตาราง points
