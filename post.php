@@ -57,8 +57,11 @@ if (isset($_SESSION['user_login'])) {
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->execute();
 
+        
+
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_OBJ);
+            
             if ($row) {
                 $images = json_decode($row->Product_img);
 
@@ -148,7 +151,7 @@ if (isset($_SESSION['user_login'])) {
                         <div>
                             <hr class="border-3">
                         </div>
-                       
+
                         <div style="<?php echo $user['user_id'] === $row->user_id ? 'display: none;' : ''; ?>">
                             <label class="containers position-absolute fix-location">
                                 <?php
@@ -250,12 +253,14 @@ if (isset($_SESSION['user_login'])) {
     ?>
     </div>
     <div class="d-flex justify-content-center mx-5 gap-5 mt-5">
+
         <div class="col-5 bg-dark w-100 rounded-4 p-4" id="comment-section">
             <div>
                 <h5 class="text-white">Comments</h5>
             </div>
             <div class="border my-3"></div>
-            <form method="POST" action="">
+            <form method="POST" action=""
+                style="<?php echo ($row->type_buy_or_sell === 'ปิดประกาศ' || $row->type_buy_or_sell === 'ปิดการขาย') ? 'display: none;' : ''; ?>">
                 <div class="d-flex mb-3">
                     <input type="text" id="user_name" name="user_name" hidden
                         value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>">
@@ -365,9 +370,8 @@ if (isset($_SESSION['user_login'])) {
             }
 
             if (isset($comments)) {
-                displayComments($comments, $conn, $user);
+                displayComments($comments, $conn, $user, $row->type_buy_or_sell);
             }
-
             function fetchReplies($comment_id, $conn)
             {
                 $sqlReplies = "SELECT * FROM comments WHERE parent_comment_id = :comment_id ORDER BY created_at ASC";
@@ -376,8 +380,7 @@ if (isset($_SESSION['user_login'])) {
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
-
-            function displayComments($comments, $conn, $user)
+            function displayComments($comments, $conn, $user, $type)
             {
                 foreach ($comments as $comment) {
                     ?>
@@ -409,7 +412,7 @@ if (isset($_SESSION['user_login'])) {
                         <div class="ps-5 ms-5" id="text-edit-<?= $comment['comment_id']; ?>" style="display: block;">
                             <?= nl2br(htmlspecialchars($comment['comment_text'])); ?>
                         </div>
-                        <div class="ps-5 ms-5">
+                        <div class="ps-5 ms-5" style="<?= htmlspecialchars($type === 'ปิดประกาศ' || $type === 'ปิดการขาย') ? 'display: none;' : ''; ?>">
                             <span class="pointer me-2" onclick="showReplyForm(<?= $comment['comment_id']; ?>)">ตอบกลับ</span>
                             <?php if (isset($comment['user_id']) && $comment['user_id'] == $user['user_id']) { ?>
                                 <span class="pointer me-2" onclick="toggleEditForm(<?= $comment['comment_id']; ?>)"
@@ -441,7 +444,7 @@ if (isset($_SESSION['user_login'])) {
                         if (!empty($replies)) {
                             ?>
                             <div class="ms-5 mb-2">
-                                <?php displayComments($replies, $conn, $user); ?>
+                                <?php displayComments($replies, $conn, $user, $type); ?>
                             </div>
                             <?php
                         }
