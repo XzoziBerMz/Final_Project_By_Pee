@@ -35,7 +35,7 @@ if (isset($_POST['user_id']) && isset($_POST['firstname']) && isset($_POST['last
     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
     // กำหนดประเภทของไฟล์ที่อนุญาต
-    $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
+    $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'jfif');
     if (in_array($fileType, $allowTypes)) {
       // อัปโหลดไฟล์ไปยังเซิร์ฟเวอร์
       if (move_uploaded_file($_FILES["user_photo"]["tmp_name"], $targetFilePath)) {

@@ -175,12 +175,12 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                             </div>
                             <div class="mt-3" id="password_form_change" style="display: none;">
                                 <div class="mb-3">
-                                    <label for="current_password" class="form-label">Current Password</label>
+                                    <label for="current_password" class="form-label">รหัสผ่านเดิม</label>
                                     <input type="password" value="" class="form-control" id="current_password"
                                         aria-describedby="passwordHelp">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="new_password" class="form-label">New Password</label>
+                                    <label for="new_password" class="form-label">รหัสผ่านใหม่</label>
                                     <input type="password" value="" class="form-control" id="new_password"
                                         aria-describedby="passwordHelp">
                                 </div>

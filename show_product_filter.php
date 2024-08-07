@@ -95,8 +95,8 @@ $_SESSION['filtered_products'] = $products;
                                     <span href="">
                                         <?php
                                         $product_title = $row_pro['product_name'];
-                                        if (mb_strlen($product_title) > 35) {
-                                            $shortened_title = mb_substr($product_title, 0, 22) . '...';
+                                        if (mb_strlen($product_title) > 25) {
+                                            $shortened_title = mb_substr($product_title, 0, 20) . '...';
                                             echo $shortened_title;
                                         } else {
                                             echo $product_title;

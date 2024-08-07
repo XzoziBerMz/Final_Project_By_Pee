@@ -200,7 +200,11 @@ ob_end_flush()
       <div class="mb-2" style="margin-top: 35px;">
         <label for="price" class="form-label label-insert" style="display: block;"> รูปภาพ <span
             class="span-label">*</span></label>
-        <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 20MB</p>
+        <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 20MB
+          <span style="float: right; display: flex; margin-right: 10px;">เฉพาะไฟล์ :
+            <b style="color: #09BA00;"> &nbsp jpg , png , jpeg , gif , jfif</b>
+          </span>
+        </p>
 
 
         <div class="file-upload">

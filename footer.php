@@ -45,43 +45,37 @@ if (isset($_SESSION['user_login'])) {
                 <div class="d-flex justify-content-between text-white">
                     <div class="row col-6">
                         <div>
-                            <h2>เกี่ยวกับ BY P</h2>
+                            <h3>ติดตามเรา</h3>
                         </div>
-                        <div class="d-flex gap-4">
+                        <div class="d-flex gap-3">
                             <div>
-                                <img class="pointer" src="./image/fackbook.png" alt="" width="40" height="40">
+                                <img class=" pointer" src="./image/fackbook.png" alt="" width="30" height="30">
                             </div>
                             <div>
-                                <img class="pointer" src="./image/instagram.png" alt="" width="40" height="40">
+                                <img class="pointer" src="./image/instagram.png" alt="" width="30" height="30">
                             </div>
                             <div>
-                                <img class="pointer" src="./image/twitter.png" alt="" width="40" height="40">
+                                <img class="pointer" src="./image/twitter.png" alt="" width="30" height="30">
                             </div>
                         </div>
                     </div>
-                    <div class="row col-6">
+                    <div class="row col-6" style="margin-left: 20%;">
                         <div>
                             <h2>ติดต่อกับเรา</h2>
                         </div>
                         <div style="max-width: 600px; word-wrap: break-word; word-break: break-all;" class="my-3">
-                            <span>aksljdlaskdjaslkjalksjaskdjasldjkaslaskljdaijoqwnlkdansoiushskjbfdkldawdejsuirhfykbnlaksljdlaskdjaslkjalksjaskdjasldjkaslaskljdaijoqwnlkdansoiushskjbfdkldawdejsuirhfykbnlaksljdlaskdjaslkjalksjaskdjasldjkaslaskljdaijoqwnlkdansoiushskjbfdkldawdejsuirhfykbnlaksljdlaskdjaslkjalksjaskdjasldjkaslaskljdaijoqwnlkdansoiushskjbfdkldawdejsuirhfykbnl</span>
-                        </div>
-                        <div class="mb-3 d-flex gap-3 align-items-center">
-                            <img src="./image/telephone.png" alt="" width="40" height="40">
-                            <span>088-8888888</span>
-                        </div>
-                        <div class="d-flex gap-3 align-items-center">
-                            <img src="./image/email.png" alt="" width="40" height="40">
-                            <span>test@gmail.com</span>
+                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure dolore fuga fugit libero
+                                possimus corporis quod, vitae illum provident ab necessitatibus voluptatem natus
+                                veritatis sequi? Quis molestias omnis magni sapiente!</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="my-2 w-100 border border-2 border-white"></div>
 
-            <div class="d-flex justify-content-center text-white align-items-center">
-                <h2>© NPRU BY P</h2>
+            <div class="d-flex flex-column justify-content-end align-items-center" style="height: 180px;">
+                <h6>© NPRU</h6>
             </div>
+
         </footer>
     </div>
 
