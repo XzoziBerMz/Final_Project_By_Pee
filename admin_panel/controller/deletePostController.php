@@ -31,7 +31,7 @@ if (isset($_POST['record'])) {
         $conn->commit();
 
         // ตรวจสอบว่าการลบสำเร็จหรือไม่
-        if ($stmt_posts->rowCount() > 0) {
+        if ($stmt->rowCount() > 0) {
             echo "ลบ ประกาศ เรียบร้อยแล้ว";
         } else {
             echo "ไม่สามารถลบได้";
