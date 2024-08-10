@@ -28,7 +28,7 @@ if ($price_type !== '') {
     $query .= " AND posts.type_buy_or_sell = :price_type";
 }
 
-$query .= " ORDER BY posts.posts_id ASC";
+$query .= " ORDER BY posts.posts_id DESC";
 
 // Prepare และ Bind ค่าพารามิเตอร์
 $stmt = $conn->prepare($query);
@@ -74,7 +74,7 @@ $_SESSION['filtered_products'] = $products;
                     ?>
                     <div class="product-card position-relative">
                         <div
-                            class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดประกาศ') ? 'tag-close' : ''; ?>">
+                            class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดการขาย') ? 'tag-close' : ''; ?>">
                             <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
                         </div>
                         <div class="product-tumb">

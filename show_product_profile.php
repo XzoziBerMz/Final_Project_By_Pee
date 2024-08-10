@@ -33,7 +33,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
         $query_product .= " AND p.type_id = :type_id";
     }
 
-    $query_product .= " ORDER BY p.posts_id ASC";
+    $query_product .= " ORDER BY p.posts_id DESC";
 
     $stmt = $conn->prepare($query_product);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -76,7 +76,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
             <?php foreach ($result as $row_pro) { ?>
                 <div class="product-card-fix position-relative">
                     <div
-                        class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดประกาศ') ? 'tag-close' : ''; ?>">
+                        class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดการขาย') ? 'tag-close' : ''; ?>">
                         <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
                     </div>
                     <div class="product-tumb">

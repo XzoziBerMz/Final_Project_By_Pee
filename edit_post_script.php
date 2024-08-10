@@ -144,7 +144,7 @@ if (isset($_POST["submit"])) {
       $stmt->bindParam(12, $user_id);
       $result = $stmt->execute();
 
-      if ($price_type === 'ปิดประกาศ') {
+      if ($price_type === 'ปิดการขาย') {
         $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 AND user_id != :user_id ORDER BY created_at DESC";
         $stmtComment = $conn->prepare($sqlComments);
         $stmtComment->bindParam(':post_id', $product_id, PDO::PARAM_INT);
@@ -157,10 +157,10 @@ if (isset($_POST["submit"])) {
           $uniqueComments[$comment['user_id']] = $comment;
         }
 
-          $sqlNotify = "INSERT INTO notify (notify_status, titles, post_id, user_id, user_notify_id) 
+        $sqlNotify = "INSERT INTO notify (notify_status, titles, post_id, user_id, user_notify_id) 
               VALUES (:notify_status, :titles, :post_id, :user_id, :user_notify_id)";
-          $stmtNotify = $conn->prepare($sqlNotify);
-          $titles = 'ปิดการขาย';
+        $stmtNotify = $conn->prepare($sqlNotify);
+        $titles = 'ปิดการขาย';
         foreach ($uniqueComments as $comment) {
           $stmtNotify->execute([
             ':notify_status' => true,

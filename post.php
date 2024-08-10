@@ -57,11 +57,11 @@ if (isset($_SESSION['user_login'])) {
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->execute();
 
-        
+
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_OBJ);
-            
+
             if ($row) {
                 $images = json_decode($row->Product_img);
 
@@ -186,7 +186,7 @@ if (isset($_SESSION['user_login'])) {
                         </div>
 
                         <!-- positions -->
-                        <div class="positions">
+                        <div class="positions" style="font-size: larger;">
                             <span><i class="fa-solid fa-location-dot fa-xl" style="color: #f104a6;"></i> จุดนัดพบ :
                                 <b><?php echo $row->position_name; ?></b></span>
                         </div>
@@ -412,7 +412,8 @@ if (isset($_SESSION['user_login'])) {
                         <div class="ps-5 ms-5" id="text-edit-<?= $comment['comment_id']; ?>" style="display: block;">
                             <?= nl2br(htmlspecialchars($comment['comment_text'])); ?>
                         </div>
-                        <div class="ps-5 ms-5" style="<?= htmlspecialchars($type === 'ปิดประกาศ' || $type === 'ปิดการขาย') ? 'display: none;' : ''; ?>">
+                        <div class="ps-5 ms-5"
+                            style="<?= htmlspecialchars($type === 'ปิดประกาศ' || $type === 'ปิดการขาย') ? 'display: none;' : ''; ?>">
                             <span class="pointer me-2" onclick="showReplyForm(<?= $comment['comment_id']; ?>)">ตอบกลับ</span>
                             <?php if (isset($comment['user_id']) && $comment['user_id'] == $user['user_id']) { ?>
                                 <span class="pointer me-2" onclick="toggleEditForm(<?= $comment['comment_id']; ?>)"

@@ -217,8 +217,8 @@ ob_end_flush()
             <span>ขาย</span>
           </label>
           <label>
-            <input type="radio" id="price_type" name="price_type" value="ปิดประกาศ" <?php echo ($type_buy_or_sell === 'ปิดประกาศ') ? 'checked' : ''; ?>>
-            <span>ปิดประกาศ</span>
+            <input type="radio" id="price_type" name="price_type" value="ปิดการขาย" <?php echo ($type_buy_or_sell === 'ปิดการขาย') ? 'checked' : ''; ?>>
+            <span>ปิดการขาย</span>
           </label>
 
           <span class="selection"></span>

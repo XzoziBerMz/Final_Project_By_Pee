@@ -21,7 +21,7 @@ if (isset($_GET['type_id'])) {
     INNER JOIN types as t ON p.type_id = t.type_id
     INNER JOIN sub_type as s ON p.sub_type_id = s.sub_type_id
     WHERE p.type_id = :type_id AND p.sub_type_id = :sub_type_id
-    ORDER BY p.posts_id ASC");
+    ORDER BY p.posts_id DESC");
 
     $stmt->bindParam(':type_id', $type_id, PDO::PARAM_INT);
     $stmt->bindParam(':sub_type_id', $sub_type_id, PDO::PARAM_INT);
@@ -34,7 +34,7 @@ if (isset($_GET['type_id'])) {
     INNER JOIN types as t ON p.type_id = t.type_id
     INNER JOIN sub_type as s ON p.sub_type_id = s.sub_type_id
     WHERE p.type_id = :type_id
-    ORDER BY p.posts_id ASC");
+    ORDER BY p.posts_id DESC");
 
     $stmt->bindParam(':type_id', $type_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -67,7 +67,7 @@ if (isset($_GET['type_id'])) {
       <?php foreach ($result as $row_pro) { ?>
         <div class="product-card position-relative">
           <div
-            class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดประกาศ') ? 'tag-close' : ''; ?>">
+            class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดการขาย') ? 'tag-close' : ''; ?>">
             <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
           </div>
           <div class="product-tumb">
