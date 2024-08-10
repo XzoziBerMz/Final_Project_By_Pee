@@ -47,9 +47,9 @@ require_once "header.php";
           // ตรวจสอบว่าพบข้อมูลหรือไม่ก่อนแสดงผล
           if ($type_name_result) {
             $type_name = $type_name_result['type_name'];
-            echo '<p style="background-color: black;">หมวด ' . $type_name . '</p>';
+            echo '<p style="text-shadow: 3px 3px 1px #000000;">หมวด ' . $type_name . '</p>';
           } else {
-            echo '<p style="background-color: black;">ไม่มีหมวดหมู่ระบุ</p>';
+            echo '<p style="text-shadow: 2px 2px 4px #000000;">ไม่มีหมวดหมู่ระบุ</p>';
           }
         }
         ?>
