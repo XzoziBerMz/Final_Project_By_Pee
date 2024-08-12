@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "header.php";
+require_once "connetdatabase/conn_db.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,11 +54,15 @@ require_once "header.php";
       <!-- หมวดหมู่ -->
       <b class="header-filter">หมวดหมู่</b>
       <div class="list-group mb-4" style="margin-top: 10px;">
+        <a href="search&filter.php" class="list-group-item list-group-item-action list-group-item-light">
+          ทั้งหมด
+        </a>
         <?php
         foreach ($result as $row) { ?>
           <a href="search&filter.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>"
             class="list-group-item list-group-item-action list-group-item-light">
-            <?php echo $row["type_name"]; ?></a>
+            <?php echo $row["type_name"]; ?>
+          </a>
         <?php } ?>
       </div>
       <!-- ราคา -->
@@ -106,9 +111,13 @@ require_once "header.php";
       <!-- post_type -->
       <b class="header-filter">ประเภทประกาศ</b>
       <div class="radio-input" style="margin-top: 15px;">
-        <label style=>
+        <label>
           <input type="radio" name="price_type" value="ซื้อ">
           <span>ซื้อ</span>
+        </label>
+        <label>
+          <input type="radio" name="price_type" value="" checked>
+          <span>ทั้งหมด</span>
         </label>
         <label>
           <input type="radio" name="price_type" value="ขาย">

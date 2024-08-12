@@ -132,7 +132,7 @@ $_SESSION['filtered_products'] = $products;
                     </div>
                 <?php }
             } else {
-                echo '<h3 style="text-align:center; margin-top: 10%;">ไม่พบสินค้าที่คุณตามหาอยู่</h3>';
+                echo '<h3 style="text-align:center; margin-top: 10%;">ไม่มีประกาศที่เกี่ยวข้อง</h3>';
             }
         }
         ?>

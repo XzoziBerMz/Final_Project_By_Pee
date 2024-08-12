@@ -130,42 +130,26 @@
       }
 
       /* เลือกประกาศ */
-      .radio-input {
-        --container-width: 100%;
-        --selection-bg: #3ec550;
-        --border-radius: 10px;
-        --border-color: rgba(53, 52, 52, 0.226);
-        --font-color: #000;
-        --font-color-selected: #fff;
-        --transition-speed: 0.15s;
-      
-        position: relative;
-        display: flex;
-        align-items: center;
-        width: var(--container-width);
-        background-color: #fff;
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
-        overflow: hidden;
-      }
-      
-      .radio-input::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 1px;
-        background-color: #00000033;
-        z-index: 1;
-      }
       
       .radio-input input {
         display: none;
       }
+
+      .radio-input {
+        --container_width: 300px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+        background-color: #fff;
+        color: #000000;
+        width: var(--container_width);
+        overflow: hidden;
+        border: 1px solid rgba(53, 52, 52, 0.226);
+      }
       
       .radio-input label {
-        height: 50px;
+        height: 55px;
         flex: 1;
         padding: 10px;
         cursor: pointer;
@@ -175,33 +159,39 @@
         font-weight: 600;
         letter-spacing: -1px;
         font-size: 16px;
-        color: var(--font-color);
-        z-index: 2; /* Ensures labels are above the dividing line */
-        transition: color var(--transition-speed);
+        color: black;
+        z-index: 2;
       }
       
-      .radio-input .selection {
+      .selection {
+        display: none;
         position: absolute;
         height: 100%;
-        width: calc(var(--container-width) / 2);
-        background-color: #fff; /* Set initial background color to white */
-        top: 0;
-        left: 0;
+        width: calc(var(--container_width) / 3);
         z-index: 0;
-        transition: transform var(--transition-speed), background-color var(--transition-speed);
+        left: 0;
+        top: 0;
+        transition: .15s ease;
       }
       
       .radio-input label:has(input:checked) {
-        color: var(--font-color-selected);
+        color: #fff;
       }
       
-      .radio-input label:nth-of-type(1):has(input:checked) ~ .selection {
-        background-color: var(--selection-bg);
-        transform: translateX(calc(var(--container-width) * 0 / 2));
+      .radio-input label:has(input:checked) ~ .selection {
+        background-color: #09CD56;
+        display: inline-block;
       }
       
-      .radio-input label:nth-of-type(2):has(input:checked) ~ .selection {
-        background-color: var(--selection-bg);
-        transform: translateX(calc(var(--container-width) * 2 / 2));
+      .radio-input label:nth-child(1):has(input:checked) ~ .selection {
+        transform: translateX(calc(var(--container_width) * 0/3));
+      }
+      
+      .radio-input label:nth-child(2):has(input:checked) ~ .selection {
+        transform: translateX(calc(var(--container_width) * 1/3));
+      }
+      
+      .radio-input label:nth-child(3):has(input:checked) ~ .selection {
+        transform: translateX(calc(var(--container_width) * 2/3));
       }
       

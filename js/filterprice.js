@@ -12,9 +12,6 @@ function validateRange() {
   let minPrice = parseInt(inputElements[0].value);
   let maxPrice = parseInt(inputElements[1].value);
 
-  // [] Array
-  // {} Object
-
   if (minPrice > maxPrice) {
     let tempValue = maxPrice;
     maxPrice = minPrice;

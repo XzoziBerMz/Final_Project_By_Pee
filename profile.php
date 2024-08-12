@@ -4,6 +4,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 require_once "header.php";
+require_once "connetdatabase/conn_db.php";
 
 // ดึงข้อมูลแอดมินและผู้ใช้
 if (isset($_SESSION['user_login'])) {
