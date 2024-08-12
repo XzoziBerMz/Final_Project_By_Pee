@@ -98,10 +98,10 @@ function toggleShowMore() {
     if (section && button) { 
         if (section.style.height === 'max-content') {
             section.style.height = '350px';
-            button.textContent = 'Show More';
+            button.textContent = 'แสดงเพิ่มเติม';
         } else {
             section.style.height = 'max-content';
-            button.textContent = 'Show Less';
+            button.textContent = 'แสดงน้อยลง';
         }
     } else {
         console.error('Elements not found.');
@@ -119,12 +119,12 @@ function viewProfileBy(id) {
     window.location.href = `./profile_by.php?profile_id=${id}`
 }
 
-function pointCheck(checkbox, user_id, user_post_id, post_id) {
+function ratingsCheck(checkbox, user_id, user_post_id, post_id) {
     const isChecked = checkbox.checked;
 
     const data = {
         user_id: user_id,        // User ID ของผู้ใช้
-        point: isChecked,        // ค่า point ที่เป็น true หรือ false ขึ้นอยู่กับ checkbox
+        ratings: isChecked,        // ค่า point ที่เป็น true หรือ false ขึ้นอยู่กับ checkbox
         post_id: post_id,        // Post ID ที่เกี่ยวข้อง
         user_post_id: user_post_id // User ID ของเจ้าของโพสต์
     };

@@ -9,20 +9,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // }
 
     // รับค่าจาก POST
-    $positions_name = $_POST['positions_name'];
+    $location_name = $_POST['location_name'];
 
     try {
         // เตรียม statement สำหรับการ insert ข้อมูล
-        $stmt = $conn->prepare("INSERT INTO positions (position_name) VALUES (:positions_name)");
-        $stmt->bindParam(':positions_name', $positions_name, PDO::PARAM_STR);
+        $stmt = $conn->prepare("INSERT INTO location (location_name) VALUES (:location_name)");
+        $stmt->bindParam(':location_name', $location_name, PDO::PARAM_STR);
 
         // ดำเนินการ statement
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            echo "เพิ่ม positions เรียบร้อยแล้ว";
+            echo "เพิ่ม location เรียบร้อยแล้ว";
         } else {
-            echo "เกิดข้อผิดพลาดในการเพิ่ม positions";
+            echo "เกิดข้อผิดพลาดในการเพิ่ม location";
         }
 
     } catch (PDOException $e) {

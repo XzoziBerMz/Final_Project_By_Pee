@@ -53,7 +53,7 @@ function showCustomers() {
   });
 }
 
-function showPositions() {
+function showlocation() {
   $.ajax({
     url: "./adminView/viewpositions.php",
     method: "post",
@@ -150,14 +150,14 @@ function userDelete(id) {
   });
 }
 
-function positionsDelete(id) {
+function locationDelete(id) {
   $.ajax({
     url: "./controller/deletePositonsController.php",
     method: "post",
     data: { record: id },
     success: function (data) {
       $('form').trigger('reset');
-      showPositions();
+      showlocation();
     }
   });
 }
@@ -264,7 +264,7 @@ function adduser(event) {
 }
 
 // ฟังก์ชั่น addpositions ที่ใช้ AJAX สำหรับเพิ่มจุดนัดพบ
-function addpositions(event) {
+function addlocation(event) {
   event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
 
   let formData = new FormData(event.target);
@@ -279,8 +279,8 @@ function addpositions(event) {
     contentType: false,
     success: function (data) {
       alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
-      $('#addpositionsForm').trigger('reset'); // รีเซ็ตฟอร์ม
-      showPositions();
+      $('#addlocationForm').trigger('reset'); // รีเซ็ตฟอร์ม
+      showlocation();
       $('#myModal').modal('hide'); // ปิด modal
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -293,7 +293,7 @@ function addpositions(event) {
 }
 
 // ฟังก์ชั่น updatepositions ที่ใช้ AJAX สำหรับเพิ่มผู้ใช้
-function updatepositions(event) {
+function updatelocation(event) {
   event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
 
   let formData = new FormData(event.target);
@@ -308,9 +308,9 @@ function updatepositions(event) {
     contentType: false,
     success: function (data) {
       alert(data); // แสดงข้อความที่ได้จากเซิร์ฟเวอร์
-      $('#updatepositionForm').trigger('reset'); // รีเซ็ตฟอร์ม
-      showPositions();
-      $('#editpositionsModal').modal('hide'); // ปิด modal
+      $('#updatelocationForm').trigger('reset'); // รีเซ็ตฟอร์ม
+      showlocation();
+      $('#editlocationModal').modal('hide'); // ปิด modal
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.error('Error: ' + textStatus, errorThrown); // แสดงข้อผิดพลาดใน console

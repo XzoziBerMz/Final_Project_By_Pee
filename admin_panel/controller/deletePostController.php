@@ -23,7 +23,7 @@ if (isset($_POST['record'])) {
         $stmt->execute();
 
         // ลบข้อมูลโพสที่มี point เท่ากับ p_id ในตาราง point
-        $stmt = $conn->prepare("DELETE FROM points WHERE post_id = :p_id");
+        $stmt = $conn->prepare("DELETE FROM rating WHERE post_id = :p_id");
         $stmt->bindParam(':p_id', $p_id, PDO::PARAM_INT);
         $stmt->execute();
 

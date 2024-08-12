@@ -81,20 +81,20 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                     <span class="detaill_user">หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
                 </div>
                 <?php
-                $sqlPointView = "SELECT * FROM points WHERE user_post_id = :user_id";
+                $sqlPointView = "SELECT * FROM rating WHERE user_post_id = :user_id";
                 $stmtPointView = $conn->prepare($sqlPointView);
                 $stmtPointView->bindParam(':user_id', $user['user_id'], PDO::PARAM_INT);
                 $stmtPointView->execute();
-                $pointsData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
+                $ratingData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
 
-                $totalPoints = 0;
-                foreach ($pointsData as $rowPoint) {
-                    $totalPoints += $rowPoint['point']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
+                $totalrating = 0;
+                foreach ($ratingData as $rowPoint) {
+                    $totalrating += $rowPoint['ratings']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
                 }
                 ?>
                 <div class="d-flex justify-content-center mb-3">
                     <span class="detaill_user">คะแนนความนิยม : <b
-                            style="color: #09CD56;"><?php echo $totalPoints ?></b></span>
+                            style="color: #09CD56;"><?php echo $totalrating ?></b></span>
                 </div>
                 <div class="d-flex justify-content-center">
                     <span class="detaill_user">เข้าร่วมเมื่อ : <?php echo formatDate($user['create_at']); ?></span>

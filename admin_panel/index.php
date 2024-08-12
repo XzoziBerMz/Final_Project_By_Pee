@@ -122,12 +122,12 @@ if (isset($_SESSION['admin_login'])) {
       </div>
       <div class="col-sm-3">
         <div class="card">
-          <a href="#positions" style="text-decoration:none" onclick="showPositions()">
+          <a href="#location" style="text-decoration:none" onclick="showlocation()">
             <i class="fa-solid fa-map-location-dot mb-2" style="font-size: 70px; color: black;"></i>
-            <h4 style=" color:white;">Total Positions </h4>
+            <h4 style=" color:white;">Total location </h4>
             <h5 style="color:white;">
               <?php
-              $sql = "SELECT * from positions";
+              $sql = "SELECT * from location";
               $result = $conn->query($sql);
               $count = $result->rowCount();
               if ($result > 0) {

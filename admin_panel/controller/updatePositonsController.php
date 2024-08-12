@@ -4,18 +4,18 @@ include_once "../config/dbconnect.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ตรวจสอบว่ามีข้อมูลส่งมาจากฟอร์ม
-    if (isset($_POST['position_id']) && isset($_POST['edit_position_name'])) {
-        // รับค่า position_id และชื่อใหม่จากฟอร์ม
-        $position_id = $_POST['position_id'];
-        $new_position_name = $_POST['edit_position_name'];
+    if (isset($_POST['location_id']) && isset($_POST['edit_location_name'])) {
+        // รับค่า location_id และชื่อใหม่จากฟอร์ม
+        $location_id = $_POST['location_id'];
+        $new_location_name = $_POST['edit_location_name'];
 
         // เตรียมคำสั่ง SQL สำหรับอัปเดตชื่อตำแหน่ง
-        $sql = "UPDATE positions SET position_name = :new_position_name WHERE position_id = :position_id";
+        $sql = "UPDATE location SET location_name = :new_location_name WHERE location_id = :location_id";
         $stmt = $conn->prepare($sql);
 
         // ผูกค่าที่ได้รับจากฟอร์มกับพารามิเตอร์ในคำสั่ง SQL
-        $stmt->bindParam(':new_position_name', $new_position_name);
-        $stmt->bindParam(':position_id', $position_id);
+        $stmt->bindParam(':new_location_name', $new_location_name);
+        $stmt->bindParam(':location_id', $location_id);
 
         // ดำเนินการ statement
         $stmt->execute();

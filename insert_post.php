@@ -234,17 +234,17 @@ ob_end_flush()
       <!-- position -->
       <div class="mb-2" style="margin-top: 30px;">
         <?php
-        $positions = "SELECT position_id, position_name FROM positions";
-        $stmt = $conn->prepare($positions);
+        $locations = "SELECT location_id, location_name FROM locations";
+        $stmt = $conn->prepare($locations);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
-        <label for="positions" class="form-label label-insert">จุดนัดพบ <span class="span-label">*</span></label>
-        <select class="form-control input-insert" name="positions" id="positions">
+        <label for="locations" class="form-label label-insert">จุดนัดพบ <span class="span-label">*</span></label>
+        <select class="form-control input-insert" name="locations" id="locations">
           <option value="" disabled selected>กรุณาเลือกจุดนัดพบ !</option>
           <?php foreach ($results as $row): ?>
-            <option value="<?= htmlspecialchars($row['position_id']); ?>">
-              <?= htmlspecialchars($row['position_name']); ?>
+            <option value="<?= htmlspecialchars($row['location_id']); ?>">
+              <?= htmlspecialchars($row['location_name']); ?>
             </option>
           <?php endforeach; ?>
         </select>

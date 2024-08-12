@@ -68,7 +68,7 @@ if (isset($_GET['type_id'])) {
         <?php foreach ($result as $row_pro) { ?>
           <div class="product-card position-relative">
             <div
-              class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดการขาย') ? 'tag-close' : ''; ?>">
+              class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดการซื้อขาย') ? 'tag-close' : ''; ?>">
               <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
             </div>
             <div class="product-tumb">

@@ -10,7 +10,7 @@ require_once 'connetdatabase/conn_db.php';
 $query_product = "SELECT * FROM posts as p 
 INNER JOIN types as t ON p.type_id = t.type_id
 INNER JOIN sub_type as s ON p.sub_type_id = s.sub_type_id
-WHERE p.type_buy_or_sell NOT IN ('ปิดประกาศ', 'ปิดการขาย')
+WHERE p.type_buy_or_sell NOT IN ('ปิดประกาศ', 'ปิดการซื้อขาย')
 ORDER BY p.posts_id DESC";
 
 $stmt = $conn->prepare($query_product);

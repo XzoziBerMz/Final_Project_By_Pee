@@ -7,7 +7,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 if ($data) {
     // ตรวจสอบว่ามี record ที่ตรงกับ user_id และ post_id หรือไม่
-    $sql = "SELECT * FROM points WHERE user_id = :user_id AND post_id = :post_id";
+    $sql = "SELECT * FROM rating WHERE user_id = :user_id AND post_id = :post_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_STR);
     $stmt->bindValue(':post_id', $data['post_id'], PDO::PARAM_INT);
@@ -15,18 +15,18 @@ if ($data) {
 
     if ($stmt->rowCount() > 0) {
         // ถ้ามีข้อมูลอยู่แล้วให้ทำการ UPDATE
-        $sql = "UPDATE points SET point = :point, user_post_id = :user_post_id WHERE user_id = :user_id AND post_id = :post_id";
+        $sql = "UPDATE rating SET ratings = :ratings, user_post_id = :user_post_id WHERE user_id = :user_id AND post_id = :post_id";
         $stmt = $conn->prepare($sql);
-        $stmt->bindValue(':point', $data['point'], PDO::PARAM_BOOL);
+        $stmt->bindValue(':ratings', $data['ratings'], PDO::PARAM_BOOL);
         $stmt->bindValue(':user_post_id', $data['user_post_id'], PDO::PARAM_STR);
         $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_STR);
         $stmt->bindValue(':post_id', $data['post_id'], PDO::PARAM_INT);
     } else {
         // ถ้าไม่มีข้อมูลให้ทำการ INSERT ใหม่
-        $sql = "INSERT INTO points (user_id, point, post_id, user_post_id) VALUES (:user_id, :point, :post_id, :user_post_id)";
+        $sql = "INSERT INTO rating (user_id, ratings, post_id, user_post_id) VALUES (:user_id, :ratings, :post_id, :user_post_id)";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_STR);
-        $stmt->bindValue(':point', $data['point'], PDO::PARAM_BOOL);
+        $stmt->bindValue(':ratings', $data['ratings'], PDO::PARAM_BOOL);
         $stmt->bindValue(':post_id', $data['post_id'], PDO::PARAM_INT);
         $stmt->bindValue(':user_post_id', $data['user_post_id'], PDO::PARAM_STR);
     }

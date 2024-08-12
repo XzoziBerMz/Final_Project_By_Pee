@@ -217,8 +217,8 @@ ob_end_flush()
             <span>ขาย</span>
           </label>
           <label>
-            <input type="radio" id="price_type" name="price_type" value="ปิดการขาย" <?php echo ($type_buy_or_sell === 'ปิดการขาย') ? 'checked' : ''; ?>>
-            <span>ปิดการขาย</span>
+            <input type="radio" id="price_type" name="price_type" value="ปิดการซื้อขาย" <?php echo ($type_buy_or_sell === 'ปิดการซื้อขาย') ? 'checked' : ''; ?>>
+            <span>ปิดการซื้อขาย</span>
           </label>
 
           <span class="selection"></span>
@@ -267,17 +267,17 @@ ob_end_flush()
       <!-- position -->
       <div class="mb-2" style="margin-top: 30px;">
         <?php
-        $positions = "SELECT position_id, position_name FROM positions";
-        $stmt = $conn->prepare($positions);
+        $locations = "SELECT location_id, location_name FROM location";
+        $stmt = $conn->prepare($locations);
         $stmt->execute();
-        $positionsResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $locationsResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
-        <label for="positions" class="form-label label-insert">จุดนัดพบ <span class="span-label">*</span></label>
-        <select class="form-control input-insert" name="positions" id="positions">
+        <label for="locations" class="form-label label-insert">จุดนัดพบ <span class="span-label">*</span></label>
+        <select class="form-control input-insert" name="locations" id="locations">
           <option value="" disabled selected>กรุณาเลือกจุดนัดพบ !</option>
-          <?php foreach ($positionsResults as $row): ?>
-            <option value="<?= htmlspecialchars($row['position_id']); ?>" <?= isset($result['position_id']) && $result['position_id'] == $row['position_id'] ? 'selected' : ''; ?>>
-              <?= htmlspecialchars($row['position_name']); ?>
+          <?php foreach ($locationsResults as $row): ?>
+            <option value="<?= htmlspecialchars($row['location_id']); ?>" <?= isset($result['location_id']) && $result['location_id'] == $row['location_id'] ? 'selected' : ''; ?>>
+              <?= htmlspecialchars($row['location_name']); ?>
             </option>
           <?php endforeach; ?>
         </select>

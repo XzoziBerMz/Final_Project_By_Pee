@@ -17,7 +17,7 @@ if (isset($_POST["submit"])) {
   $price = '';
   $p_number = $_POST['phone_number'];
   $description = $_POST['description'];
-  $positions = $_POST['positions'];
+  $locations = $_POST['locations'];
   $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : null;
   $sub_type_id = isset($_POST['sub_type_id']) ? $_POST['sub_type_id'] : null;
   $totalFiles = count($_FILES['photo_file']['name']);
@@ -82,7 +82,7 @@ if (isset($_POST["submit"])) {
       }
 
       $filesArray = json_encode($filesArray);
-      $query = "INSERT INTO posts (user_id, product_name, type_id, sub_type_id, phone_number, Product_detail, position_id , type_buy_or_sell, product_price_type, product_price, Product_img, datasave) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+      $query = "INSERT INTO posts (user_id, product_name, type_id, sub_type_id, phone_number, Product_detail, location_id , type_buy_or_sell, product_price_type, product_price, Product_img, datasave) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
       $stmt = $conn->prepare($query);
       $stmt->bindParam(1, $user_id);
       $stmt->bindParam(2, $title);
@@ -90,7 +90,7 @@ if (isset($_POST["submit"])) {
       $stmt->bindParam(4, $sub_type_id);
       $stmt->bindParam(5, $p_number);
       $stmt->bindParam(6, $description);
-      $stmt->bindParam(7, $positions);
+      $stmt->bindParam(7, $locations);
       $stmt->bindParam(8, $price_type);
       $stmt->bindParam(9, $priceType);
       $stmt->bindParam(10, $price);

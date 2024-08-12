@@ -49,9 +49,9 @@ if (isset($_SESSION['user_login'])) {
         $product_id = $_GET['product_id'];
 
         // Database connection (assuming $conn is already set)
-        $sqlAll = "SELECT posts.*, positions.position_name 
+        $sqlAll = "SELECT posts.*, location.location_name
         FROM posts 
-        JOIN positions ON posts.position_id = positions.position_id 
+        JOIN location ON posts.location_id = location.location_id 
         WHERE posts.posts_id = :product_id";
         $stmt = $conn->prepare($sqlAll);
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
@@ -128,15 +128,15 @@ if (isset($_SESSION['user_login'])) {
                             $stmtUser->execute();
                             $postUser = $stmtUser->fetch(PDO::FETCH_ASSOC);
 
-                            $sqlPointView = "SELECT * FROM points WHERE user_post_id = :user_id";
-                            $stmtPointView = $conn->prepare($sqlPointView);
-                            $stmtPointView->bindParam(':user_id', $postUser['user_id'], PDO::PARAM_INT);
-                            $stmtPointView->execute();
-                            $pointsData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
+                            $sqlratingsView = "SELECT * FROM rating WHERE user_post_id = :user_id";
+                            $stmtratingsView = $conn->prepare($sqlratingsView);
+                            $stmtratingsView->bindParam(':user_id', $postUser['user_id'], PDO::PARAM_INT);
+                            $stmtratingsView->execute();
+                            $ratingData = $stmtratingsView->fetchAll(PDO::FETCH_ASSOC);
 
-                            $totalPoints = 0;
-                            foreach ($pointsData as $rowPoint) {
-                                $totalPoints += $rowPoint['point'];
+                            $totalrating = 0;
+                            foreach ($ratingData as $rowrating) {
+                                $totalrating += $rowrating['ratings'];
                             }
                             ?>
                             <p style="margin-top: 20px;">โพสต์โดย:
@@ -144,7 +144,7 @@ if (isset($_SESSION['user_login'])) {
                                     onclick="viewProfileBy('<?= $postUser['user_id'] ?>')"><?php echo $postUser['firstname'] . ' ' . $postUser['lastname']; ?>
                                 </span>
                                 <span style="float: right;">คะแนนความนิยม : <b
-                                        style="color: #09CD56;"><?php echo $totalPoints ?></b></span>
+                                        style="color: #09CD56;"><?php echo $totalrating ?></b></span>
                             </p>
 
                         </div>
@@ -155,17 +155,17 @@ if (isset($_SESSION['user_login'])) {
                         <div style="<?php echo $user['user_id'] === $row->user_id ? 'display: none;' : ''; ?>">
                             <label class="containers position-absolute fix-location">
                                 <?php
-                                // เตรียมคำสั่ง SQL เพื่อตรวจสอบข้อมูลในตาราง points
-                                $sqlPoint = "SELECT * FROM points WHERE post_id = :product_id AND user_id = :user_id";
-                                $stmtPoint = $conn->prepare($sqlPoint);
-                                $stmtPoint->bindParam(':product_id', $product_id, PDO::PARAM_INT);
-                                $stmtPoint->bindParam(':user_id', $user['user_id'], PDO::PARAM_INT);
-                                $stmtPoint->execute();
-                                $rowPoint = $stmtPoint->fetch(PDO::FETCH_OBJ);
+                                // เตรียมคำสั่ง SQL เพื่อตรวจสอบข้อมูลในตาราง rating
+                                $sqlratings = "SELECT * FROM rating WHERE post_id = :product_id AND user_id = :user_id";
+                                $stmtratings = $conn->prepare($sqlratings);
+                                $stmtratings->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+                                $stmtratings->bindParam(':user_id', $user['user_id'], PDO::PARAM_INT);
+                                $stmtratings->execute();
+                                $rowratings = $stmtratings->fetch(PDO::FETCH_OBJ);
                                 ?>
                                 <input type="checkbox"
-                                    onclick="pointCheck(this, '<?php echo $user['user_id']; ?>', '<?php echo $row->user_id; ?>', '<?php echo $product_id; ?>')"
-                                    <?php echo !empty($rowPoint) && $rowPoint->point ? 'checked' : ''; ?>>
+                                    onclick="ratingsCheck(this, '<?php echo $user['user_id']; ?>', '<?php echo $row->user_id; ?>', '<?php echo $product_id; ?>')"
+                                    <?php echo !empty($rowratings) && $rowratings->ratings ? 'checked' : ''; ?>>
                                 <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <path
@@ -188,7 +188,7 @@ if (isset($_SESSION['user_login'])) {
                         <!-- positions -->
                         <div class="positions" style="font-size: larger;">
                             <span><i class="fa-solid fa-location-dot fa-xl" style="color: #f104a6;"></i> จุดนัดพบ :
-                                <b><?php echo $row->position_name; ?></b></span>
+                                <b><?php echo $row->location_name; ?></b></span>
                         </div>
 
                         <div class="">
@@ -260,7 +260,7 @@ if (isset($_SESSION['user_login'])) {
             </div>
             <div class="border my-3"></div>
             <form method="POST" action=""
-                style="<?php echo ($row->type_buy_or_sell === 'ปิดประกาศ' || $row->type_buy_or_sell === 'ปิดการขาย') ? 'display: none;' : ''; ?>">
+                style="<?php echo ($row->type_buy_or_sell === 'ปิดประกาศ' || $row->type_buy_or_sell === 'ปิดการซื้อขาย') ? 'display: none;' : ''; ?>">
                 <div class="d-flex mb-3">
                     <input type="text" id="user_name" name="user_name" hidden
                         value="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?>">
@@ -413,7 +413,7 @@ if (isset($_SESSION['user_login'])) {
                             <?= nl2br(htmlspecialchars($comment['comment_text'])); ?>
                         </div>
                         <div class="ps-5 ms-5"
-                            style="<?= htmlspecialchars($type === 'ปิดประกาศ' || $type === 'ปิดการขาย') ? 'display: none;' : ''; ?>">
+                            style="<?= htmlspecialchars($type === 'ปิดประกาศ' || $type === 'ปิดการซื้อขาย') ? 'display: none;' : ''; ?>">
                             <span class="pointer me-2" onclick="showReplyForm(<?= $comment['comment_id']; ?>)">ตอบกลับ</span>
                             <?php if (isset($comment['user_id']) && $comment['user_id'] == $user['user_id']) { ?>
                                 <span class="pointer me-2" onclick="toggleEditForm(<?= $comment['comment_id']; ?>)"

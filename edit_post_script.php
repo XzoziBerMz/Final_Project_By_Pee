@@ -18,7 +18,7 @@ if (isset($_POST["submit"])) {
   $price = '';
   $p_number = $_POST['phone_number'];
   $description = $_POST['description'];
-  $positions = $_POST['positions'];
+  $locations = $_POST['locations'];
   $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : null;
   $sub_type_id = isset($_POST['sub_type_id']) ? $_POST['sub_type_id'] : null;
 
@@ -128,14 +128,14 @@ if (isset($_POST["submit"])) {
       $filesArrayJson = json_encode($filesArray);
 
       // Perform database update
-      $query = "UPDATE posts SET product_name = ?, type_id = ?, sub_type_id = ?, phone_number = ?, Product_detail = ?, position_id = ?, type_buy_or_sell = ?, product_price_type = ?, product_price = ?, Product_img = ?, datasave = NOW() WHERE posts_id = ? AND user_id = ?";
+      $query = "UPDATE posts SET product_name = ?, type_id = ?, sub_type_id = ?, phone_number = ?, Product_detail = ?, location_id = ?, type_buy_or_sell = ?, product_price_type = ?, product_price = ?, Product_img = ?, datasave = NOW() WHERE posts_id = ? AND user_id = ?";
       $stmt = $conn->prepare($query);
       $stmt->bindParam(1, $title);
       $stmt->bindParam(2, $type_id);
       $stmt->bindParam(3, $sub_type_id);
       $stmt->bindParam(4, $p_number);
       $stmt->bindParam(5, $description);
-      $stmt->bindParam(6, $positions);
+      $stmt->bindParam(6, $locations);
       $stmt->bindParam(7, $price_type);
       $stmt->bindParam(8, $priceType);
       $stmt->bindParam(9, $price);
@@ -144,7 +144,7 @@ if (isset($_POST["submit"])) {
       $stmt->bindParam(12, $user_id);
       $result = $stmt->execute();
 
-      if ($price_type === 'ปิดการขาย') {
+      if ($price_type === 'ปิดการซื้อขาย') {
         $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 AND user_id != :user_id ORDER BY created_at DESC";
         $stmtComment = $conn->prepare($sqlComments);
         $stmtComment->bindParam(':post_id', $product_id, PDO::PARAM_INT);
@@ -160,7 +160,7 @@ if (isset($_POST["submit"])) {
         $sqlNotify = "INSERT INTO notify (notify_status, titles, post_id, user_id, user_notify_id) 
               VALUES (:notify_status, :titles, :post_id, :user_id, :user_notify_id)";
         $stmtNotify = $conn->prepare($sqlNotify);
-        $titles = 'ปิดการขาย';
+        $titles = 'ปิดการซื้อขาย';
         foreach ($uniqueComments as $comment) {
           $stmtNotify->execute([
             ':notify_status' => true,
