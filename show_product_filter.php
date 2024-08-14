@@ -10,6 +10,7 @@ $max_price = isset($_GET['max_price']) ? intval($_GET['max_price']) : PHP_INT_MA
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $type_id = isset($_GET['type_id']) ? intval($_GET['type_id']) : 0;
 $price_type = isset($_GET['price_type']) ? $_GET['price_type'] : '';
+// echo $search;
 
 // Query ที่ใช้ในการดึงข้อมูล
 $query = "SELECT posts.*, types.type_name, sub_type.sub_type_name 
@@ -28,10 +29,11 @@ if ($price_type !== '') {
     $query .= " AND posts.type_buy_or_sell = :price_type";
 }
 
-$query .= "ORDER BY 
+$query .= " ORDER BY 
               CASE 
                   WHEN posts.type_buy_or_sell = 'ปิดประกาศ' THEN 2
                   WHEN posts.type_buy_or_sell = 'ปิดการซื้อขาย' THEN 2
+                  ELSE 0
               END, 
               posts.posts_id DESC";
 
