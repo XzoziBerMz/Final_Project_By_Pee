@@ -28,7 +28,12 @@ if ($price_type !== '') {
     $query .= " AND posts.type_buy_or_sell = :price_type";
 }
 
-$query .= " ORDER BY posts.posts_id DESC";
+$query .= "ORDER BY 
+              CASE 
+                  WHEN posts.type_buy_or_sell = 'ปิดประกาศ' THEN 2
+                  WHEN posts.type_buy_or_sell = 'ปิดการซื้อขาย' THEN 2
+              END, 
+              posts.posts_id DESC";
 
 // Prepare และ Bind ค่าพารามิเตอร์
 $stmt = $conn->prepare($query);

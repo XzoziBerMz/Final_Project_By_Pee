@@ -64,194 +64,217 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
     <link rel="stylesheet" href="Custom/profile.css">
 </head>
 
+
+
 <body>
-    <div class="row m-0 m-3">
+    <div>
+        <div class="row m-0 position-relative ">
 
-        <!-- profile user -->
-        <div class="col-md-2 profile-container ">
-            <div class="card card-user rounded-4">
-                <div class="mb-4">
-                    <img src="<?php echo $user['user_photo']; ?>" class="rounded-circle" alt="" width="150"
-                        height="150">
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p class="username"> <?php echo $user['firstname'] . ' ' . $user['lastname'] ?> </p>
-                </div>
-                <div class="d-flex justify-content-center mb-3">
-                    <span class="detaill_user">หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
-                </div>
-                <?php
-                $sqlPointView = "SELECT * FROM rating WHERE user_post_id = :user_id";
-                $stmtPointView = $conn->prepare($sqlPointView);
-                $stmtPointView->bindParam(':user_id', $user['user_id'], PDO::PARAM_INT);
-                $stmtPointView->execute();
-                $ratingData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
-
-                $totalrating = 0;
-                foreach ($ratingData as $rowPoint) {
-                    $totalrating += $rowPoint['ratings']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
-                }
-                ?>
-                <div class="d-flex justify-content-center mb-3">
-                    <span class="detaill_user">คะแนนความนิยม : <b
-                            style="color: #09CD56;"><?php echo $totalrating ?></b></span>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <span class="detaill_user">เข้าร่วมเมื่อ : <?php echo formatDate($user['create_at']); ?></span>
-                </div>
-                <hr>
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-personal-information"
-                        onclick='viewProfile(<?php echo json_encode($user); ?>)'>ดูข้อมูลส่วนตัว</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">ข้อมูลส่วนตัว</h1>
-                        <button type="button" class="btn-close" onclick="closeModal()"></button>
+            <!-- profile user -->
+            <div class="col-md-2 profile-container ">
+                <div class="card card-user rounded-4">
+                    <div class="mb-4">
+                        <img src="<?php echo $user['user_photo']; ?>" class="rounded-circle" alt="" width="150"
+                            height="150">
                     </div>
-                    <div class="modal-body">
-                        <div class="text-center" id="form_show_text">
-                            <div class="mt-3">
-                                <img class="m-0 rounded-circle" src="<?php echo $user['user_photo']; ?>" alt=""
-                                    width="200" height="200">
-                            </div>
-                            <div class="mt-3">
-                                <span>หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
-                            </div>
-                            <div class="mt-3">
-                                <span>เข้าร่วมเมื่อ : <?php echo formatDate($user['create_at']); ?></span>
-                            </div>
-                            <div class="mt-3">
-                                <span>ชื่อ : <?php echo $user['firstname'] . ' ' . $user['lastname'] ?></span>
-                            </div>
-
-                            <div class="d-flex justify-content-end align-items-center mt-5">
-                                <div>
-                                    <button class="btn btn-warning text-light" onclick="onEdit('edit')"
-                                        id="edit_profile">แก้ไขข้อมูลส่วนตัว</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="" id="form_edit_input" style="display: none;">
-                            <div class="mt-3 text-center">
-                                <img class="m-0 rounded-circle pointer" id="profilePic"
-                                    src="<?php echo $user['user_photo']; ?>" alt="" width="200" height="200"
-                                    onclick="document.getElementById('fileInput').click();">
-                                <input type="file" id="fileInput" hidden>
-                            </div>
-                            <div class="mt-3 text-center">
-                                <span>หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="firstname" class="form-label">ชื่อ</label>
-                                <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp">
-                            </div>
-                            <div class="mb-3">
-                                <label for="lastname" class="form-label">นามสกุล</label>
-                                <input type="text" class="form-control" id="lastname" aria-describedby="emailHelp">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
-                                <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp">
-                            </div>
-                            <div class="mb-3">
-                                <label for="address" class="form-label">ที่อยู่</label>
-                                <input type="text" class="form-control" id="address" aria-describedby="emailHelp">
-                            </div>
-                            <div>
-                                <div>
-                                    <button class="btn btn-warning text-light" onclick="changePassword()"
-                                        id="edit_profile">เปลี่ยนรหัสผ่าน</button>
-                                </div>
-                            </div>
-                            <div class="mt-3" id="password_form_change" style="display: none;">
-                                <div class="mb-3">
-                                    <label for="current_password" class="form-label">รหัสผ่านเดิม</label>
-                                    <input type="password" value="" class="form-control" id="current_password"
-                                        aria-describedby="passwordHelp">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="new_password" class="form-label">รหัสผ่านใหม่</label>
-                                    <input type="password" value="" class="form-control" id="new_password"
-                                        aria-describedby="passwordHelp">
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-end align-items-center gap-3">
-                                <div>
-                                    <button class="btn btn-danger text-light" onclick="onEdit('cancel')"
-                                        id="edit_profile">ยกเลิก</button>
-                                </div>
-                                <div>
-                                    <button class="btn btn-success text-light" onclick="saveChanges()"
-                                        id="edit_profile">บันทึก</button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="d-flex justify-content-center">
+                        <p class="username"> <?php echo $user['firstname'] . ' ' . $user['lastname'] ?> </p>
                     </div>
-                    <!-- <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div> -->
-                </div>
-            </div>
-        </div>
-
-        <!-- post user -->
-        <?php
-        $type = "SELECT * FROM types";
-        $stmt = $conn->prepare($type);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        ?>
-
-        <div class="col-md-10 ">
-            <div class="mt-4" style="margin-bottom: 2%;">
-                <!-- หมวดหมู่ -->
-                <div class="categories-container">
-
-                    <a href="profile.php" class="category-item">ทั้งหมด </a>
-
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="detaill_user">หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
+                    </div>
                     <?php
-                    foreach ($result as $row) { ?>
-                        <a href="profile.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>" class="category-item">
-                            <?php echo $row["type_name"]; ?></a>
-                    <?php } ?>
+                    $sqlPointView = "SELECT * FROM rating WHERE user_post_id = :user_id";
+                    $stmtPointView = $conn->prepare($sqlPointView);
+                    $stmtPointView->bindParam(':user_id', $user['user_id'], PDO::PARAM_INT);
+                    $stmtPointView->execute();
+                    $ratingData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
 
-                    <!-- ปุ่มตามหา-ประกาศขาย -->
-                    <div class="div-btn" style="margin-left: 15%;">
-                        <a href="category_Sell-find_products.php" class="btn btn-post">
-                            <i class="fa-solid fa-circle fa-flip-vertical fa-2xs blink-2" style="color: #ffffff;"></i>
-                            ตามหา / ขายสินค้า
-                        </a>
+                    $totalrating = 0;
+                    foreach ($ratingData as $rowPoint) {
+                        $totalrating += $rowPoint['ratings']; // สมมติว่า column ที่เก็บคะแนนคือ 'point'
+                    }
+                    ?>
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="detaill_user">คะแนนความนิยม : <b
+                                style="color: #09CD56;"><?php echo $totalrating ?></b></span>
                     </div>
-
+                    <div class="d-flex justify-content-center">
+                        <span class="detaill_user">เข้าร่วมเมื่อ : <?php echo formatDate($user['create_at']); ?></span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-personal-information"
+                            onclick='viewProfile(<?php echo json_encode($user); ?>)'>ดูข้อมูลส่วนตัว</button>
+                    </div>
                 </div>
-                <hr class="hr-catagory">
             </div>
 
-            <!-- post-user -->
+            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">ข้อมูลส่วนตัว</h1>
+                            <button type="button" class="btn-close" onclick="closeModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center" id="form_show_text">
+                                <div class="mt-3">
+                                    <img class="m-0 rounded-circle" src="<?php echo $user['user_photo']; ?>" alt=""
+                                        width="200" height="200">
+                                </div>
+                                <div class="mt-3">
+                                    <span>หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
+                                </div>
+                                <div class="mt-3">
+                                    <span>เข้าร่วมเมื่อ : <?php echo formatDate($user['create_at']); ?></span>
+                                </div>
+                                <div class="mt-3">
+                                    <span>ชื่อ : <?php echo $user['firstname'] . ' ' . $user['lastname'] ?></span>
+                                </div>
+
+                                <div class="d-flex justify-content-end align-items-center mt-5">
+                                    <div>
+                                        <button class="btn btn-warning text-light" onclick="onEdit('edit')"
+                                            id="edit_profile">แก้ไขข้อมูลส่วนตัว</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="" id="form_edit_input" style="display: none;">
+                                <div class="mt-3 text-center">
+                                    <img class="m-0 rounded-circle pointer" id="profilePic"
+                                        src="<?php echo $user['user_photo']; ?>" alt="" width="200" height="200"
+                                        onclick="document.getElementById('fileInput').click();">
+                                    <input type="file" id="fileInput" hidden>
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <span>หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="firstname" class="form-label">ชื่อ</label>
+                                    <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lastname" class="form-label">นามสกุล</label>
+                                    <input type="text" class="form-control" id="lastname" aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
+                                    <input type="text" class="form-control" id="phone_number"
+                                        aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">ที่อยู่</label>
+                                    <input type="text" class="form-control" id="address" aria-describedby="emailHelp">
+                                </div>
+                                <div>
+                                    <div>
+                                        <button class="btn btn-warning text-light" onclick="changePassword()"
+                                            id="edit_profile">เปลี่ยนรหัสผ่าน</button>
+                                    </div>
+                                </div>
+                                <div class="mt-3" id="password_form_change" style="display: none;">
+                                    <div class="mb-3">
+                                        <label for="current_password" class="form-label">รหัสผ่านเดิม</label>
+                                        <input type="password" value="" class="form-control" id="current_password"
+                                            aria-describedby="passwordHelp">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="new_password" class="form-label">รหัสผ่านใหม่</label>
+                                        <input type="password" value="" class="form-control" id="new_password"
+                                            aria-describedby="passwordHelp">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end align-items-center gap-3">
+                                    <div>
+                                        <button class="btn btn-danger text-light" onclick="onEdit('cancel')"
+                                            id="edit_profile">ยกเลิก</button>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-success text-light" onclick="saveChanges()"
+                                            id="edit_profile">บันทึก</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- post user -->
             <?php
-            include_once "show_product_profile.php";
+            $type = "SELECT * FROM types";
+            $stmt = $conn->prepare($type);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             ?>
 
-        </div>
-    </div>
+            <div class="col-md-10 ">
+                <div class="mt-4" style="margin-bottom: 2%;">
+                    <!-- หมวดหมู่ -->
+                    <div class="categories-container">
 
-    <!-- footer -->
-    <?php
-    include_once "footer.php";
-    ?>
+                        <a href="profile.php" class="category-item">ทั้งหมด </a>
+
+                        <?php
+                        foreach ($result as $row) { ?>
+                            <a href="profile.php?act=showbytype&type_id=<?php echo $row['type_id']; ?>"
+                                class="category-item">
+                                <?php echo $row["type_name"]; ?></a>
+                        <?php } ?>
+
+                        <!-- ปุ่มตามหา-ประกาศขาย -->
+                        <div class="div-btn" style="margin-left: 15%;">
+                            <a href="category_Sell-find_products.php" class="btn btn-post">
+                                <i class="fa-solid fa-circle fa-flip-vertical fa-2xs blink-2"
+                                    style="color: #ffffff;"></i>
+                                ตามหา / ขายสินค้า
+                            </a>
+                        </div>
+
+                    </div>
+                    <hr class="hr-catagory">
+                </div>
+
+                <!-- post-user -->
+                <?php
+                include_once "show_product_profile.php";
+                ?>
+
+            </div>
+
+            <?php
+            
+            if (count($result) > 4) {
+                $height = '110% !important';
+            } else if (count($result) === 0) {
+                $height = '164.4% !important';
+            } else if (count($result) <= 4) {
+                $height = '124.6% !important';
+            } 
+
+            ?>
+        
+            <div class="position-absolute start-50 translate-middle w-100 px-0" style="top: <?php echo $height; ?>;">
+                <?php
+                include_once "footer.php";
+                ?>
+            </div>
+        </div>
+
+        <!-- footer -->
+
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/profile.js"></script>

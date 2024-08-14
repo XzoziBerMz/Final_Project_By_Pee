@@ -69,86 +69,105 @@ $userDetail = $user_stmt->fetch(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-    <div class="row m-0 m-3">
+    <div>
 
-        <!-- profile user -->
-        <div class="col-md-2 profile-container ">
-            <div class="card card-user">
-                <div class="mb-4">
-                    <img src="<?php echo $userDetail['user_photo']; ?>" class="rounded-circle" alt="" width="150"
-                        height="150">
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p class="username"> <?php echo $userDetail['firstname'] . ' ' . $userDetail['lastname'] ?> </p>
-                </div>
-                <div class="d-flex justify-content-center mb-3">
-                    <span class="detaill_user">หมายเลขสมาชิก : <?php echo $userDetail['user_id'] ?></span>
-                </div>
-                <?php
-                $sqlPointView = "SELECT * FROM rating WHERE user_post_id = :user_id";
-                $stmtPointView = $conn->prepare($sqlPointView);
-                $stmtPointView->bindParam(':user_id', $profile_id, PDO::PARAM_INT);
-                $stmtPointView->execute();
-                $ratingData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
+        <div class="row m-0 position-relative">
 
-                $totalrating = 0;
-                foreach ($ratingData as $rowPoint) {
-                    $totalrating += $rowPoint['ratings'];
-                }
-                ?>
-                <div class="d-flex justify-content-center mb-3">
-                    <span class="detaill_user">คะแนนความนิยม : <b
-                            style="color: #09CD56;"><?php echo $totalrating ?></b></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- post user -->
-        <?php
-        $type = "SELECT * FROM types";
-        $stmt = $conn->prepare($type);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        ?>
-
-        <div class="col-md-10">
-            <div class="mt-4" style="margin-bottom: 2%;">
-                <!-- หมวดหมู่ -->
-                <div class="categories-container">
-
-                    <a href="profile_by.php?profile_id=<?php echo $profile_id ?>" class=" category-item">ทั้งหมด </a>
-
-                    <?php
-                    foreach ($result as $row) { ?>
-                        <a href="profile_by.php?profile_id=<?php echo $profile_id ?>&act=showbytype&type_id=<?php echo $row['type_id']; ?>"
-                            class="category-item">
-                            <?php echo $row["type_name"]; ?></a>
-                    <?php } ?>
-
-                    <!-- ปุ่มตามหา-ประกาศขาย -->
-                    <div class="div-btn" style="margin-left: 15%;">
-                        <a href="category_Sell-find_products.php" class="btn btn-post">
-                            <i class="fa-solid fa-circle fa-flip-vertical fa-2xs blink-2" style="color: #ffffff;"></i>
-                            ตามหา / ขายสินค้า
-                        </a>
+            <!-- profile user -->
+            <div class="col-md-2 profile-container ">
+                <div class="card card-user">
+                    <div class="mb-4">
+                        <img src="<?php echo $userDetail['user_photo']; ?>" class="rounded-circle" alt="" width="150"
+                            height="150">
                     </div>
+                    <div class="d-flex justify-content-center">
+                        <p class="username"> <?php echo $userDetail['firstname'] . ' ' . $userDetail['lastname'] ?> </p>
+                    </div>
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="detaill_user">หมายเลขสมาชิก : <?php echo $userDetail['user_id'] ?></span>
+                    </div>
+                    <?php
+                    $sqlPointView = "SELECT * FROM rating WHERE user_post_id = :user_id";
+                    $stmtPointView = $conn->prepare($sqlPointView);
+                    $stmtPointView->bindParam(':user_id', $profile_id, PDO::PARAM_INT);
+                    $stmtPointView->execute();
+                    $ratingData = $stmtPointView->fetchAll(PDO::FETCH_ASSOC);
 
+                    $totalrating = 0;
+                    foreach ($ratingData as $rowPoint) {
+                        $totalrating += $rowPoint['ratings'];
+                    }
+                    ?>
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="detaill_user">คะแนนความนิยม : <b
+                                style="color: #09CD56;"><?php echo $totalrating ?></b></span>
+                    </div>
                 </div>
-                <hr class="hr-catagory">
             </div>
 
-            <!-- post-user -->
+            <!-- post user -->
             <?php
-            include_once "show_product_profile.php";
+            $type = "SELECT * FROM types";
+            $stmt = $conn->prepare($type);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             ?>
 
+            <div class="col-md-10">
+                <div class="mt-4" style="margin-bottom: 2%;">
+                    <!-- หมวดหมู่ -->
+                    <div class="categories-container">
+
+                        <a href="profile_by.php?profile_id=<?php echo $profile_id ?>" class=" category-item">ทั้งหมด
+                        </a>
+
+                        <?php
+                        foreach ($result as $row) { ?>
+                            <a href="profile_by.php?profile_id=<?php echo $profile_id ?>&act=showbytype&type_id=<?php echo $row['type_id']; ?>"
+                                class="category-item">
+                                <?php echo $row["type_name"]; ?></a>
+                        <?php } ?>
+
+                        <!-- ปุ่มตามหา-ประกาศขาย -->
+                        <div class="div-btn" style="margin-left: 15%;">
+                            <a href="category_Sell-find_products.php" class="btn btn-post">
+                                <i class="fa-solid fa-circle fa-flip-vertical fa-2xs blink-2"
+                                    style="color: #ffffff;"></i>
+                                ตามหา / ขายสินค้า
+                            </a>
+                        </div>
+
+                    </div>
+                    <hr class="hr-catagory">
+                </div>
+
+                <!-- post-user -->
+                <?php
+                include_once "show_product_profile.php";
+                ?>
+
+            </div>
+        </div>
+
+        <!-- footer -->
+        <?php
+
+        if (count($result) > 4) {
+            $height = '120% !important';
+        } else if (count($result) === 0) {
+            $height = '85.3% !important';
+        } else if (count($result) <= 4) {
+            $height = '85.3% !important';
+        }
+
+        ?>
+
+        <div class="position-absolute start-50 translate-middle w-100 px-0" style="top: <?php echo $height; ?>;">
+            <?php
+            include_once "footer.php";
+            ?>
         </div>
     </div>
-
-    <!-- footer -->
-    <?php
-    include_once "footer.php";
-    ?>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/profile.js"></script>
