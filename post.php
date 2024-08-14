@@ -473,7 +473,7 @@ if (isset($_SESSION['user_login'])) {
         // Assuming $row is already fetched from the previous query
         // RAND() อันนี้คือแบบสุ่ม // datasave คือเรียงจากใหม่สุด
         // $sql = "SELECT * FROM posts ORDER BY RAND() DESC LIMIT 4";
-        $sql = "SELECT * FROM posts WHERE type_id = :type_id AND posts_id != :posts_id ORDER BY datasave DESC LIMIT 4";
+        $sql = "SELECT * FROM posts WHERE type_id = :type_id AND posts_id != :posts_id AND type_buy_or_sell NOT IN ('ปิดประกาศ', 'ปิดการซื้อขาย')  ORDER BY datasave DESC LIMIT 4";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':type_id', $row->type_id, PDO::PARAM_INT);
         $stmt->bindParam(':posts_id', $row->posts_id, PDO::PARAM_INT);
