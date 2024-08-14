@@ -234,7 +234,7 @@ ob_end_flush()
       <!-- position -->
       <div class="mb-2" style="margin-top: 30px;">
         <?php
-        $locations = "SELECT location_id, location_name FROM locations";
+        $locations = "SELECT location_id, location_name FROM location";
         $stmt = $conn->prepare($locations);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
