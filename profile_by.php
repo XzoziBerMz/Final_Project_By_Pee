@@ -153,11 +153,11 @@ $userDetail = $user_stmt->fetch(PDO::FETCH_ASSOC);
         <?php
 
         if (count($result) > 4) {
-            $height = '120% !important';
+            $height = '121% !important';
         } else if (count($result) === 0) {
-            $height = '85.3% !important';
+            $height = '86.3% !important';
         } else if (count($result) <= 4) {
-            $height = '85.3% !important';
+            $height = '86.3% !important';
         }
 
         ?>

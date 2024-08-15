@@ -64,9 +64,11 @@ if (isset($_SESSION['user_login'])) {
                             <h2>ติดต่อกับเรา</h2>
                         </div>
                         <div style="max-width: 600px; word-wrap: break-word; word-break: break-all;" class="my-3">
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure dolore fuga fugit libero
-                                possimus corporis quod, vitae illum provident ab necessitatibus voluptatem natus
-                                veritatis sequi? Quis molestias omnis magni sapiente!</span>
+                            <span>มหาวิทยาลัยราชภัฏนครปฐม Nakhon Pathom Rajabhat University
+                                <p>ที่อยู่ : 85 ถนนมาลัยแมน
+                                    อ.เมือง
+                                    จ.นครปฐม 73000</p>
+                            </span>
                         </div>
                     </div>
                 </div>
