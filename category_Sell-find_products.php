@@ -34,6 +34,7 @@ ob_end_flush()
     <script src="https://kit.fontawesome.com/a94becc44e.js" crossorigin="anonymous"></script>
 
     <!-- css -->
+    <link rel="icon" href="image/logo.png">
     <link rel="stylesheet" href="Custom/catagory.css">
     <link rel="stylesheet" href="Custom/mains.css">
     <link rel="stylesheet" href="Custom/body.css">
@@ -46,8 +47,7 @@ ob_end_flush()
     <nav class="navbar navbar-dark bg-dark nav-head slide-right">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php" style="margin-left: 150px;">
-                <img src="image/logo01.png" alt="" width="60" height="60" class="d-inline-block align-text-top"
-                    style="margin-right: 10px;">
+                <i class="fa-solid fa-delete-left fa-xl" style="color: #25ce03;"></i>
                 <h3 style="float: right;"></h3>
             </a>
         </div>

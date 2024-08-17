@@ -39,6 +39,7 @@ if (isset($_SESSION['admin_login'])) {
     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- css -->
+  <link rel="icon" href="../image/logo.png">
   <link rel="stylesheet" href="./assets/css/styles.css">
 
   <!-- datatable -->

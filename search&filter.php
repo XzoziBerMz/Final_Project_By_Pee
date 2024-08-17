@@ -18,10 +18,6 @@ require_once "connetdatabase/conn_db.php";
   <!-- navbar-head -->
   <nav class="navbar navbar-dark bg-dark nav-head slide-right mb-3" style="height: 105px;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="search&filter.php" style="margin-left: 150px;">
-        <img src="image/logo01.png" alt="" width="65" height="70" class="d-inline-block align-text-top"
-          style="margin-right: 10px;">
-        <h3 style="float: right;"></h3>
       </a>
       <!-- ปุ่มตามหา-ประกาศขาย -->
       <div class="div-btn">
