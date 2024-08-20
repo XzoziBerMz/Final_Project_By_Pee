@@ -1,9 +1,7 @@
 <?php
-
 // ตรวจสอบว่า session ยังไม่ได้เปิด ถึงจะทำการเปิด session
 if (!isset($_SESSION)) {
   session_start();
-
 }
 
 ob_start();
@@ -16,10 +14,24 @@ if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
   exit();
 }
 
+// ดึงข้อมูลเบอร์โทรศัพท์จากฐานข้อมูล
+$user_id = isset($_SESSION['user_login']) ? $_SESSION['user_login'] : $_SESSION['admin_login'];
+$query = "SELECT user_tel FROM users WHERE user_id = :user_id";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':user_id', $user_id);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-ob_end_flush()
+// ตรวจสอบว่าพบข้อมูลเบอร์โทรศัพท์หรือไม่
+if ($user && isset($user['user_tel'])) {
+  $phone_number = $user['user_tel'];
+} else {
+  $phone_number = '';
+}
 
-  ?>
+ob_end_flush();
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -228,7 +240,8 @@ ob_end_flush()
       <div class="mb-2" style="margin-top: 30px;">
         <label for="Phone" class="form-label label-insert">เบอร์โทรศัพท์ <span class="span-label">*</span></label>
         <input type="tel" class="form-control input-insert" name="phone_number" maxlength="10" id="phone_number"
-          placeholder="กรุณากรอกหมายเลขโทรศัพท์" oninput="validateInput(this)">
+          placeholder="กรุณากรอกหมายเลขโทรศัพท์" value="<?php echo htmlspecialchars($phone_number); ?>"
+          oninput="validateInput(this)">
       </div>
 
       <!-- position -->

@@ -165,8 +165,8 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                                 </div>
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
-                                    <input type="text" class="form-control" id="phone_number"
-                                        aria-describedby="emailHelp">
+                                    <input type="tel" class="form-control" id="phone_number"
+                                        aria-describedby="emailHelp" oninput="validateInput(this)" maxlength="10">
                                 </div>
                                 <div class="mb-3">
                                     <label for="address" class="form-label">ที่อยู่</label>
@@ -254,17 +254,17 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
             </div>
 
             <?php
-            
+
             if (count($result) > 4) {
                 $height = '110% !important';
             } else if (count($result) === 0) {
                 $height = '164.4% !important';
             } else if (count($result) <= 4) {
                 $height = '124.6% !important';
-            } 
+            }
 
             ?>
-        
+
             <div class="position-absolute start-50 translate-middle w-100 px-0" style="top: <?php echo $height; ?>;">
                 <?php
                 include_once "footer.php";
@@ -281,6 +281,13 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
         </script>
+    <script>
+        // ส่วนของ input phone ตัวแปรนี้ทำให้ไม่สามารถใส่ข้อความได้ใส่ได้แค่ตัวเลขเท่านั้น
+        function validateInput(element) {
+            let value = element.value.replace(/\D/g, ''); // ลบอักขระที่ไม่ใช่ตัวเลข
+            element.value = value;
+        }
+    </script>
 
 </body>
 

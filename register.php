@@ -67,25 +67,34 @@ require_once "header.php";
             <?php } ?>
 
             <div class="mb-4">
-                <input type="text" class="form-control" name="firstname" placeholder="ชื่อจริง">
+                <input type="text" class="form-control" name="firstname" placeholder="ชื่อจริง" maxlength="20" required>
             </div>
             <div class="mb-4">
-                <input type="text" class="form-control" name="lastname" placeholder="นามสกุล">
+                <input type="text" class="form-control" name="lastname" placeholder="นามสกุล " maxlength="20" required>
             </div>
             <div class="mb-4">
-                <input type="text" class="form-control" name="email" placeholder="อีเมล">
+                <input type="email" class="form-control" name="email" placeholder="อีเมล" required>
             </div>
             <div class="mb-4">
-                <input type="password" class="form-control" name="password" placeholder="รหัสผ่าน">
+                <input type="tel" class="form-control" name="phone_number" placeholder="เบอร์โทรศัพท์"
+                    oninput="validateInput(this)" maxlength="10" required>
             </div>
             <div class="mb-4">
-                <input type="password" class="form-control" name="confirm_password" placeholder="ยืนยันรหัสผ่าน">
+                <input type="text" class="form-control" name="address" placeholder="ที่อยู่" required>
             </div>
+            <div>
+                <div class="mb-4">
+                    <input type="password" class="form-control" name="password" placeholder="รหัสผ่าน" required>
+                </div>
+                <div class="mb-4">
+                    <input type="password" class="form-control" name="confirm_password" placeholder="ยืนยันรหัสผ่าน"
+                        required>
+                </div>
 
 
-            <div class="d-grid">
-                <button type="submit" class="button-27" role="button" name="register">ยืนยันการลงทะเบียน</button>
-            </div>
+                <div class="d-grid">
+                    <button type="submit" class="button-27" role="button" name="register">ยืนยันการลงทะเบียน</button>
+                </div>
 
         </form>
 
@@ -94,6 +103,13 @@ require_once "header.php";
                 เข้าสู่ระบบ</a></p>
     </div>
 
+    <script>
+        // ส่วนของ input phone ตัวแปรนี้ทำให้ไม่สามารถใส่ข้อความได้ใส่ได้แค่ตัวเลขเท่านั้น
+        function validateInput(element) {
+            let value = element.value.replace(/\D/g, ''); // ลบอักขระที่ไม่ใช่ตัวเลข
+            element.value = value;
+        }
+    </script>
 </body>
 
 </html>
