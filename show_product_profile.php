@@ -145,10 +145,14 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
                         <hr>
                         <div class=" d-flex justify-content-end mb-2 gap-3">
                             <div class="d-flex gap-3">
+                                <?php 
+                                if($row_pro['type_buy_or_sell'] !== 'ปิดการซื้อขาย') {
+                                ?>
                                 <div class="pointer tag-edit" onclick="editpage(<?php echo $row_pro['posts_id']; ?>)">
                                     <span>แก้ไข</span>
                                 </div>
-                                <div class="pointer tag-delete" onclick="confirmDelete(<?php echo $row_pro['posts_id']; ?>)">
+                                <?php } ?>
+                                <div class="pointer tag-delete" onclick="confirmDelete(<?php echo $row_pro['posts_id']; ?>, <?php echo $user_id; ?>)">
                                     <span>ลบ</span>
                                 </div>
                             </div>

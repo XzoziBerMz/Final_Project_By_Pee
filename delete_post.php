@@ -7,7 +7,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['pos
     require_once "connetdatabase/conn_db.php"; // เชื่อมต่อฐานข้อมูล
 
     $post_id = $_POST['post_id'];
-
+    $user_id = $_POST['user_id'];
     try {
         // เริ่มต้นการทำงาน transaction
         $conn->beginTransaction();
@@ -27,8 +27,42 @@ if (isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['pos
         $stmt_notify->bindParam(':p_id', $post_id, PDO::PARAM_INT);
         $stmt_notify->execute();
 
-        // commit การเปลี่ยนแปลงทั้งหมด
-        $conn->commit();
+        try {
+            $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 AND user_id != :user_id ORDER BY created_at DESC";
+            $stmtComment = $conn->prepare($sqlComments);
+            $stmtComment->bindParam(':post_id', $post_id, PDO::PARAM_INT);
+            $stmtComment->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $stmtComment->execute();
+            $comments = $stmtComment->fetchAll(PDO::FETCH_ASSOC);
+            // echo '<pre>';
+            // print_r($stmtComment);
+            // echo '</pre>';
+            // exit();
+            $uniqueComments = [];
+            foreach ($comments as $comment) {
+                $uniqueComments[$comment['user_id']] = $comment;
+            }
+
+            $sqlNotify = "INSERT INTO notify (notify_status, titles, post_id, user_id, user_notify_id) 
+                  VALUES (:notify_status, :titles, :post_id, :user_id, :user_notify_id)";
+            $stmtNotify = $conn->prepare($sqlNotify);
+            $titles = 'ลบประกาศนั้นแล้ว';
+            foreach ($uniqueComments as $comment) {
+                $stmtNotify->execute([
+                    ':notify_status' => true,
+                    ':titles' => $titles,
+                    ':post_id' => $post_id,
+                    ':user_id' => $comment['user_id'],
+                    ':user_notify_id' => $user_id
+                ]);
+            }
+    
+            // commit การเปลี่ยนแปลงทั้งหมด
+            $conn->commit();
+        } catch (PDOException $e) {
+
+        }
+
 
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {

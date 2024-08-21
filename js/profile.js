@@ -132,7 +132,7 @@ function saveChanges() {
     });
 }
 
-function confirmDelete(id) {
+function confirmDelete(id, user) {
     Swal.fire({
         title: 'คุณแน่ใจหรือเปล่า?',
         text: "คุณต้องการจะลบจริงๆใช่ไหม!",
@@ -143,7 +143,7 @@ function confirmDelete(id) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            userDelete(id);
+            userDelete(id, user);
         }
     });
 }
@@ -159,14 +159,15 @@ document.getElementById('fileInput').addEventListener('change', function () {
     }
 });
 
-function userDelete(id) {
+function userDelete(id, user) {
     // ส่งคำร้องขอ AJAX ไปยังไฟล์ PHP
     $.ajax({
         url: 'delete_post.php', // ปรับให้ตรงกับไฟล์ PHP ของคุณ
         type: 'POST',
         data: {
             action: 'delete',
-            post_id: id
+            post_id: id,
+            user_id: user
         },
         success: function (response) {
             let result = JSON.parse(response);
