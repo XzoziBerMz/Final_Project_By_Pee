@@ -12,6 +12,11 @@ if (isset($_POST['register'])) {
     $c_password = $_POST['confirm_password'];
     $urole = 'user';
 
+
+    $default_image_path = 'image/user_defalt_image/';
+    $images = glob($default_image_path . "*.{jpg,png,jfif,gif}", GLOB_BRACE);
+    $selected_image = $images[array_rand($images)];
+
     if (empty($firstname)) {
         $_SESSION['error'] = 'กรุณากรอกชื่อ';
         header("location: register.php");
@@ -58,7 +63,7 @@ if (isset($_POST['register'])) {
             } else if (!isset($_SESSION['error'])) {
 
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("INSERT INTO users(firstname, lastname, email, user_tel, user_address, password, urole) VALUES(:firstname, :lastname, :email, :phone_number, :address, :password, :urole)");
+                $stmt = $conn->prepare("INSERT INTO users(firstname, lastname, email, user_tel, user_address, password, urole, user_photo) VALUES(:firstname, :lastname, :email, :phone_number, :address, :password, :urole, :user_photo)");
                 $stmt->bindParam(":firstname", $firstname);
                 $stmt->bindParam(":lastname", $lastname);
                 $stmt->bindParam(":email", $email);
@@ -66,6 +71,7 @@ if (isset($_POST['register'])) {
                 $stmt->bindParam(":address", $address);
                 $stmt->bindParam(":password", $passwordHash);
                 $stmt->bindParam(":urole", $urole);
+                $stmt->bindParam(":user_photo", $selected_image);
                 $stmt->execute();
 
                 $_SESSION['success'] = "สมัครสมาชิกเรียบร้อยแล้ว! <a href='signin.php' class='alert-link'>คลิกที่นี่</a> เพื่อเข้าสู่ระบบ";
