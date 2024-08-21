@@ -12,7 +12,7 @@ if (isset($_POST['register'])) {
     $c_password = $_POST['confirm_password'];
     $urole = 'user';
 
-
+    // default image user
     $default_image_path = 'image/user_defalt_image/';
     $images = glob($default_image_path . "*.{jpg,png,jfif,gif}", GLOB_BRACE);
     $selected_image = $images[array_rand($images)];
