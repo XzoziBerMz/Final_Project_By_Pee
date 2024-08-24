@@ -30,6 +30,11 @@ require_once "header.php";
         <!-- รูปภาพ -->
         <img src="image/bg-banner-01.jpg" alt="*" class="img-banner">
 
+        <div class="welcome-message scale-up-hor-left"
+            style="position: absolute; top: 20px; left: 20px; color: white; font-size: 30px; text-shadow: 3px 3px 1px #000000;">
+            ยินดีต้อนรับสู่เว็บไซต์ประกาศซื้อขายสินค้ามือสองมหาวิทยาลัยราชภัฏนครปฐม
+        </div>
+
         <!-- ปุ่มโพสต์-หาสินค้า -->
         <div class="div-btn">
             <a href="category_Sell-find_products.php" class="btn btn-post">

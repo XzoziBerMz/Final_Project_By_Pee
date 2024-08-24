@@ -51,7 +51,8 @@ if (isset($_SESSION['user_login'])) {
     <div class=" navbar-collapse ">
 
       <a href="index.php" style="margin-left: 3%; margin-right: 10px;"> <img src="image/logo.png" alt=""
-          style=" margin-right: 10px;" width="35px" height="35px"></a>
+          style=" margin-right: 10px;" width="35px" height="35px"><b style="color: #d9d9d0;">KaiDoo</b></a>
+      <p style="color: #d9d9d0; margin-top: 20px;">|</p>
 
       <?php
       // เรียกข้อมูลประเภททั้งหมด

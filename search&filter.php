@@ -26,6 +26,10 @@ require_once "connetdatabase/conn_db.php";
         </a>
       </div>
     </div>
+    <!-- logo -->
+    <a href="search&filter.php" style="color: aliceblue; margin-left: 230px;">
+      <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">KaiDoo</h1>
+    </a>
     <!-- Search bar ที่ตรงกลาง -->
     <div class="div-search">
       <form class="form-inline" action="search&filter.php" method="GET">

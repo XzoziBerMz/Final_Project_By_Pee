@@ -75,7 +75,7 @@ if (isset($_SESSION['user_login'])) {
             </div>
 
             <div class="d-flex flex-column justify-content-end align-items-center mt-3">
-                <h6>© NPRU</h6>
+                <h6>© KaiDoo.NPRU</h6>
             </div>
 
         </footer>
