@@ -72,14 +72,14 @@ $_SESSION['filtered_products'] = $products;
 </head>
 
 <body>
-    <div class="row m-0" id="product-container">
+    <div class="row m-0 mt-4" id="product-container">
         <?php
         if (isset($_SESSION['filtered_products'])) {
             $result = $_SESSION['filtered_products'];
             if ($result) {
                 foreach ($result as $row_pro) {
                     ?>
-                    <div class="product-card position-relative">
+                    <div class="product-card position-relative" style="margin-bottom: 2%;">
                         <div
                             class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดการซื้อขาย') ? 'tag-close' : ''; ?>">
                             <span><?php echo $row_pro['type_buy_or_sell']; ?></span>

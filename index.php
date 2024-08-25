@@ -31,8 +31,8 @@ require_once "header.php";
         <img src="image/bg-banner-01.jpg" alt="*" class="img-banner">
 
         <div class="welcome-message scale-up-hor-left"
-            style="position: absolute; top: 20px; left: 20px; color: white; font-size: 30px; text-shadow: 3px 3px 1px #000000;">
-            ยินดีต้อนรับสู่เว็บไซต์ประกาศซื้อขายสินค้ามือสองมหาวิทยาลัยราชภัฏนครปฐม
+            style="position: absolute; top: 20px; left: 20px; color: white; font-size: 35px; text-shadow: 3px 3px 1px #000000;">
+            ยินดีต้อนรับสู่เว็บไซต์ KaiDoo เว็บไซต์สำหรับประกาศซื้อขายสินค้ามือสองมหาวิทยาลัยราชภัฏนครปฐม
         </div>
 
         <!-- ปุ่มโพสต์-หาสินค้า -->
