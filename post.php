@@ -282,9 +282,19 @@ if (isset($_SESSION['user_login'])) {
                         $comment_text = htmlspecialchars($_POST['comment_text']);
                         $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
 
+                        // ตรวจสอบคำไม่สุภาพ
+                        $profanity_words = ['ควย', 'โง่', 'พ่อง', 'หี', 'ควาย', 'พ่อมึง', 'ส้นตีน', 'กาก', 'ตอแหล', 'เหี้ย', 'สัส', 'อีดอก', 'เย็ด', 'คุวย', 'แตด', 'จังไร', 'แม่มึง', 'kuy', 'ชาติหมา', 'hee', 'KUY', 'HEE', 'YED', 'yed']; // เพิ่มคำไม่สุภาพที่ต้องการกรอง
+                        foreach ($profanity_words as $bad_word) {
+                            if (stripos($comment_text, $bad_word) !== false) {
+                                echo "<script>
+                                alert('ตรวจพบคำหยาบคาย โปรดแก้ไขข้อความ');
+                                window.history.back(); 
+                                </script>";
+                                exit();
+                            }
+                        }
                         $conn->beginTransaction();
                         try {
-                            // แทรกข้อมูลคอมเมนต์
                             $sql = "INSERT INTO comments (post_id, user_id, user_name, image, comment_text, parent_comment_id) VALUES (:post_id, :user_id, :user_name, :image, :comment_text, :parent_comment_id)";
                             $stmt = $conn->prepare($sql);
                             $stmt->bindParam(':post_id', $product_id);
@@ -295,7 +305,7 @@ if (isset($_SESSION['user_login'])) {
                             $stmt->bindParam(':parent_comment_id', $parent_comment_id);
                             $stmt->execute();
 
-                            // แทรกข้อมูลการแจ้งเตือน
+                            // ส่วนการแจ้งเตือน
                             $sqlNotify = "INSERT INTO notify (notify_status, titles, post_id, user_id, user_notify_id) VALUES (:notify_status, :titles, :post_id, :user_id, :user_notify_id)";
                             $stmtNotify = $conn->prepare($sqlNotify);
                             $titles = '';
@@ -308,7 +318,6 @@ if (isset($_SESSION['user_login'])) {
                             $stmtNotify->bindParam(':user_notify_id', $user['user_id']); // User who will receive the notification
                             $stmtNotify->execute();
 
-                            // คอมมิต transaction
                             $conn->commit();
 
                             header("Location: post.php?product_id=" . $product_id);

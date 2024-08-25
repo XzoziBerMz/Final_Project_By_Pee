@@ -1,7 +1,7 @@
 <div>
   <h2 style="margin-bottom: 20px; margin-left: 5%;">All Users</h2>
 
-  <div style="margin-left: 5%;">
+  <div style="margin-left: 5%; margin-right: -5%;">
     <table id="userTable" class="table">
       <thead>
         <tr>
@@ -10,6 +10,7 @@
           <th class="text-center">firstname</th>
           <th class="text-center">lastname</th>
           <th class="text-center">email</th>
+          <th class="text-center">phone number</th>
           <th class="text-center">urole</th>
           <th class="text-center">Created</th>
           <th class="text-center">Action</th>
@@ -29,6 +30,7 @@
             <td><?= $row["firstname"] ?></td>
             <td><?= $row["lastname"] ?></td>
             <td><?= $row["email"] ?></td>
+            <td><?= $row["user_tel"] ?></td>
             <td>
               <select onchange="updateUserRole('<?= $row['user_id'] ?>', this.value)">
                 <option value="user" <?= $row["urole"] == 'user' ? 'selected' : '' ?>>User</option>
