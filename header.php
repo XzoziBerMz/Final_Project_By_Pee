@@ -213,13 +213,27 @@ if (isset($_SESSION['user_login'])) {
                         <span class="text-danger"><?= $item['titles'] ?></span>
                       </div>
                     </div>
-                    <div class="text-success">
-                      <span class="d-flex pointer"
-                        onclick="updateViewNotify(<?= htmlspecialchars($item['id']) ?>, <?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span>
+                    <div class="d-flex gap-3">
+                      <div class="text-success">
+                        <span class="d-flex pointer"
+                          onclick="viewNotify(<?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span>
+                        <!-- <span class="d-flex pointer"
+                          onclick="updateViewNotify(<?= htmlspecialchars($item['id']) ?>, <?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span> -->
+                      </div>
+                      <div class="text-danger">
+                        <span class="d-flex pointer"
+                          onclick="deteleViewNotify(<?= htmlspecialchars($item['id']) ?>, <?= htmlspecialchars($item['post_id']) ?>)">ลบ</span>
+                      </div>
                     </div>
                   </div>
                 <?php }
               } ?>
+              <?php
+              if ($notify_list) { ?>
+              <div class="d-flex justify-content-center align-items-center">
+                <span class="text-danger pointer" onclick="deleteNotifyAll(<?= htmlspecialchars($user['user_id']) ?>)">ลบทั้งหมด</span>
+              </div>
+              <?php } ?>
             </ul>
           </div>
         <?php endif; ?>
