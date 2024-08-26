@@ -12,6 +12,18 @@ if (isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['pos
         // เริ่มต้นการทำงาน transaction
         $conn->beginTransaction();
 
+        $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 AND user_id != :user_id ORDER BY created_at DESC";
+        $stmtComment = $conn->prepare($sqlComments);
+        $stmtComment->bindParam(':post_id', $post_id, PDO::PARAM_INT);
+        $stmtComment->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmtComment->execute();
+        $comments = $stmtComment->fetchAll(PDO::FETCH_ASSOC);
+        
+        $uniqueComments = [];
+        foreach ($comments as $comment) {
+            $uniqueComments[$comment['user_id']] = $comment;
+        }
+
         // ลบความคิดเห็นที่เกี่ยวข้องในตาราง comments
         $stmt_comments = $conn->prepare("DELETE FROM comments WHERE post_id = :p_id");
         $stmt_comments->bindParam(':p_id', $post_id, PDO::PARAM_INT);
@@ -28,25 +40,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['pos
         $stmt_notify->execute();
 
         try {
-            $sqlComments = "SELECT * FROM comments WHERE post_id = :post_id AND parent_comment_id = 0 AND user_id != :user_id ORDER BY created_at DESC";
-            $stmtComment = $conn->prepare($sqlComments);
-            $stmtComment->bindParam(':post_id', $post_id, PDO::PARAM_INT);
-            $stmtComment->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            $stmtComment->execute();
-            $comments = $stmtComment->fetchAll(PDO::FETCH_ASSOC);
-            // echo '<pre>';
-            // print_r($stmtComment);
-            // echo '</pre>';
-            // exit();
-            $uniqueComments = [];
-            foreach ($comments as $comment) {
-                $uniqueComments[$comment['user_id']] = $comment;
-            }
-
             $sqlNotify = "INSERT INTO notify (notify_status, titles, post_id, user_id, user_notify_id) 
                   VALUES (:notify_status, :titles, :post_id, :user_id, :user_notify_id)";
             $stmtNotify = $conn->prepare($sqlNotify);
-            $titles = 'ลบประกาศนั้นแล้ว';
+            $titles = 'ลบประกาศแล้ว';
             foreach ($uniqueComments as $comment) {
                 $stmtNotify->execute([
                     ':notify_status' => true,

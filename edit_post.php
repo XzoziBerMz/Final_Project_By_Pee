@@ -208,12 +208,12 @@ ob_end_flush()
           <span class="span-label">*</span></label>
         <div class="radio-input-edit" style="margin-top: 15px;">
           <?php $type_buy_or_sell = $result['type_buy_or_sell']; ?>
-          <label>
-            <input type="radio" id="price_type" name="price_type" value="ซื้อ" <?php echo ($type_buy_or_sell === 'ซื้อ') ? 'checked' : ''; ?>>
+          <label id="buy_label">
+            <input type="radio" id="price_type_buy" name="price_type" value="ซื้อ" <?php echo ($type_buy_or_sell === 'ซื้อ') ? 'checked' : ''; ?>>
             <span>ซื้อ</span>
           </label>
-          <label>
-            <input type="radio" id="price_type" name="price_type" value="ขาย" <?php echo ($type_buy_or_sell === 'ขาย') ? 'checked' : ''; ?>>
+          <label id="sell_label">
+            <input type="radio" id="price_type_sell" name="price_type" value="ขาย" <?php echo ($type_buy_or_sell === 'ขาย') ? 'checked' : ''; ?>>
             <span>ขาย</span>
           </label>
           <label>
@@ -397,6 +397,16 @@ ob_end_flush()
     $(document).ready(function () {
       var existingImages = <?php echo json_encode($product_imgs); ?>;
       showExistingImages(existingImages.map(image => 'image/' + image));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var typeBuyOrSell = "<?php echo $type_buy_or_sell; ?>";
+
+      if (typeBuyOrSell === 'ซื้อ') {
+        document.getElementById("sell_label").style.display = 'none';
+      } else if (typeBuyOrSell === 'ขาย') {
+        document.getElementById("buy_label").style.display = 'none';
+      }
     });
   </script>
 

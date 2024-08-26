@@ -74,7 +74,7 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
             <div class="col-md-2 profile-container ">
                 <div class="card card-user rounded-4">
                     <div class="mb-4">
-                        <img src="<?php echo $user['user_photo']; ?>" class="rounded-circle" alt="" width="150"
+                        <img src="<?php echo $user['user_photo']; ?>" class="rounded-circle border" alt="" width="150"
                             height="150">
                     </div>
                     <div class="d-flex justify-content-center">
@@ -121,7 +121,7 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                         <div class="modal-body">
                             <div class="text-center" id="form_show_text">
                                 <div class="mt-3">
-                                    <img class="m-0 rounded-circle" src="<?php echo $user['user_photo']; ?>" alt=""
+                                    <img class="m-0 rounded-circle border" src="<?php echo $user['user_photo']; ?>" alt=""
                                         width="200" height="200">
                                 </div>
                                 <div class="mt-3">
@@ -142,11 +142,14 @@ $profile_id = isset($_GET['profile_id']) ? $_GET['profile_id'] : null;
                                 </div>
                             </div>
                             <div class="" id="form_edit_input" style="display: none;">
-                                <div class="mt-3 text-center">
-                                    <img class="m-0 rounded-circle pointer" id="profilePic"
+                                <div class="mt-3 text-center position-relative">
+                                    <img class="m-0 rounded-circle border pointer " id="profilePic"
                                         src="<?php echo $user['user_photo']; ?>" alt="" width="200" height="200"
                                         onclick="document.getElementById('fileInput').click();">
                                     <input type="file" id="fileInput" hidden>
+                                    <div class="position-absolute top-16 end-27 translate-middle ">
+                                        <img src="image/icons/edit.svg" alt="" width="35" height="35">
+                                    </div>
                                 </div>
                                 <div class="mt-3 text-center">
                                     <span>หมายเลขสมาชิก : <?php echo $user['user_id'] ?></span>

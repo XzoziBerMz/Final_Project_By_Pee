@@ -1,22 +1,21 @@
-
 /* profile users */
-.username{
+.username {
     color: #109c33;
 }
 
-.detaill_user{
-    color:#63636398 ;
+.detaill_user {
+    color: #63636398;
     margin-top: -8px;
 }
 
-.rounded-circle{
+.rounded-circle {
     margin-left: 22%;
     margin-top: 5%;
 }
 
-.card-user{
+.card-user {
     margin-top: 65px;
-    width: 100%; 
+    width: 100%;
     margin-left: 5px;
     /* height: 320px; */
     border: 0px;
@@ -33,7 +32,7 @@
     gap: 10px;
     margin-top: 30px;
     margin-left: 20px;
-    
+
 }
 
 .btn-personal-information {
@@ -50,6 +49,7 @@
     color: white;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 8px;
 }
+
 /* หมวดหมู่ */
 .category-item {
     background-color: #f8f9fa;
@@ -68,32 +68,69 @@
     color: #2e3033;
 }
 
-.hr-catagory{
+.hr-catagory {
     margin-left: 30px;
-    margin-right:60px;
+    margin-right: 60px;
 }
 
 /* ปุ่มโพสต์หา-ขายสินค้า */
 .div-btn {
-    position: absolute; 
+    position: absolute;
     right: 20px;
     margin-right: 70px;
-    }
-    
-    .btn-post {
+}
+
+.btn-post {
     background-color: #09CD56;
-    color: #FFFFFF; 
+    color: #FFFFFF;
     width: 100%;
-    padding: 10px;  
+    padding: 10px;
     transition: background-color 0.5s ease, color 0.5s ease;
-    }
-    
-    .btn-post:hover {
+}
+
+.btn-post:hover {
     background-color: #08ae4b;
     color: #FFFFFF;
+}
+
+/* css ลูกเล่นตรงส่วน ปุ่มโพสต์หา-ขายสินค้า */
+.blink-2 {
+    -webkit-animation: blink-2 1s 1s infinite both;
+    animation: blink-2 1s 1s infinite both
+}
+
+@-webkit-keyframes blink-2 {
+    0% {
+        opacity: 1
     }
-    
-    /* css ลูกเล่นตรงส่วน ปุ่มโพสต์หา-ขายสินค้า */
-    .blink-2{-webkit-animation:blink-2 1s 1s infinite both;animation:blink-2 1s 1s infinite both}
-    
-    @-webkit-keyframes blink-2{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}@keyframes blink-2{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}
+
+    50% {
+        opacity: .2
+    }
+
+    100% {
+        opacity: 1
+    }
+}
+
+@keyframes blink-2 {
+    0% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: .2
+    }
+
+    100% {
+        opacity: 1
+    }
+}
+
+.top-16 {
+    top: 16% !important;
+}
+
+.end-27{
+    right: 27% !important;
+}
