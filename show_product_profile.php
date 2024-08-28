@@ -98,7 +98,7 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
                                     <?php
                                     $product_title = $row_pro['product_name'];
                                     if (mb_strlen($product_title) > 25) {
-                                        $shortened_title = mb_substr($product_title, 0, 20) . '...';
+                                        $shortened_title = mb_substr($product_title, 0, 19) . '...';
                                         echo $shortened_title;
                                     } else {
                                         echo $product_title;
@@ -145,14 +145,15 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
                         <hr>
                         <div class=" d-flex justify-content-end mb-2 gap-3">
                             <div class="d-flex gap-3">
-                                <?php 
-                                if($row_pro['type_buy_or_sell'] !== 'ปิดการซื้อขาย') {
-                                ?>
-                                <div class="pointer tag-edit" onclick="editpage(<?php echo $row_pro['posts_id']; ?>)">
-                                    <span>แก้ไข</span>
-                                </div>
+                                <?php
+                                if ($row_pro['type_buy_or_sell'] !== 'ปิดการซื้อขาย') {
+                                    ?>
+                                    <div class="pointer tag-edit" onclick="editpage(<?php echo $row_pro['posts_id']; ?>)">
+                                        <span>แก้ไข</span>
+                                    </div>
                                 <?php } ?>
-                                <div class="pointer tag-delete" onclick="confirmDelete(<?php echo $row_pro['posts_id']; ?>, <?php echo $user_id; ?>)">
+                                <div class="pointer tag-delete"
+                                    onclick="confirmDelete(<?php echo $row_pro['posts_id']; ?>, <?php echo $user_id; ?>)">
                                     <span>ลบ</span>
                                 </div>
                             </div>

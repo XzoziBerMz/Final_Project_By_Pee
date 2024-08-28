@@ -198,3 +198,19 @@ a {
 hr {
     color: #999;
 }
+
+.btn-allpost{
+    background-color: #09CD56;
+    color: #f0f0f0;
+    font-size: x-large;
+    width: 20%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
+    transition: box-shadow 0.3s ease; /* เพิ่มการเปลี่ยนแปลงเงาเมื่อมีการโฮเวอร์ */
+}
+
+.btn-allpost:hover {
+    box-shadow: 0 5px 13px rgba(0, 0, 0, 0.3); /* เพิ่มเงาเมื่อโฮเวอร์ */
+    color: #f0f0f0;
+    background-color: #08ae4b;
+}

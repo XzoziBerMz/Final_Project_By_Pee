@@ -283,7 +283,7 @@ if (isset($_SESSION['user_login'])) {
                         $parent_comment_id = isset($_POST['parent_comment_id']) ? (int) $_POST['parent_comment_id'] : NULL;
 
                         // ตรวจสอบคำไม่สุภาพ
-                        $profanity_words = ['ควย', 'โง่', 'พ่อง', 'หี', 'ควาย', 'พ่อมึง', 'ส้นตีน', 'กาก', 'ตอแหล', 'เหี้ย', 'สัส', 'อีดอก', 'เย็ด', 'คุวย', 'แตด', 'จังไร', 'แม่มึง', 'kuy', 'ชาติหมา', 'hee', 'KUY', 'HEE', 'YED', 'yed']; // เพิ่มคำไม่สุภาพที่ต้องการกรอง
+                        $profanity_words = ['ควย', 'โง่', 'พ่อง', 'หี', 'ควาย', 'พ่อมึง', 'ส้นตีน', 'กาก', 'ตอแหล', 'เหี้ย', 'สัส', 'อีดอก', 'เย็ด', 'คุวย', 'แตด', 'จังไร', 'แม่มึง', 'kuy', 'ชาติหมา', 'hee', 'KUY', 'HEE', 'YED', 'yed', 'กระหรี่']; // เพิ่มคำไม่สุภาพที่ต้องการกรอง
                         foreach ($profanity_words as $bad_word) {
                             if (stripos($comment_text, $bad_word) !== false) {
                                 echo "<script>

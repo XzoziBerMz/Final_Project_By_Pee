@@ -17,6 +17,9 @@ $stmt = $conn->prepare($query_product);
 $stmt->execute();
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// จำกัดการแสดงผลแค่ 15 รายการ
+$limited_result = array_slice($result, 0, 15);
+
 ?>
 
 <!DOCTYPE html>
@@ -29,25 +32,22 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- css -->
   <link rel="stylesheet" href="Custom/show_products.css">
-
 </head>
 
 <body>
 
   <div class="mt-3" style="margin-left: 10px;">
-
     <!-- Product cards with Carousel -->
     <div class="row m-0">
 
       <!-- Product -->
-      <?php foreach ($result as $row_pro) { ?>
+      <?php foreach ($limited_result as $row_pro) { ?>
         <div class="product-card position-relative">
           <div
             class="position-absolute top-0 translate-middle <?php echo ($row_pro['type_buy_or_sell'] === 'ขาย') ? 'tag-sell' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ซื้อ') ? 'tag-buy' : ''; ?> <?php echo ($row_pro['type_buy_or_sell'] === 'ปิดประกาศ') ? 'tag-close' : ''; ?>">
             <span><?php echo $row_pro['type_buy_or_sell']; ?></span>
           </div>
           <div class="product-tumb">
-
             <?php
             $product_images = json_decode($row_pro["Product_img"]);
             if (!empty($product_images)) {
@@ -55,9 +55,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
               ?>
               <img src="image/<?php echo $first_image; ?>" class="image-fix" alt="..." width="350" height="200">
             <?php } ?>
-
-
-
           </div>
           <div class="product-details">
             <span class="product-catagory"> ประเภท : <?php echo $row_pro['type_name']; ?> /
@@ -69,14 +66,13 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                   <?php
                   $product_title = $row_pro['product_name'];
                   if (mb_strlen($product_title) > 25) {
-                    $shortened_title = mb_substr($product_title, 0, 20) . '...';
+                    $shortened_title = mb_substr($product_title, 0, 19) . '...';
                     echo $shortened_title;
                   } else {
                     echo $product_title;
                   }
                   ?>
                 </span>
-                <!-- <h4></h4> -->
               </div>
               <div>
                 <?php
@@ -106,13 +102,17 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 echo '<div class="product-price">' . $formatted_price . ' บาท</div>';
               }
               ?>
-
               <div><a class="btn btn-more"
                   href="post.php?product_id=<?php echo $row_pro['posts_id']; ?>">รายละเอียดเพิ่มเติม</a></div>
             </div>
           </div>
         </div>
       <?php } ?>
+    </div>
+
+    <!-- ปุ่มแสดงประกาศทั้งหมด -->
+    <div class="text-center mt-5">
+      <a href="search&filter.php" class="btn btn-allpost">แสดงประกาศทั้งหมด</a>
     </div>
   </div>
 
