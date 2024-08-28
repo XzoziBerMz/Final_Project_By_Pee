@@ -83,9 +83,8 @@ ob_end_flush()
   <!-- navbar-head -->
   <nav class="navbar navbar-dark bg-dark nav-head slide-right">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.php" style="margin-left: 150px;">
-        <img src="image/logo01.png" alt="" width="60" height="60" class="d-inline-block align-text-top"
-          style="margin-right: 10px;">
+      <a class="navbar-brand" href="profile.php" style="margin-left: 150px;">
+        <i class="fa-solid fa-delete-left fa-xl" style="color: #25ce03;"></i>
         <h3 style="float: right;"></h3>
       </a>
     </div>
@@ -230,7 +229,11 @@ ob_end_flush()
       <div class="mb-2" style="margin-top: 35px;">
         <label for="price" class="form-label label-insert" style="display: block;"> รูปภาพ <span
             class="span-label">*</span></label>
-        <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 20MB</p>
+        <p style="margin-top: 5px; color: gray;">อัปโหลด รูปภาพ ขนาดไฟล์สูงสุด: 20MB
+          <span style="float: right; display: flex; margin-right: 10px;">เฉพาะไฟล์ :
+            <b style="color: #09BA00;"> &nbsp jpg , png , jpeg , gif , jfif</b>
+          </span>
+        </p>
 
         <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
