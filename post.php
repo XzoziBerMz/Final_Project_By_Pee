@@ -187,11 +187,12 @@ if (isset($_SESSION['user_login'])) {
 
                         <!-- positions -->
                         <div class="positions" style="font-size: larger;">
-                            <span><i class="fa-solid fa-location-dot fa-xl" style="color: #f104a6;"></i> จุดนัดพบ :
+                            <span style="font-size: 20px;"><i class="fa-solid fa-location-dot fa-xl" style="color: #f104a6;"></i>
+                                จุดนัดพบ :
                                 <b><?php echo $row->location_name; ?></b></span>
                         </div>
 
-                        <div class="">
+                        <div>
                             <?php
                             $formatted_price = number_format($row->product_price);
                             ?>

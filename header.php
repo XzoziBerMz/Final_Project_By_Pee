@@ -190,7 +190,7 @@ if (isset($_SESSION['user_login'])) {
                       <div>
                         <span>จากประกาศ : <?php
                         $product_title = $notify_post['product_name'];
-                        if (mb_strlen($product_title) > 35) {
+                        if (mb_strlen($product_title) > 25) {
                           $shortened_title = mb_substr($product_title, 0, 20) . '...';
                           echo $shortened_title;
                         } else {
