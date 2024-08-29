@@ -12,6 +12,11 @@ require_once "header.php";
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>หน้าหลัก</title>
 
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/a94becc44e.js" crossorigin="anonymous"></script>
 
@@ -31,7 +36,7 @@ require_once "header.php";
         <img src="image/bg-banner-01.jpg" alt="*" class="img-banner">
 
         <div class="welcome-message scale-up-hor-left"
-            style="position: absolute; top: 20px; left: 20px; color: white; font-size: 35px; text-shadow: 3px 3px 1px #000000;">
+            style="position: absolute; top: 20px; left: 20px; color: white; font-family: 'Kanit', sans-serif; font-size: 35px; text-shadow: 3px 3px 1px #000000;">
             ยินดีต้อนรับสู่เว็บไซต์ KaiDoo เว็บไซต์สำหรับประกาศซื้อขายสินค้ามือสองมหาวิทยาลัยราชภัฏนครปฐม
         </div>
 
