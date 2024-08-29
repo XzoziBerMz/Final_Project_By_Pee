@@ -188,15 +188,21 @@ if (isset($_SESSION['user_login'])) {
                   <div class="border mb-3 border-2 rounded-4 p-2 d-flex justify-content-between align-items-center">
                     <div>
                       <div>
-                        <span>จากประกาศ : <?php
-                        $product_title = $notify_post['product_name'];
-                        if (mb_strlen($product_title) > 25) {
-                          $shortened_title = mb_substr($product_title, 0, 20) . '...';
-                          echo $shortened_title;
+                        <?php
+                        if ($item['titles'] === 'ลบประกาศแล้ว') { // ตรวจสอบว่าเป็นลบประกาศให้เปลียนชื่อเป็น ผู้โพสต์ที่เคยไปตอบประกาศ
+                          echo '<span>ประกาศที่เคยตอบกลับของ : <strong>' . htmlspecialchars($user_notify_list['firstname']) . '</strong></span>';
                         } else {
-                          echo $product_title;
+                          echo '<span>จากประกาศ : ';
+                          $product_title = $notify_post['product_name'];
+                          if (mb_strlen($product_title) > 25) {
+                            $shortened_title = mb_substr($product_title, 0, 20) . '...';
+                            echo '<strong>' . $shortened_title . '</strong>';
+                          } else {
+                            echo '<strong>' . $product_title . '</strong>';
+                          }
+                          echo '</span>';
                         }
-                        ?></span>
+                        ?>
                       </div>
                       <div style="display: <?= $hasTitle ? 'none' : 'block' ?>;">
                         <span>ตอบกลับโดย : <?php
@@ -214,33 +220,34 @@ if (isset($_SESSION['user_login'])) {
                       </div>
                     </div>
                     <div class="d-flex gap-3">
-                      <div class="text-success">
-                        <span class="d-flex pointer"
-                          onclick="viewNotify(<?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span>
-                        <!-- <span class="d-flex pointer"
-                          onclick="updateViewNotify(<?= htmlspecialchars($item['id']) ?>, <?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span> -->
-                      </div>
+                      <?php if ($item['titles'] !== 'ลบประกาศแล้ว') { // ตรวจสอบว่าเป็นลบประกาศให้หรือไม่ ถ้าเป็นให้ไม่ต้องแสดงรายละเอียด ?>
+                        <div class="text-success">
+                          <span class="d-flex pointer"
+                            onclick="viewNotify(<?= htmlspecialchars($item['post_id']) ?>)">รายละเอียด</span>
+                        </div>
+                      <?php } ?>
                       <div class="text-danger">
                         <span class="d-flex pointer"
                           onclick="deteleViewNotify(<?= htmlspecialchars($item['id']) ?>, <?= htmlspecialchars($item['post_id']) ?>)">ลบ</span>
                       </div>
                     </div>
                   </div>
-                <?php }
+                  <?php
+                }
               } ?>
-              <?php
-              if ($notify_list) { ?>
-                <div class="d-flex justify-content-center align-items-center">
-                  <span class="text-danger pointer"
-                    onclick="deleteNotifyAll(<?= htmlspecialchars($user['user_id']) ?>)">ลบทั้งหมด</span>
+              <?php if ($notify_list) { ?>
+                <div class="sticky-footer pointer" onclick="deleteNotifyAll(<?= htmlspecialchars($user['user_id']) ?>)">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <span style="margin-bottom: 10px;">ลบทั้งหมด</span>
+                  </div>
                 </div>
               <?php } ?>
             </ul>
+
           </div>
         <?php endif; ?>
       </div>
     </div>
-
   </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

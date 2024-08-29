@@ -18,7 +18,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['pos
         $stmtComment->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmtComment->execute();
         $comments = $stmtComment->fetchAll(PDO::FETCH_ASSOC);
-        
+
         $uniqueComments = [];
         foreach ($comments as $comment) {
             $uniqueComments[$comment['user_id']] = $comment;
@@ -53,7 +53,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'delete' && isset($_POST['pos
                     ':user_notify_id' => $user_id
                 ]);
             }
-    
+
             // commit การเปลี่ยนแปลงทั้งหมด
             $conn->commit();
         } catch (PDOException $e) {
