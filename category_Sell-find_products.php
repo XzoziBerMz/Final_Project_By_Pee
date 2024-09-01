@@ -71,16 +71,8 @@ ob_end_flush()
                     <a href="javascript:void(0);" onclick="toggleDropdown(<?php echo $row['type_id']; ?>)"
                         style="width:95%; margin: auto; padding: 25px; margin-bottom: 10px; text-align: left;"
                         class="btn btn-button" type="button">
-                        <?php if ($row['type_id'] == 1) { ?>
-                            <i class="fa-solid fa-book fa-2xl" style="margin-right: 17px; margin-left: 10px;"></i>
-                        <?php } elseif ($row['type_id'] == 2) { ?>
-                            <i class="fa-solid fa-plug fa-2xl" style="margin-right: 22px; margin-left: 13px;"></i>
-                        <?php } elseif ($row['type_id'] == 3) { ?>
-                            <i class="fa-solid fa-shirt fa-2xl" style="margin-right: 19px; margin-left: 5px;"></i>
-                        <?php } elseif ($row['type_id'] == 4) { ?>
-                            <i class="fa-solid fa-shoe-prints fa-2xl" style="margin-right: 18px; margin-left: 10px;"></i>
-                        <?php } elseif ($row['type_id'] == 5) { ?>
-                            <i class="fa-solid fa-car fa-2xl" style="margin-right: 30px; margin-left: 11px;"></i>
+                        <?php if ($row['type_id']) { ?>
+                            <span style="margin-right: 17px; margin-left: 10px;"></span>
                         <?php } ?>
                         <b style="font-size: x-large;"><?php echo $row["type_name"]; ?></b>
                     </a>
