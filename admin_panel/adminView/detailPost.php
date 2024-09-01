@@ -104,9 +104,28 @@ if (!isset($_SESSION['admin_login'])) {
 
                 <div class="border col-5 p-4 position-relative">
                     <div>
-                        <div class="post-name row ">
-                            <span><?php echo $row->product_name; ?></span>
+                        <div class="post-name row gap-4 d-flex justify-content-between">
+                            <span class="col-auto">
+                                <?php echo "<b>$row->product_name</b>"; ?>
+                            </span>
+                            <span class="col-auto">
+                                <?php
+                                // กำหนดสีตัวอักษรตามค่า type_buy_or_sell
+                                if ($row->type_buy_or_sell === 'ปิดการซื้อขาย' || $row->type_buy_or_sell === 'ขาย') {
+                                    $color = 'red';
+                                } else if ($row->type_buy_or_sell === 'ซื้อ') {
+                                    $color = 'green';
+                                } else {
+                                    $color = 'black'; // สีเริ่มต้นถ้าไม่ตรงกับเงื่อนไข
+                                }
+
+                                // แสดงข้อความพร้อมสีที่กำหนด
+                                echo 'สถานะประกาศ: <b style="color:' . $color . ';">' . $row->type_buy_or_sell . '</b>';
+                                ?>
+                            </span>
+
                         </div>
+
                         <!-- แสดงชื่อผู้โพสต์ -->
                         <?php
                         $sqlUser = "SELECT user_id , firstname , lastname FROM users WHERE user_id = :user_id";
