@@ -80,17 +80,18 @@ session_start(); //เรียกใช้งานsession
                     <?php } ?>
 
                     <div class="mb-4">
-                        <input style="padding: 10px;" type="text" class="form-control" name="email" placeholder="อีเมล">
+                        <input style="padding: 10px;" type="text" class="form-control" name="email" placeholder="อีเมล"
+                            required>
                     </div>
                     <div class="d-flex gap-4 mb-4">
                         <div class="col">
                             <input style="padding: 10px;" type="text" class="form-control" name="firstname"
-                                placeholder="ชื่อจริง" maxlength="20px">
+                                placeholder="ชื่อจริง" maxlength="20px" required>
                         </div>
 
                         <div class="col">
                             <input style="padding: 10px;" type="text" class="form-control" name="lastname"
-                                placeholder="นามสกุล" maxlength="20px">
+                                placeholder="นามสกุล" maxlength="20px" required>
                         </div>
                     </div>
                     <div class="mb-4">
