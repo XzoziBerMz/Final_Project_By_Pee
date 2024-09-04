@@ -288,8 +288,16 @@ if (isset($_SESSION['user_login'])) {
                         foreach ($profanity_words as $bad_word) {
                             if (stripos($comment_text, $bad_word) !== false) {
                                 echo "<script>
-                                alert('ตรวจพบคำหยาบคาย โปรดแก้ไขข้อความ');
-                                window.history.back(); 
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'ตรวจพบคำหยาบคาย',
+                                        text: 'โปรดแก้ไขข้อความ',
+                                        confirmButtonText: 'ตกลง'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.history.back();
+                                        }
+                                    });
                                 </script>";
                                 exit();
                             }
