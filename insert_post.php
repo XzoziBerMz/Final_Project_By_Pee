@@ -163,7 +163,7 @@ ob_end_flush();
       <!-- Title -->
       <div class="mb-2" style="margin-top: 30px;">
         <label for="Title" class="form-label label-insert">Title <span class="span-label">*</span></label>
-        <input type="text" class="form-control input-insert" name="title" maxlength="120">
+        <input type="text" class="form-control input-insert" name="title" maxlength="120" required>
       </div>
 
       <!-- price -->
@@ -171,7 +171,7 @@ ob_end_flush();
         <div class="col">
           <label for="price" class=" form-label label-insert" style="display: block;"> ราคา <span
               class="span-label">*</span></label>
-          <select class="select-price" id="price" name="price">
+          <select class="select-price" id="price" name="price" required>
             <option>ฟรี</option>
             <option>ต่อรองได้</option>
             <option>ราคาคงที่</option>
@@ -241,7 +241,7 @@ ob_end_flush();
         <label for="Phone" class="form-label label-insert">เบอร์โทรศัพท์ <span class="span-label">*</span></label>
         <input type="tel" class="form-control input-insert" name="phone_number" maxlength="10" id="phone_number"
           placeholder="กรุณากรอกหมายเลขโทรศัพท์" value="<?php echo htmlspecialchars($phone_number); ?>"
-          oninput="validateInput(this)">
+          oninput="validateInput(this)" required>
       </div>
 
       <!-- position -->
@@ -268,7 +268,8 @@ ob_end_flush();
         <label for="price" class="form-label label-insert" style="display: block;"> คำอธิบาย <span
             class="span-label">*</span></label>
         <textarea id="description" name="description" rows="5" cols="167"
-          placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..." oninput="limitTextarea(this, 200)"></textarea>
+          placeholder="กรอกคำอธิบายหรือรายละเอียดสินค้าของคุณที่นี่..." oninput="limitTextarea(this, 200)"
+          required></textarea>
         <p>คุณพิมพ์ได้อีก <span id="charCount" style="color:#09BA00;"></span> ตัวอักษร</p>
       </div>
 
